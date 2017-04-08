@@ -1,22 +1,19 @@
 # problem1.py
 
-import abc
 import math
 import random
 
 import numpy as np
 
-from .abstract_problem import AbstractProblem
+from abstract_problem import AbstractProblem
 
 
 class Problem1(AbstractProblem):
 
     def generate(self):
-        v = 3 # [km/s]: velocity of the seismic waves
+        v = 3.0 # [km/s]: velocity of the seismic waves
 
-        r0 = np.array([79.0674612756, -27.0524778103])  # temporary
-
-        # r0 = np.array([random.uniform(-100,100), random.uniform(-100,100)])
+        r0 = np.array([random.uniform(-100,100), random.uniform(-100,100)])
         r1 = np.array([random.uniform(-100,100), random.uniform(-100,100)])
         r2 = np.array([random.uniform(-100,100), random.uniform(-100,100)])
         r3 = np.array([random.uniform(-100,100), random.uniform(-100,100)])
@@ -26,7 +23,7 @@ class Problem1(AbstractProblem):
         t3 = np.linalg.norm(r3-r0) / v
 
         problem = [str(number) for number in [r1[0], r1[1], t1,
-                     r2[0], r2[1], t2, r3[0], r3[1], t3]]
+                    r2[0], r2[1], t2, r3[0], r3[1], t3]]
         solution = [str(number) for number in r0.tolist()]
 
         print("Input:", ' '.join(problem))
@@ -36,6 +33,8 @@ class Problem1(AbstractProblem):
 
 
     def solve(self, problem):
+        problem = [float(number) for number in problem]
+
         x1 = problem[0]
         y1 = problem[1]
         t1 = problem[2]
@@ -46,9 +45,7 @@ class Problem1(AbstractProblem):
         y3 = problem[7]
         t3 = problem[8]
 
-        v = 3 # [km/s]
-
-        r0 = np.array([79.0674612756, -27.0524778103])  # temporary
+        v = 3.0 # [km/s]
 
         r1 = v*t1
         r2 = v*t2
@@ -69,10 +66,8 @@ class Problem1(AbstractProblem):
 
         x = (b*f - d*e) / (b*c - a*d)
         y = (c*e - a*f) / (b*c - a*d)
-        solution = [x, y]
 
-        solution = [str for number in [x, y]]
-
+        solution = [str(number) for number in [x, y]]
         print("Solver's solution:", solution)
 
         return solution
@@ -85,3 +80,16 @@ class Problem1(AbstractProblem):
         error_distance = math.sqrt((x1-x2)**2 + (y1-y2)**2)
 
         return error_distance < error_margin
+
+    def test(self):
+        problem, solution = self.generate()
+
+        actual = solution
+        proposed = self.solve(problem)
+
+        is_correct = self.verify(proposed, actual)
+        print("Problem solved!") if is_correct else print("Incorrect solution.")
+
+
+if __name__ == '__main__':
+    Problem1().test()
