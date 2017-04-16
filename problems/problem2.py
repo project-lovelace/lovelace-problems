@@ -1,16 +1,16 @@
 # problem2.py
 
-import abc
 import math
 import random
 
 import numpy as np
 
-from .abstract_problem import AbstractProblem
+from abstract_problem import AbstractProblem
 
 
 class Problem2(AbstractProblem):
-    def generate():
+
+    def generate(self):
         # Physical constants
         # TODO: Find reasonable values for g, m, C, rho, A.
         g = 9.8 # [m/s^2]
@@ -55,7 +55,7 @@ class Problem2(AbstractProblem):
         #
         # return problem, solution
 
-    def solve(problem):
+    def solve(self, problem):
         # Physical constants
         # TODO: Find reasonable values for g, m, C, rho, A. Also x0, y0, blast_radius.
         g = 9.8 # [m/s^2]
@@ -99,28 +99,28 @@ class Problem2(AbstractProblem):
         # more accurate x-position value. Probably doesn't matter too much.
         x_final = (x[-1] + x[-2]) / 2
 
-        solution = x_final
+        solution = str(x_final)
 
         print("Solver's solution:", solution)
         return solution
 
 
-    def verify(proposed, actual):
+    def verify(self, proposed, actual):
         error = abs(proposed-actual)
         print("Error:", error)
 
         return error == 0
 
 
-    def test():
-        problem, solution = generate()
+    def test(self):
+        problem, solution = self.generate()
 
-        actual = solution  # FIXME: the actual solution should come from a solver function
-        proposed = [79.0674612655, -27.0523778103]  # assume this came from user's code
+        actual = solution
+        proposed = self.solve(problem)
 
-        is_correct = verify(proposed, actual)
-
+        is_correct = self.verify(proposed, actual)
         print("Problem solved!") if is_correct else print("Incorrect solution.")
 
 
-test()
+if __name__ == '__main__':
+    Problem2().test()
