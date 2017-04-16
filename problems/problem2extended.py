@@ -1,11 +1,10 @@
 # problem2.py
 
-import math
 import random
 
 import numpy as np
 
-from abstract_problem import AbstractProblem
+from problems.abstract_problem import AbstractProblem
 
 
 class Problem2Extended(AbstractProblem):
@@ -127,13 +126,11 @@ class Problem2Extended(AbstractProblem):
         print("Solver's solution:", solution)
         return solution
 
-
     def verify(self, proposed, actual):
         error = abs(proposed-actual)
         print("Error:", error)
 
         return error == 0
-
 
     def test(self):
         problem, solution = self.generate()
@@ -143,7 +140,6 @@ class Problem2Extended(AbstractProblem):
 
         is_correct = self.verify(proposed, actual)
         print("Problem solved!") if is_correct else print("Incorrect solution.")
-
 
 
 if __name__ == '__main__':

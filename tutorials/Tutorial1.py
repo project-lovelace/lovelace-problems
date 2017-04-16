@@ -1,15 +1,12 @@
-# problem1.py
+# tutorial1.py
 
-import abc
 import math
 import random
 
-import numpy as np
-
-from .abstract_problem import AbstractProblem
+from tutorials.abstract_tutorial import AbstractTutorial
 
 
-class Problem1(AbstractProblem):
+class Tutorial1(AbstractTutorial):
 
     def generate(self):
         K   = random.randint(500,2500)    # [geese]
@@ -26,7 +23,6 @@ class Problem1(AbstractProblem):
         print("Generator's solution: ", ' '.join(solution))
 
         return problem, solution
-
 
     def solve(self, problem):
         K   = problem['K']   # [geese]

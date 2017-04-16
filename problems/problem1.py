@@ -5,7 +5,7 @@ import random
 
 import numpy as np
 
-from abstract_problem import AbstractProblem
+from problems.abstract_problem import AbstractProblem
 
 
 class Problem1(AbstractProblem):
@@ -30,7 +30,6 @@ class Problem1(AbstractProblem):
         print("Generator's solution:", ' '.join(solution))
 
         return problem, solution
-
 
     def solve(self, problem):
         problem = [float(number) for number in problem]
