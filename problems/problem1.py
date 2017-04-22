@@ -13,10 +13,10 @@ class Problem1(AbstractProblem):
     def generate(self):
         v = 3.0  # [km/s]: velocity of the seismic waves
 
-        r0 = np.array([random.uniform(-100,100), random.uniform(-100,100)])
-        r1 = np.array([random.uniform(-100,100), random.uniform(-100,100)])
-        r2 = np.array([random.uniform(-100,100), random.uniform(-100,100)])
-        r3 = np.array([random.uniform(-100,100), random.uniform(-100,100)])
+        r0 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
+        r1 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
+        r2 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
+        r3 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
 
         t1 = np.linalg.norm(r1-r0) / v
         t2 = np.linalg.norm(r2-r0) / v
