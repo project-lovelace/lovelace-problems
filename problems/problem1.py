@@ -1,8 +1,8 @@
 # problem1.py
+# Finding earthquake epicenters
 
 import math
 import random
-
 import numpy as np
 
 from problems.abstract_problem import AbstractProblem

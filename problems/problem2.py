@@ -1,7 +1,7 @@
 # problem2.py
+# The M198 howitzer
 
 import random
-
 import numpy as np
 
 from problems.abstract_problem import AbstractProblem
@@ -56,7 +56,7 @@ class Problem2(AbstractProblem):
 
         # ODE solver parameters
         # TODO: Use a robust numpy RK4 ODE solver just to be safe?
-        Delta_t = 0.001  # [s]
+        Delta_t = 0.01  # [s]
 
         # Solve for the trajectories using Euler's method (RK1) and stop once
         # the projectile hits the ground.
@@ -68,7 +68,7 @@ class Problem2(AbstractProblem):
             vy_n = vy[i] - g*Delta_t - ((P_D/m) * v[i]*vy[i])*Delta_t
             v_n = np.sqrt(vx_n**2 + vy_n**2)
 
-            print("t= {:.3f} x= {:.3f} y= {:.3f} vx = {:.3f} vy = {:.3f}".format(i*Delta_t, x_n, y_n, vx_n, vy_n))
+            print("t= {:.3f}  x= {:.3f}  y= {:.3f}  vx = {:.3f}  vy = {:.3f}".format(i*Delta_t, x_n, y_n, vx_n, vy_n))
 
             x.append(x_n)
             vx.append(vx_n)
