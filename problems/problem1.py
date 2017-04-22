@@ -11,7 +11,7 @@ from problems.abstract_problem import AbstractProblem
 class Problem1(AbstractProblem):
 
     def generate(self):
-        v = 3.0 # [km/s]: velocity of the seismic waves
+        v = 3.0  # [km/s]: velocity of the seismic waves
 
         r0 = np.array([random.uniform(-100,100), random.uniform(-100,100)])
         r1 = np.array([random.uniform(-100,100), random.uniform(-100,100)])
