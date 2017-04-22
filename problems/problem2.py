@@ -56,30 +56,32 @@ class Problem2(AbstractProblem):
 
         # ODE solver parameters
         # TODO: Use a robust numpy RK4 ODE solver just to be safe?
-        Delta_t = 0.00001  # [s]
+        Delta_t = 0.001  # [s]
 
         # Solve for the trajectories using Euler's method (RK1) and stop once
         # the projectile hits the ground.
         i = 0
-        while i < 5:
-            x.append(x[i] + vx[i] * Delta_t)
-            vx.append(vx[i])
-            # print("v_x change: ", (P_D / m) * v[i] * vx[i])
-            # vx.append(vx[i] - (P_D/m) * v[i] * vx[i])
-            y.append(y[i] + vy[i] * Delta_t)
-            vy.append(vy[i] - g * Delta_t)
-            # print("v_y change: ", - (P_D/m) * v[i] * vy[i])
-            # vy.append(vy[i] - g * Delta_t - (P_D/m) * v[i] * vy[i])
-            v.append(np.sqrt(vx[i+1]**2 + vy[i+1]**2))
+        while y[i] > 0:
+            x_n = x[i] + vx[i]*Delta_t
+            vx_n = vx[i] - ((P_D/m) * v[i]*vx[i])*Delta_t
+            y_n = y[i] + vy[i]*Delta_t
+            vy_n = vy[i] - g*Delta_t - ((P_D/m) * v[i]*vy[i])*Delta_t
+            v_n = np.sqrt(vx_n**2 + vy_n**2)
+
+            print("t= {:.3f} x= {:.3f} y= {:.3f} vx = {:.3f} vy = {:.3f}".format(i*Delta_t, x_n, y_n, vx_n, vy_n))
+
+            x.append(x_n)
+            vx.append(vx_n)
+            y.append(y_n)
+            vy.append(vy_n)
+            v.append(v_n)
             i = i+1
 
         # Interpolate between the last data point above ground and the data
         # point that would have been below the ground to get a better estimate
         # of the landing point.
-        # r = -y[-2]/y[-1]
-        # x_final = (x[-2] + r*x[-1]) / (r+1)
-
-        x_final = x[-1]
+        r = -y[-2]/y[-1]
+        x_final = (x[-2] + r*x[-1]) / (r+1)
 
         solution = {'x_final': x_final}
 
