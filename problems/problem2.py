@@ -56,7 +56,6 @@ class Problem2(AbstractProblem):
 
     def solve(self, problem):
         # Physical constants
-        # TODO: Find reasonable values for g, m, C, rho, A. Also x0, y0, blast_radius.
         g = 9.8 # [m/s^2]
         m = 1 # [kg]
 
