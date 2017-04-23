@@ -16,9 +16,9 @@ from problems.abstract_problem import AbstractProblem
 
 class Problem3(AbstractProblem):
     def generate(self):
-        dna_length = random.randint(10, 20)
+        dna_length = random.randint(5, 10)
         extra_sites = random.randint(1, 2)
-        strand_length = random.randint(3, 5)
+        strand_length = random.randint(3, 10)
 
         sequence = self.generate_dna_sequence(dna_length)
         sequence = self.randomly_insert_extra_sites(sequence, extra_sites)

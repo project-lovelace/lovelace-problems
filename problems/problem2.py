@@ -30,7 +30,7 @@ class Problem2(AbstractProblem):
         g = 9.80665  # [m/s^2], standard gravity
         rho = 1.225  # [kg/m^3], density of air at sea level and 15°C
 
-        m = 43  # [kg], M198 Howitzer shell mass
+        m = 43  # [kg], M107 155mm shell mass
         A = np.pi * (15.5 / 2) ** 2  # [m^2], area of M107 155mm shell
         # blast_radius = 3  # [m], M198 Howitzer shell destructive radius
 
