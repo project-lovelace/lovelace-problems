@@ -56,10 +56,10 @@ class Problem3(AbstractProblem):
         # TODO: Will not work if strand contains 'CCTGG'.
         sequence = sequence.replace('CCAGG', strand + 'CCAGG')
         sequence = sequence.replace('CCTGG', strand + 'CCTGG')
-
         complement = self.dna_complement(sequence)
 
-        return complement
+        solution = {'complement': complement}
+        return solution
 
     def verify(self, proposed, actual):
         return proposed == actual
