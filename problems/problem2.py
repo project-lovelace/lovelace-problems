@@ -24,7 +24,7 @@ class Problem2(AbstractProblem):
         y_0 = random.uniform(1, 3)  # [m]
 
         problem = {'theta': theta, 'v_0': v_0, 'x_0': x_0, 'y_0': y_0}
-        return problem
+        return problem, None
 
     def solve(self, problem):
         g = 9.80665  # [m/s^2], standard gravity

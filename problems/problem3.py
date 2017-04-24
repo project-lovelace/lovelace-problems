@@ -25,7 +25,7 @@ class Problem3(AbstractProblem):
         strand = self.generate_dna_sequence(strand_length)
 
         problem = {'sequence': sequence, 'strand': strand}
-        return problem
+        return problem, None
 
     @staticmethod
     def generate_dna_sequence(length):

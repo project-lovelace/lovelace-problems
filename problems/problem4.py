@@ -6,7 +6,7 @@ import random
 from problems.abstract_problem import AbstractProblem
 
 
-class Problem3(AbstractProblem):
+class Problem4(AbstractProblem):
     def generate(self):
         return
 
