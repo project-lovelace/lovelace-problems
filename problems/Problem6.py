@@ -93,7 +93,7 @@ class Problem6(AbstractProblem):
             'scrambler_arrangement': self.generate_scrambler_arrangement(),
             'scrambler_orientation': self.generate_scrambler_orientation(),
             'plugboard_setting': self.generate_plugboard_setting(),
-            'plaintext': 'YOURENIGMASUCKS'
+            'plaintext': 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
         }
         return problem
 
@@ -149,6 +149,11 @@ class Problem6(AbstractProblem):
 
         solution = self.solve(problem)
         print(solution)
+
+        problem['plaintext'] = solution['ciphertext']
+        print(problem)
+        solution2 = self.solve(problem)
+        print(solution2)
 
 if __name__ == '__main__':
     Problem6().test()
