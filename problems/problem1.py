@@ -81,6 +81,9 @@ class Problem1(AbstractProblem):
         error_margin = 0.0001
         error_distance = math.sqrt((x1-x2)**2 + (y1-y2)**2)
 
+        log.debug("User's answer: %s", ' '.join(answer))
+        log.debug("Error in user's answer: %s", error_distance)
+
         return error_distance < error_margin
 
     def test(self):
