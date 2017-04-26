@@ -1,11 +1,15 @@
 # problem1.py
 # Finding earthquake epicenters
 
+import logging
 import math
 import random
 import numpy as np
 
 from problems.abstract_problem import AbstractProblem
+
+log = logging.getLogger(__name__)
+log.setLevel(logging.DEBUG)
 
 
 class Problem1(AbstractProblem):
@@ -22,12 +26,12 @@ class Problem1(AbstractProblem):
         t2 = np.linalg.norm(r2-r0) / v
         t3 = np.linalg.norm(r3-r0) / v
 
-        problem = [str(number) for number in [r1[0], r1[1], t1,
-                    r2[0], r2[1], t2, r3[0], r3[1], t3]]
+        problem = [str(number) for number in
+                   [r1[0], r1[1], t1, r2[0], r2[1], t2, r3[0], r3[1], t3]]
         solution = [str(number) for number in r0.tolist()]
 
-        print("Input:", ' '.join(problem))
-        print("Generator's solution:", ' '.join(solution))
+        log.debug("Problem generated: %s", ' '.join(problem))
+        log.debug("Generator's solution: %s", ' '.join(solution))
 
         return problem, solution
 
@@ -44,7 +48,7 @@ class Problem1(AbstractProblem):
         y3 = problem[7]
         t3 = problem[8]
 
-        v = 3.0 # [km/s]
+        v = 3.0  # [km/s]
 
         r1 = v*t1
         r2 = v*t2
@@ -62,12 +66,11 @@ class Problem1(AbstractProblem):
         f = r1**2 - x1**2 - y1**2 - r3**2 + x3**2 + y3**2
 
         # Solving ax + by = e and cx + dy = f for x,y gives
-
         x = (b*f - d*e) / (b*c - a*d)
         y = (c*e - a*f) / (b*c - a*d)
 
         solution = [str(number) for number in [x, y]]
-        print("Solver's solution:", solution)
+        log.debug("Solver's solution: %s", ' '.join(solution))
 
         return solution
 
@@ -78,6 +81,9 @@ class Problem1(AbstractProblem):
         error_margin = 0.0001
         error_distance = math.sqrt((x1-x2)**2 + (y1-y2)**2)
 
+        log.debug("User's answer: %s", ' '.join(answer))
+        log.debug("Error in user's answer: %s", error_distance)
+
         return error_distance < error_margin
 
     def test(self):
@@ -87,7 +93,7 @@ class Problem1(AbstractProblem):
         proposed = self.solve(problem)
 
         is_correct = self.verify(proposed, actual)
-        print("Problem solved!") if is_correct else print("Incorrect solution.")
+        log.debug("Problem solved!") if is_correct else log.debug("Incorrect solution.")
 
 
 if __name__ == '__main__':

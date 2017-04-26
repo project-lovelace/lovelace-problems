@@ -1,4 +1,4 @@
-# problem2.py
+# problem3.py
 # Polymerase chain reaction
 
 # Featuring the EcoRII restriction enzyme:
@@ -9,9 +9,13 @@
 # 5' NNCCWGGNN    5'---NN     CCWGGNN---3'
 # 3' NNGGWCCNN    3'---NNGGWCC     NN---5'
 
+import logging
 import random
 
 from problems.abstract_problem import AbstractProblem
+
+log = logging.getLogger(__name__)
+log.setLevel(logging.DEBUG)
 
 
 class Problem3(AbstractProblem):

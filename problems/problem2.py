@@ -1,10 +1,14 @@
 # problem2.py
 # The M198 howitzer
 
+import logging
 import random
 import numpy as np
 
 from problems.abstract_problem import AbstractProblem
+
+log = logging.getLogger(__name__)
+log.setLevel(logging.DEBUG)
 
 
 class Problem2(AbstractProblem):
