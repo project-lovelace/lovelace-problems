@@ -1,12 +1,15 @@
-# problem2.py
+# problem4.py
 # Convex chocolate chip cookies
 
-import random
+import logging
 
 from problems.abstract_problem import AbstractProblem
 
+log = logging.getLogger(__name__)
+log.setLevel(logging.DEBUG)
 
-class Problem3(AbstractProblem):
+
+class Problem4(AbstractProblem):
     def generate(self):
         return
 

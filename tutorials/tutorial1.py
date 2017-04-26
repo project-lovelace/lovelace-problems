@@ -1,9 +1,12 @@
 # tutorial1.py
 
+import logging
 import math
 import random
 
 from tutorials.abstract_tutorial import AbstractTutorial
+
+log = logging.getLogger(__name__)
 
 
 class Tutorial1(AbstractTutorial):
@@ -15,15 +18,10 @@ class Tutorial1(AbstractTutorial):
 
         problem = {"K": K, "P_0": P_0, "r": r}
 
-        # TODO BASIM:
-        # Can't find the solution without fully solving the problem so I called
-        # self.solve() here. Hope this is okay.
-        solution = self.solve(problem)
+        log.debug("Generated problem: ", ' '.join(problem))
+        log.debug("Generator cannot provide a solution.")
 
-        print("Input: ", ' '.join(problem))
-        print("Generator's solution: ", ' '.join(solution))
-
-        return problem, solution
+        return problem, None
 
     def solve(self, problem):
         K   = problem['K']    # [geese]
