@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('[%(asctime)s] %(name)s:%(levelname)s: %(message)s')
 
-# create console handler
+# create console handler and add it to the logger
 ch = logging.StreamHandler()
 ch.setLevel(logging.DEBUG)
 ch.setFormatter(formatter)
@@ -86,6 +86,16 @@ class Problem1(AbstractProblem):
                 n = n+1
 
         return test_cases
+
+    def get_user_inputs(self):
+        # single string with newlines for each test case.
+        inputs = []
+        for tc in self.test_cases:
+            input_str = str(tc.input['x1']) + ' ' + str(tc.input['y1']) + ' ' str(tc.input['t1']) + ' '
+            input_str += str(tc.input['x2']) + ' ' + str(tc.input['y2']) + ' ' + str(tc.input['t2']) + ' '
+            input_str += str(tc.input['x3']) + ' ' + str(tc.input['y3']) + ' ' + str(tc.input['t3'])
+            inputs.append(input_str)
+        return inputs
 
     def generate_input(self, test_type):
         test_case = TestCase1(test_type)
@@ -203,27 +213,39 @@ class Problem1(AbstractProblem):
                 logger.critical("Our own solution is incorrect!")
         return
 
-    def verify_user_solution(self, test_case):
+    def verify_user_solution(self, user_input_str, user_output_str):
         logger.info("Verifying user solution...")
+        logger.debug("User input string: %s", user_input_str)
+        logger.debug("User output string: %s", user_output_str)
+
+        # Build TestCase object out of user's input string.
+        tmp_test_case = TestCase1()
+        inputs = list(map(float, user_input_str.split()))
+        x1, y1, t1, x2, y2, t2, x3, y3, t3 = inputs
+        tmp_test_case.input['x1'] = x1
+        tmp_test_case.input['x1'] = x1
+        tmp_test_case.input['y1'] = y1
+        tmp_test_case.input['t1'] = t1
+        tmp_test_case.input['x2'] = x2
+        tmp_test_case.input['y2'] = y2
+        tmp_test_case.input['t2'] = t2
+        tmp_test_case.input['x3'] = x3
+        tmp_test_case.input['y3'] = y3
+        tmp_test_case.input['t3'] = t3
+
+        # Solve the problem with this TestCase so we have our own solution, and extract the solution.
+        self.solve_test_case(tmp_test_case)
+        x = tmp_test_case.output['x']
+        y = tmp_test_case.output['y']
 
         # Extract user solution.
-        user_solution = test_case.output
-        user_x = user_solution['x']
-        user_y = user_solution['y']
+        outputs = list(map(float, user_output_str.split()))
+        user_x = outputs[0]
+        user_y = outputs[1]
 
-        # Recreate test case and solve it ourselves.
-        tc = test_case
-        tc.output = {}
-        self.solve_test_case(tc)
-
-        our_solution = tc.output
-        x = our_solution['x']
-        y = our_solution['y']
-
-        # Check that solutions agree.
+        # Compare our solution with user's solution.
+        error_tol = tmp_test_case.testing['error_tol']
         error_distance = math.sqrt((x - user_x)**2 + (y - user_y)**2)  # [km]
-
-        error_tol = test_case.testing['error_tol']
 
         logger.debug("User solution:")
         logger.debug("(x, y) = (%f, %f)", user_x, user_y)
