@@ -21,6 +21,7 @@ logger.addHandler(ch)
 
 
 class TestCase1Type(Enum):
+    # TODO: Somehow include the test case descriptions within the Enum?
     GENERAL = 1
     ZERO_CASE = 2
     # ALL_CLOSE = auto()
@@ -172,38 +173,63 @@ class Problem1(AbstractProblem):
         x = (b*f - d*e) / (b*c - a*d)
         y = (c*e - a*f) / (b*c - a*d)
 
+        if test_case.output:  # Testing if output dict is non-empty.
+            logger.warning("Test case already has solution:")
+            logger.warning("(x, y) = (%f, %f)", test_case.output['x'], test_case.output['y'])
+            logger.warning("Overwriting with new solution.")
+
         test_case.output['x'] = x
         test_case.output['y'] = y
 
-        solution = [str(number) for number in [x, y]]
-        logger.debug("Solver's solution: %s", ' '.join(solution))
+        logger.debug("Test case solution:")
+        logger.debug("(x, y) = (%f, %f)", x, y)
 
         return
 
     def test_our_solution(self):
-        pass
+        # Just solve the test cases we already have from initialization and verify them.
+        # TODO: This should fail or throw an exception if something is wrong.
+        logger.info("Testing Problem1...")
+        for tc in self.test_cases:
+            self.solve_test_case(tc)
+            if not self.verify_user_solution(tc):
+                logger.critical("Our own solution is incorrect!")
+        return
 
     def verify_user_solution(self, test_case):
-        x1, y1 = [float(num_str) for num_str in answer]
-        x2, y2 = [float(num_str) for num_str in solution]
+        logger.info("Verifying user solution...")
 
-        error_margin = 0.0001
-        error_distance = math.sqrt((x1-x2)**2 + (y1-y2)**2)
+        # Extract user solution.
+        user_solution = test_case.output
+        user_x = user_solution['x']
+        user_y = user_solution['y']
 
-        logger.debug("User's answer: %s", ' '.join(answer))
-        logger.debug("Error in user's answer: %s", error_distance)
+        # Recreate test case and solve it ourselves.
+        tc = test_case
+        tc.output = {}
+        self.solve_test_case(tc)
 
-        return error_distance < error_margin
+        our_solution = tc.output
+        x = our_solution['x']
+        y = our_solution['y']
 
-    def test(self):
-        problem, solution = self.generate()
+        # Check that solutions agree.
+        error_distance = math.sqrt((x - user_x)**2 + (y - user_y)**2)  # [km]
 
-        actual = solution
-        proposed = self.solve(problem)
+        error_tol = 0.0001  # [km]
 
-        is_correct = self.verify(proposed, actual)
-        logger.debug("Problem solved!") if is_correct else logger.debug("Incorrect solution.")
+        logger.debug("User solution:")
+        logger.debug("(x, y) = (%f, %f)", user_x, user_y)
+        logger.debug("Our solution:")
+        logger.debug("(x, y) = (%f, %f)", x, y)
+        logger.debug("Error tolerance = %e. Error distance: %e.", error_tol, error_distance)
 
+        if error_distance < error_tol:
+            logger.info("User solution correct within error margin.")
+            return True
+        else:
+            logger.info("User solution incorrect within error margin.")
+            return False
 
 if __name__ == '__main__':
-    Problem1()
+    Problem1().test_our_solution()
