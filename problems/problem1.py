@@ -9,6 +9,7 @@ import numpy as np
 from enum import Enum  # , auto
 from abstract_problem import AbstractProblem
 
+# TODO: Store logger config in an ini-style file?
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('[%(asctime)s] %(name)s:%(levelname)s: %(message)s')

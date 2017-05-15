@@ -49,6 +49,8 @@ class Problem6(AbstractProblem):
         for p in pairs:
             plugboard[p[0]] = p[1]
 
+        print(plugboard)
+        print('{:s} -> {:s}'.format(ch, plugboard[ch]))
         if ch in plugboard.keys():
             return plugboard[ch]
         else:
@@ -93,7 +95,7 @@ class Problem6(AbstractProblem):
             'scrambler_arrangement': self.generate_scrambler_arrangement(),
             'scrambler_orientation': self.generate_scrambler_orientation(),
             'plugboard_setting': self.generate_plugboard_setting(),
-            'plaintext': 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+            'plaintext': 'AAA'
         }
         return problem
 

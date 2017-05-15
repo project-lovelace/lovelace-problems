@@ -8,10 +8,6 @@ from problems.abstract_problem import AbstractProblem
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 
-<<<<<<< HEAD
-=======
-
->>>>>>> master
 class Problem4(AbstractProblem):
     def generate(self):
         return
