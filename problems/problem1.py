@@ -33,7 +33,11 @@ class TestCase1Type(Enum):
 
 class TestCase1:
     constants = {
-        'v': 3.0  # km/s
+        'v': 3.0  # [km/s]
+    }
+
+    testing = {
+        'error_tol': 0.0001  # [km]
     }
 
     repeats = {
@@ -53,6 +57,8 @@ class TestCase1:
         self.input = {}
         self.output = {}
 
+# TODO: Is this the best way of describing the expected input/output?
+# There must be a data structure that will do this for us more nicely than a dict with a commented convention?
 # Inputs:
 #   x1, y1, t1, x2, y2, t2, x3, y3, t3
 #
@@ -216,7 +222,7 @@ class Problem1(AbstractProblem):
         # Check that solutions agree.
         error_distance = math.sqrt((x - user_x)**2 + (y - user_y)**2)  # [km]
 
-        error_tol = 0.0001  # [km]
+        error_tol = test_case.testing['error_tol']
 
         logger.debug("User solution:")
         logger.debug("(x, y) = (%f, %f)", user_x, user_y)

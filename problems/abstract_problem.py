@@ -6,8 +6,8 @@ import abc
 class AbstractProblem(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
-    def generate_input(self):
-        """Create a set of inputs for a problem and return them as a TestCase object. If the solution is known at input
+    def generate_input(self, test_type):
+        """Create the input(s) for a problem and return them as a TestCase object. If the solution is known at input
         creation time, it should be included in the TestCase. It would be called generate_test_case except that it is
         only expected to generate the input, not the output."""
 
