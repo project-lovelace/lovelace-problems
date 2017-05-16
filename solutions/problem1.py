@@ -1,6 +1,8 @@
 import sys
 
-problem = [float(number) for number in sys.argv[1:]]
+input_str = str(input())
+input_list = input_str.split()
+problem = [float(number) for number in input_list]
 
 x1 = problem[0]
 y1 = problem[1]

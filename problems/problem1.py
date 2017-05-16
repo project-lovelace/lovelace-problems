@@ -7,7 +7,7 @@ import random
 import numpy as np
 
 from enum import Enum  # , auto
-from abstract_problem import AbstractProblem
+from problems.abstract_problem import AbstractProblem
 
 # TODO: Store logger config in an ini-style file?
 logger = logging.getLogger(__name__)
@@ -15,10 +15,10 @@ logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('[%(asctime)s] %(name)s:%(levelname)s: %(message)s')
 
 # create console handler and add it to the logger
-ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
-ch.setFormatter(formatter)
-logger.addHandler(ch)
+# ch = logging.StreamHandler()
+# ch.setLevel(logging.DEBUG)
+# ch.setFormatter(formatter)
+# logger.addHandler(ch)
 
 
 class TestCase1Type(Enum):
@@ -58,6 +58,13 @@ class TestCase1:
         self.input = {}
         self.output = {}
 
+    def input_str(self):
+        # single string with newlines.
+        input_str = str(self.input['x1']) + ' ' + str(self.input['y1']) + ' ' + str(self.input['t1']) + ' '
+        input_str += str(self.input['x2']) + ' ' + str(self.input['y2']) + ' ' + str(self.input['t2']) + ' '
+        input_str += str(self.input['x3']) + ' ' + str(self.input['y3']) + ' ' + str(self.input['t3'])
+        return input_str
+
 # TODO: Is this the best way of describing the expected input/output?
 # There must be a data structure that will do this for us more nicely than a dict with a commented convention?
 # Inputs:
@@ -86,16 +93,6 @@ class Problem1(AbstractProblem):
                 n = n+1
 
         return test_cases
-
-    def get_user_inputs(self):
-        # single string with newlines for each test case.
-        inputs = []
-        for tc in self.test_cases:
-            input_str = str(tc.input['x1']) + ' ' + str(tc.input['y1']) + ' ' str(tc.input['t1']) + ' '
-            input_str += str(tc.input['x2']) + ' ' + str(tc.input['y2']) + ' ' + str(tc.input['t2']) + ' '
-            input_str += str(tc.input['x3']) + ' ' + str(tc.input['y3']) + ' ' + str(tc.input['t3'])
-            inputs.append(input_str)
-        return inputs
 
     def generate_input(self, test_type):
         test_case = TestCase1(test_type)
@@ -219,7 +216,7 @@ class Problem1(AbstractProblem):
         logger.debug("User output string: %s", user_output_str)
 
         # Build TestCase object out of user's input string.
-        tmp_test_case = TestCase1()
+        tmp_test_case = TestCase1(None)
         inputs = list(map(float, user_input_str.split()))
         x1, y1, t1, x2, y2, t2, x3, y3, t3 = inputs
         tmp_test_case.input['x1'] = x1
