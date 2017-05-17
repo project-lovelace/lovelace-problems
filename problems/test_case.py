@@ -1,5 +1,5 @@
-import abc
 from enum import Enum
+from abc import ABCMeta, abstractmethod
 
 
 class TestCaseTypeEnum(Enum):
@@ -9,17 +9,17 @@ class TestCaseTypeEnum(Enum):
         self.multiplicity = multiplicity
 
 
-class TestCase(metaclass=abc.ABCMeta):
+class TestCase(metaclass=ABCMeta):
     def __init__(self, test_type):
         self.test_type = test_type
         self.input = {}
         self.output = {}
 
-    @abc.abstractmethod
+    @abstractmethod
     def input_str(self):
         """Should return the input string the user sees for this test case."""
 
-    @abc.abstractmethod
+    @abstractmethod
     def output_str(self):
         """If the solution/output is known, this should return the output string expected by
         AbstractProblem.verify_user_solution."""
