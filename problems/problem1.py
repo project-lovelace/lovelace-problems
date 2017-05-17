@@ -133,15 +133,9 @@ class Problem1(AbstractProblem):
         t2 = np.linalg.norm(r2-r0) / v
         t3 = np.linalg.norm(r3-r0) / v
 
-        test_case.input['x1'] = r1[0]
-        test_case.input['y1'] = r1[1]
-        test_case.input['t1'] = t1
-        test_case.input['x2'] = r2[0]
-        test_case.input['y2'] = r2[1]
-        test_case.input['t2'] = t2
-        test_case.input['x3'] = r3[0]
-        test_case.input['y3'] = r3[1]
-        test_case.input['t3'] = t3
+        test_case.input = {'x1': r1[0], 'y1': r1[1], 't1': t1,
+                           'x2': r2[0], 'y2': r2[1], 't2': t2,
+                           'x3': r3[0], 'y3': r3[1], 't3': t3}
 
         logger.debug("Test case input:")
         logger.debug("(x1, y1, t1) = (%f, %f, %f)", r1[0], r1[1], t1)
@@ -159,15 +153,9 @@ class Problem1(AbstractProblem):
     def solve_test_case(self, test_case):
         v = self.constants['v']
 
-        x1 = test_case.input['x1']
-        y1 = test_case.input['y1']
-        t1 = test_case.input['t1']
-        x2 = test_case.input['x2']
-        y2 = test_case.input['y2']
-        t2 = test_case.input['t2']
-        x3 = test_case.input['x3']
-        y3 = test_case.input['y3']
-        t3 = test_case.input['t3']
+        x1, y1, t1 = test_case.input['x1'], test_case.input['y1'], test_case.input['t1']
+        x2, y2, t2 = test_case.input['x2'], test_case.input['y2'], test_case.input['t2']
+        x3, y3, t3 = test_case.input['x3'], test_case.input['y3'], test_case.input['t3']
 
         # TODO: Find my derivation and write down the steps/logic here.
         # Setting up the equations, we get two simultaneous linear equations for
@@ -221,16 +209,10 @@ class Problem1(AbstractProblem):
 
         inputs = list(map(float, user_input_str.split()))
         x1, y1, t1, x2, y2, t2, x3, y3, t3 = inputs
-        tmp_test_case.input['x1'] = x1
-        tmp_test_case.input['x1'] = x1
-        tmp_test_case.input['y1'] = y1
-        tmp_test_case.input['t1'] = t1
-        tmp_test_case.input['x2'] = x2
-        tmp_test_case.input['y2'] = y2
-        tmp_test_case.input['t2'] = t2
-        tmp_test_case.input['x3'] = x3
-        tmp_test_case.input['y3'] = y3
-        tmp_test_case.input['t3'] = t3
+
+        tmp_test_case.input = {'x1': x1, 'y1': y1, 't1': t1,
+                               'x2': x2, 'y2': y2, 't2': t2,
+                               'x3': x3, 'y3': y3, 't3': t3}
 
         # Solve the problem with this TestCase so we have our own solution, and extract the solution.
         self.solve_test_case(tmp_test_case)
