@@ -15,55 +15,47 @@ logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('[%(asctime)s] %(name)s:%(levelname)s: %(message)s')
 
 # create console handler and add it to the logger
-# ch = logging.StreamHandler()
-# ch.setLevel(logging.DEBUG)
-# ch.setFormatter(formatter)
-# logger.addHandler(ch)
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+ch.setFormatter(formatter)
+logger.addHandler(ch)
 
 
 class TestCase1Type(Enum):
-    # TODO: Somehow include the test case descriptions within the Enum?
-    GENERAL = 1
-    ZERO_CASE = 2
+    GENERAL = ('General case', '', 3)
+    ZERO_CASE = ('Zero case',
+                 'One of the three stations is randomly placed exactly on top of the earthquake epicenter.',
+                 1)
     # ALL_CLOSE = auto()
     # ONE_FAR = auto()
     # TWO_FAR = auto()
     # ALL_FAR = auto()
-    EQUIDISTANT = 3
+    EQUIDISTANT = ('Equidistant case', 'All three stations are the same distance from the earthquake epicenter.', 1)
+    UNKNOWN = ('Unknown case',
+               'Used when given the input of a test case but not its type. Primarily used by '
+               + 'AbstractProblem.verify_user_solution.',
+               0)
+
+    def __init__(self, test_name, debug_description, multiplicity):
+        self.test_name = test_name
+        self.debug_description = debug_description
+        self.multiplicity = multiplicity
 
 
 class TestCase1:
-    constants = {
-        'v': 3.0  # [km/s]
-    }
-
-    testing = {
-        'error_tol': 0.0001  # [km]
-    }
-
-    repeats = {
-        TestCase1Type.GENERAL: 3,
-        TestCase1Type.ZERO_CASE: 1,
-        # TestCase1Type.ALL_CLOSE: 1,
-        # TestCase1Type.ONE_FAR: 1,
-        # TestCase1Type.TWO_FAR: 1,
-        # TestCase1Type.ALL_FAR: 1,
-        TestCase1Type.EQUIDISTANT: 1
-    }
-
     def __init__(self, test_type):
         self.test_type = test_type
-        self.user_description = ''
-        self.debug_description = ''
         self.input = {}
         self.output = {}
 
     def input_str(self):
-        # single string with newlines.
         input_str = str(self.input['x1']) + ' ' + str(self.input['y1']) + ' ' + str(self.input['t1']) + ' '
         input_str += str(self.input['x2']) + ' ' + str(self.input['y2']) + ' ' + str(self.input['t2']) + ' '
         input_str += str(self.input['x3']) + ' ' + str(self.input['y3']) + ' ' + str(self.input['t3'])
         return input_str
+
+    def output_str(self):
+        return str(self.output['x']) + ' ' + str(self.output['y'])
 
 # TODO: Is this the best way of describing the expected input/output?
 # There must be a data structure that will do this for us more nicely than a dict with a commented convention?
@@ -75,19 +67,30 @@ class TestCase1:
 
 
 class Problem1(AbstractProblem):
+    constants = {
+        'v': 3.0  # [km/s]
+    }
+
+    testing = {
+        'error_tol': 0.0001  # [km]
+    }
 
     def __init__(self):
         self.test_cases = self.generate_test_cases()
 
     def generate_test_cases(self):
         logger.info("Generating test cases...")
-
         test_cases = []
-        num_cases = sum(TestCase1.repeats.values())
 
+        # Count number of test cases we'll be generating in total.
+        num_cases = 0
+        for test_type in TestCase1Type:
+            num_cases += test_type.multiplicity
+
+        # Generate all the cases and store them in test_cases.
         n = 1
         for test_type in TestCase1Type:
-            for i in range(TestCase1.repeats[test_type]):
+            for i in range(test_type.multiplicity):
                 logger.debug("Generating test case %d/%d...", n, num_cases)
                 test_cases.append(self.generate_input(test_type))
                 n = n+1
@@ -95,38 +98,36 @@ class Problem1(AbstractProblem):
         return test_cases
 
     def generate_input(self, test_type):
+        if not isinstance(test_type, TestCase1Type):
+            logger.critical('test_type is not of type TestCase1Type!')
+            raise TypeError('test_type is not of type TestCase1Type!')
+
         test_case = TestCase1(test_type)
-        logger.debug("Generating test case with type %s...", test_type.name)
+        logger.debug("Generating %s...", test_type.test_name)
 
         # TODO: Code in check to make sure test_type is of type TestCase1Type.
         if test_type is TestCase1Type.GENERAL:
-            test_case.user_description = 'General case.'
-
             r0 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
             r1 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
             r2 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
             r3 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
         elif test_type is TestCase1Type.ZERO_CASE:
             # TODO: Properly implement ZERO_CASE.
-            test_case.user_description = 'Zero case.'
-            test_case.debug_description =\
-                'One of the three stations is randomly placed exactly on top of the earthquake epicenter.'
-
             r0 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
             r1 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
             r2 = r0
             r3 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
         elif test_type is TestCase1Type.EQUIDISTANT:
             # TODO: Implement EQUIDISTANT case.
-            test_case.user_description = 'Equidistant.'
-            test_case.debug_description = 'All three stations are the same distance from the earthquake epicenter.'
-
             r0 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
             r1 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
             r2 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
             r3 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
+        else:
+            logger.critical('test_type is not a known case type!')
+            raise ValueError('test_type is not a known case type!')
 
-        v = test_case.constants['v']
+        v = self.constants['v']
 
         t1 = np.linalg.norm(r1-r0) / v
         t2 = np.linalg.norm(r2-r0) / v
@@ -156,7 +157,7 @@ class Problem1(AbstractProblem):
         return test_case
 
     def solve_test_case(self, test_case):
-        v = test_case.constants['v']
+        v = self.constants['v']
 
         x1 = test_case.input['x1']
         y1 = test_case.input['y1']
@@ -206,7 +207,7 @@ class Problem1(AbstractProblem):
         logger.info("Testing Problem1...")
         for tc in self.test_cases:
             self.solve_test_case(tc)
-            if not self.verify_user_solution(tc):
+            if not self.verify_user_solution(tc.input_str(), tc.output_str()):
                 logger.critical("Our own solution is incorrect!")
         return
 
@@ -216,7 +217,8 @@ class Problem1(AbstractProblem):
         logger.debug("User output string: %s", user_output_str)
 
         # Build TestCase object out of user's input string.
-        tmp_test_case = TestCase1(None)
+        tmp_test_case = TestCase1(TestCase1Type.UNKNOWN)
+
         inputs = list(map(float, user_input_str.split()))
         x1, y1, t1, x2, y2, t2, x3, y3, t3 = inputs
         tmp_test_case.input['x1'] = x1
@@ -241,7 +243,7 @@ class Problem1(AbstractProblem):
         user_y = outputs[1]
 
         # Compare our solution with user's solution.
-        error_tol = tmp_test_case.testing['error_tol']
+        error_tol = self.testing['error_tol']
         error_distance = math.sqrt((x - user_x)**2 + (y - user_y)**2)  # [km]
 
         logger.debug("User solution:")

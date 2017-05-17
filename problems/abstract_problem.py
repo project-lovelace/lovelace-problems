@@ -19,17 +19,17 @@ class AbstractProblem(metaclass=abc.ABCMeta):
     def test_our_solution(self):
         """Just a method used to test that our code all works (no errors) and that our solution is correct (which will
         probably involve some solution checking by humans). It should test the generate_input and solve_problem methods
-        extensively. It will probably just be run occasionally to ensure our code still works in between updates.
-        """
+        extensively. It will probably just be run occasionally to ensure our code still works in between updates."""
 
     @abc.abstractmethod
-    def verify_user_solution(self, test_case):
-        """Given a TestCase object containing the user's input and output (solution), verify that they have solved the
-        problem correctly by comparing the test case our own solution. Return True if correct, else False."""
+    def verify_user_solution(self, user_input_str, user_output_str):
+        """Given the user's input and output (solution) strings, verify that they have solved the problem correctly by
+        solving the test case ourselves. Return True if their solution is correct, else False."""
 
     @abc.abstractmethod
     def generate_test_cases(self):
-        """Generates a bunch of TestCase objects used to check the user's submitted code."""
+        """Generates a bunch of TestCase objects used to check the user's submitted code. Should be called at
+        __init__."""
 
     # @property
     # @abc.abstractmethod
