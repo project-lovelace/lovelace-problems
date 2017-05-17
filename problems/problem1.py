@@ -6,7 +6,7 @@ import math
 import random
 import numpy as np
 
-from enum import Enum  # , auto
+from test_case import TestCase, TestCaseTypeEnum
 from problems.abstract_problem import AbstractProblem
 
 # TODO: Store logger config in an ini-style file?
@@ -21,7 +21,7 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 
-class TestCase1Type(Enum):
+class TestCase1Type(TestCaseTypeEnum):
     GENERAL = ('General case', '', 3)
     ZERO_CASE = ('Zero case',
                  'One of the three stations is randomly placed exactly on top of the earthquake epicenter.',
@@ -36,18 +36,8 @@ class TestCase1Type(Enum):
                + 'AbstractProblem.verify_user_solution.',
                0)
 
-    def __init__(self, test_name, debug_description, multiplicity):
-        self.test_name = test_name
-        self.debug_description = debug_description
-        self.multiplicity = multiplicity
 
-
-class TestCase1:
-    def __init__(self, test_type):
-        self.test_type = test_type
-        self.input = {}
-        self.output = {}
-
+class TestCase1(TestCase):
     def input_str(self):
         input_str = str(self.input['x1']) + ' ' + str(self.input['y1']) + ' ' + str(self.input['t1']) + ' '
         input_str += str(self.input['x2']) + ' ' + str(self.input['y2']) + ' ' + str(self.input['t2']) + ' '
