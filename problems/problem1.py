@@ -1,6 +1,3 @@
-# problem1.py
-# Finding earthquake epicenters
-
 import logging
 import math
 import random
@@ -47,9 +44,11 @@ class TestCase1(TestCase):
     def output_str(self):
         return str(self.output['x']) + ' ' + str(self.output['y'])
 
-# TODO: Is this the best way of describing the expected input/output? Just a random comment?
+# TODO: Is this the best way of describing the expected input/output? Just a random comment? Can it be enforced?
+# TODO: Should we define TestCase1Input and TestCase1Output objects? Named tuples (they're immutable though)?
 # My argument: We only use the input/output dicts in these problem files so as long as we're happy with it...
 # There must be a data structure that will do this for us more nicely than a dict with a commented convention?
+# It probably doesn't matter much. Just decide on something with Basim and go with it.
 
 # Inputs:
 #   x1, y1, t1, x2, y2, t2, x3, y3, t3
@@ -59,6 +58,7 @@ class TestCase1(TestCase):
 
 
 class Problem1(AbstractProblem):
+    # TODO: Should these dicts be in upper case?
     constants = {
         'v': 3.0  # [km/s]
     }
@@ -98,6 +98,7 @@ class Problem1(AbstractProblem):
         test_case = TestCase1(test_type)
         logger.debug("Generating %s...", test_type.test_name)
 
+        # TODO: Switch to numpy.random? Use some shorthand for generating these random numbers?
         if test_type is TestCase1Type.GENERAL:
             r0 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
             r1 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
@@ -150,12 +151,13 @@ class Problem1(AbstractProblem):
         x3, y3, t3 = test_case.input['x3'], test_case.input['y3'], test_case.input['t3']
 
         # TODO: Find my derivation and write down the steps/logic here.
-        # Setting up the equations, we get two simultaneous linear equations for
-        # x0 and y0, namely ax + by = e and cx + dy = f where
 
         r1 = v*t1
         r2 = v*t2
         r3 = v*t3
+
+        # Setting up the equations, we get two simultaneous linear equations for
+        # x0 and y0, namely ax + by = e and cx + dy = f where
 
         a = 2*(x2-x1)
         b = 2*(y2-y1)
@@ -183,11 +185,11 @@ class Problem1(AbstractProblem):
 
     def test_our_solution(self):
         # Just solve the test cases we already have from initialization and verify them.
-        # TODO: This should fail or throw an exception if something is wrong.
         logger.info("Testing Problem1...")
         for tc in self.test_cases:
             self.solve_test_case(tc)
             if not self.verify_user_solution(tc.input_str(), tc.output_str()):
+                # TODO: This should fail or throw an exception if something is wrong.
                 logger.critical("Our own solution is incorrect!")
         return
 
