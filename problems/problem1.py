@@ -1,6 +1,4 @@
 import logging
-import math
-import random
 import numpy as np
 
 from problems.test_case import TestCase, TestCaseTypeEnum
@@ -19,16 +17,14 @@ logger.addHandler(ch)
 
 
 class TestCase1Type(TestCaseTypeEnum):
-    GENERAL = ('General case', '', 3)
+    GENERAL = ('general case', '', 3)
     ZERO_CASE = ('Zero case',
                  'One of the three stations is randomly placed exactly on top of the earthquake epicenter.',
                  1)
-    # ALL_CLOSE = auto()
-    # ONE_FAR = auto()
-    # TWO_FAR = auto()
-    # ALL_FAR = auto()
-    EQUIDISTANT = ('Equidistant case', 'All three stations are the same distance from the earthquake epicenter.', 1)
-    UNKNOWN = ('Unknown case',
+    EQUIDISTANT = ('equidistant case',
+                   'All three stations are the same distance from the earthquake epicenter.',
+                   1)
+    UNKNOWN = ('unknown case',
                'Used when given the input of a test case but not its type. Primarily used by '
                + 'AbstractProblem.verify_user_solution.',
                0)
@@ -98,24 +94,35 @@ class Problem1(AbstractProblem):
         test_case = TestCase1(test_type)
         logger.debug("Generating %s...", test_type.test_name)
 
-        # TODO: Switch to numpy.random? Use some shorthand for generating these random numbers?
         if test_type is TestCase1Type.GENERAL:
-            r0 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
-            r1 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
-            r2 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
-            r3 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
+            r0 = np.random.uniform(-100, 100, 2)
+            r1 = np.random.uniform(-100, 100, 2)
+            r2 = np.random.uniform(-100, 100, 2)
+            r3 = np.random.uniform(-100, 100, 2)
         elif test_type is TestCase1Type.ZERO_CASE:
-            # TODO: Properly implement ZERO_CASE.
-            r0 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
-            r1 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
-            r2 = r0
-            r3 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
+            r0 = np.random.uniform(-100, 100, 2)
+
+            zero_station = np.random.choice([1, 2, 3])
+            if zero_station == 1:
+                r1 = r0
+                r2 = np.random.uniform(-100, 100, 2)
+                r3 = np.random.uniform(-100, 100, 2)
+            elif zero_station == 2:
+                r1 = np.random.uniform(-100, 100, 2)
+                r2 = r0
+                r3 = np.random.uniform(-100, 100, 2)
+            else:
+                r1 = np.random.uniform(-100, 100, 2)
+                r2 = np.random.uniform(-100, 100, 2)
+                r3 = r0
         elif test_type is TestCase1Type.EQUIDISTANT:
-            # TODO: Implement EQUIDISTANT case.
-            r0 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
-            r1 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
-            r2 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
-            r3 = np.array([random.uniform(-100, 100), random.uniform(-100, 100)])
+            r0 = np.random.uniform(-10, 10, 2)  # Place the earthquake near the origin.
+            d = np.random.uniform(10, 90)  # Distance to all the stations. Max=90 ensures we stay inside the box.
+            theta = np.random.uniform(0, 2*np.pi, 3)  # Choose three angles to place the stations at a distance d away.
+
+            r1 = r0 + d * np.array([np.cos(theta[0]), np.sin(theta[0])])
+            r2 = r0 + d * np.array([np.cos(theta[1]), np.sin(theta[1])])
+            r3 = r0 + d * np.array([np.cos(theta[2]), np.sin(theta[2])])
         else:
             logger.critical('test_type is not a known case type!')
             raise ValueError('test_type is not a known case type!')
@@ -190,6 +197,7 @@ class Problem1(AbstractProblem):
             self.solve_test_case(tc)
             if not self.verify_user_solution(tc.input_str(), tc.output_str()):
                 # TODO: This should fail or throw an exception if something is wrong.
+                # TODO: How should we be throwing exceptions? Should everything be in a try-catch block? Do this later?
                 logger.critical("Our own solution is incorrect!")
         return
 
@@ -220,7 +228,7 @@ class Problem1(AbstractProblem):
 
         # Compare our solution with user's solution.
         error_tol = self.testing['error_tol']
-        error_distance = math.sqrt((x - user_x)**2 + (y - user_y)**2)  # [km]
+        error_distance = np.sqrt((x - user_x)**2 + (y - user_y)**2)  # [km]
 
         logger.debug("User solution:")
         logger.debug("(x, y) = (%f, %f)", user_x, user_y)
