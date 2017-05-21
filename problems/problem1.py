@@ -4,7 +4,6 @@ import numpy as np
 from problems.test_case import TestCase, TestCaseTypeEnum
 from problems.abstract_problem import AbstractProblem
 
-# TODO: Store logger config in an ini-style file?
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('[%(asctime)s] %(name)s:%(levelname)s: %(message)s')
@@ -40,12 +39,6 @@ class TestCase1(TestCase):
     def output_str(self):
         return str(self.output['x']) + ' ' + str(self.output['y'])
 
-# TODO: Is this the best way of describing the expected input/output? Just a random comment? Can it be enforced?
-# TODO: Should we define TestCase1Input and TestCase1Output objects? Named tuples (they're immutable though)?
-# My argument: We only use the input/output dicts in these problem files so as long as we're happy with it...
-# There must be a data structure that will do this for us more nicely than a dict with a commented convention?
-# It probably doesn't matter much. Just decide on something with Basim and go with it.
-
 # Inputs:
 #   x1, y1, t1, x2, y2, t2, x3, y3, t3
 #
@@ -68,6 +61,8 @@ class Problem1(AbstractProblem):
 
     def generate_test_cases(self):
         # TODO: Can this method be moved to the AbstractProblem class? It should be the same for each problem.
+        # The only difference will be iterating through the types of test cases, e.g. TestCase2Type instead of
+        # TestCase1Type.
         logger.info("Generating test cases...")
         test_cases = []
 
@@ -197,7 +192,6 @@ class Problem1(AbstractProblem):
             self.solve_test_case(tc)
             if not self.verify_user_solution(tc.input_str(), tc.output_str()):
                 # TODO: This should fail or throw an exception if something is wrong.
-                # TODO: How should we be throwing exceptions? Should everything be in a try-catch block? Do this later?
                 logger.critical("Our own solution is incorrect!")
         return
 
