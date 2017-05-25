@@ -2,17 +2,19 @@ import logging
 import numpy as np
 
 from problems.test_case import TestCase, TestCaseTypeEnum
-from problems.abstract_problem import AbstractProblem
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('[%(asctime)s] %(name)s:%(levelname)s: %(message)s')
 
-# create console handler and add it to the logger
-ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
-ch.setFormatter(formatter)
-logger.addHandler(ch)
+# Problem-specific constants.
+PHYSICAL_CONSTANTS = {
+    'v': 3.0  # [km/s], velocity of seismic waves
+}
+
+TESTING_CONSTANTS = {
+    'error_tol': 0.0001  # [km]
+}
 
 
 class TestCase1Type(TestCaseTypeEnum):
@@ -30,6 +32,13 @@ class TestCase1Type(TestCaseTypeEnum):
 
 
 class TestCase1(TestCase):
+    # TestCase1 input and output data structure:
+    # Inputs:
+    #   x1, y1, t1, x2, y2, t2, x3, y3, t3 (all floats)
+    #
+    # Outputs:
+    #   x, y: coordinates of earthquake epicenter
+
     def input_str(self):
         input_str = str(self.input['x1']) + ' ' + str(self.input['y1']) + ' ' + str(self.input['t1']) + ' '
         input_str += str(self.input['x2']) + ' ' + str(self.input['y2']) + ' ' + str(self.input['t2']) + ' '
@@ -39,203 +48,185 @@ class TestCase1(TestCase):
     def output_str(self):
         return str(self.output['x']) + ' ' + str(self.output['y'])
 
-# Inputs:
-#   x1, y1, t1, x2, y2, t2, x3, y3, t3
-#
-# Outputs:
-#   x, y: coordinates of earthquake epicenter
+
+def generate_test_cases():
+    # TODO: This method will look the same for every module. Any way to reuse this code?
+    logger.info("Generating test cases...")
+    test_cases = []
+
+    # Count number of test cases we'll be generating in total.
+    num_cases = 0
+    for test_type in TestCase1Type:
+        num_cases += test_type.multiplicity
+
+    # Generate all the cases and store them in test_cases.
+    n = 1
+    for test_type in TestCase1Type:
+        for _ in range(test_type.multiplicity):
+            logger.debug("Generating test case %d/%d...", n, num_cases)
+            test_cases.append(generate_input(test_type))
+            n = n+1
+
+    return test_cases
 
 
-class Problem1(AbstractProblem):
-    # TODO: Should these dicts be in upper case?
-    constants = {
-        'v': 3.0  # [km/s]
-    }
+def generate_input(test_type):
+    if not isinstance(test_type, TestCase1Type):
+        logger.critical('test_type is not of type TestCase1Type!')
+        raise TypeError('test_type is not of type TestCase1Type!')
 
-    testing = {
-        'error_tol': 0.0001  # [km]
-    }
+    test_case = TestCase1(test_type)
+    logger.debug("Generating %s...", test_type.test_name)
 
-    def __init__(self):
-        self.test_cases = self.generate_test_cases()
+    if test_type is TestCase1Type.GENERAL:
+        r0 = np.random.uniform(-100, 100, 2)
+        r1 = np.random.uniform(-100, 100, 2)
+        r2 = np.random.uniform(-100, 100, 2)
+        r3 = np.random.uniform(-100, 100, 2)
+    elif test_type is TestCase1Type.ZERO_CASE:
+        r0 = np.random.uniform(-100, 100, 2)
 
-    def generate_test_cases(self):
-        # TODO: Can this method be moved to the AbstractProblem class? It should be the same for each problem.
-        # The only difference will be iterating through the types of test cases, e.g. TestCase2Type instead of
-        # TestCase1Type.
-        logger.info("Generating test cases...")
-        test_cases = []
-
-        # Count number of test cases we'll be generating in total.
-        num_cases = 0
-        for test_type in TestCase1Type:
-            num_cases += test_type.multiplicity
-
-        # Generate all the cases and store them in test_cases.
-        n = 1
-        for test_type in TestCase1Type:
-            for i in range(test_type.multiplicity):
-                logger.debug("Generating test case %d/%d...", n, num_cases)
-                test_cases.append(self.generate_input(test_type))
-                n = n+1
-
-        return test_cases
-
-    def generate_input(self, test_type):
-        if not isinstance(test_type, TestCase1Type):
-            logger.critical('test_type is not of type TestCase1Type!')
-            raise TypeError('test_type is not of type TestCase1Type!')
-
-        test_case = TestCase1(test_type)
-        logger.debug("Generating %s...", test_type.test_name)
-
-        if test_type is TestCase1Type.GENERAL:
-            r0 = np.random.uniform(-100, 100, 2)
-            r1 = np.random.uniform(-100, 100, 2)
+        zero_station = np.random.choice([1, 2, 3])
+        if zero_station == 1:
+            r1 = r0
             r2 = np.random.uniform(-100, 100, 2)
             r3 = np.random.uniform(-100, 100, 2)
-        elif test_type is TestCase1Type.ZERO_CASE:
-            r0 = np.random.uniform(-100, 100, 2)
-
-            zero_station = np.random.choice([1, 2, 3])
-            if zero_station == 1:
-                r1 = r0
-                r2 = np.random.uniform(-100, 100, 2)
-                r3 = np.random.uniform(-100, 100, 2)
-            elif zero_station == 2:
-                r1 = np.random.uniform(-100, 100, 2)
-                r2 = r0
-                r3 = np.random.uniform(-100, 100, 2)
-            else:
-                r1 = np.random.uniform(-100, 100, 2)
-                r2 = np.random.uniform(-100, 100, 2)
-                r3 = r0
-        elif test_type is TestCase1Type.EQUIDISTANT:
-            r0 = np.random.uniform(-10, 10, 2)  # Place the earthquake near the origin.
-            d = np.random.uniform(10, 90)  # Distance to all the stations. Max=90 ensures we stay inside the box.
-            theta = np.random.uniform(0, 2*np.pi, 3)  # Choose three angles to place the stations at a distance d away.
-
-            r1 = r0 + d * np.array([np.cos(theta[0]), np.sin(theta[0])])
-            r2 = r0 + d * np.array([np.cos(theta[1]), np.sin(theta[1])])
-            r3 = r0 + d * np.array([np.cos(theta[2]), np.sin(theta[2])])
+        elif zero_station == 2:
+            r1 = np.random.uniform(-100, 100, 2)
+            r2 = r0
+            r3 = np.random.uniform(-100, 100, 2)
         else:
-            logger.critical('test_type is not a known case type!')
-            raise ValueError('test_type is not a known case type!')
+            r1 = np.random.uniform(-100, 100, 2)
+            r2 = np.random.uniform(-100, 100, 2)
+            r3 = r0
+    elif test_type is TestCase1Type.EQUIDISTANT:
+        r0 = np.random.uniform(-10, 10, 2)  # Place the earthquake near the origin.
+        d = np.random.uniform(10, 90)  # Distance to all the stations. Max=90 ensures we stay inside the box.
+        theta = np.random.uniform(0, 2*np.pi, 3)  # Choose three angles to place the stations at a distance d away.
 
-        v = self.constants['v']
+        r1 = r0 + d * np.array([np.cos(theta[0]), np.sin(theta[0])])
+        r2 = r0 + d * np.array([np.cos(theta[1]), np.sin(theta[1])])
+        r3 = r0 + d * np.array([np.cos(theta[2]), np.sin(theta[2])])
+    else:
+        logger.critical('test_type is not a known case type!')
+        raise ValueError('test_type is not a known case type!')
 
-        t1 = np.linalg.norm(r1-r0) / v
-        t2 = np.linalg.norm(r2-r0) / v
-        t3 = np.linalg.norm(r3-r0) / v
+    v = PHYSICAL_CONSTANTS['v']
 
-        test_case.input = {'x1': r1[0], 'y1': r1[1], 't1': t1,
-                           'x2': r2[0], 'y2': r2[1], 't2': t2,
-                           'x3': r3[0], 'y3': r3[1], 't3': t3}
+    t1 = np.linalg.norm(r1-r0) / v
+    t2 = np.linalg.norm(r2-r0) / v
+    t3 = np.linalg.norm(r3-r0) / v
 
-        logger.debug("Test case input:")
-        logger.debug("(x1, y1, t1) = (%f, %f, %f)", r1[0], r1[1], t1)
-        logger.debug("(x2, y2, t2) = (%f, %f, %f)", r2[0], r2[1], t2)
-        logger.debug("(x3, y3, t3) = (%f, %f, %f)", r3[0], r3[1], t3)
+    test_case.input = {'x1': r1[0], 'y1': r1[1], 't1': t1,
+                       'x2': r2[0], 'y2': r2[1], 't2': t2,
+                       'x3': r3[0], 'y3': r3[1], 't3': t3}
 
-        test_case.output['x'] = r0[0]
-        test_case.output['y'] = r0[1]
+    logger.debug("Test case input:")
+    logger.debug("(x1, y1, t1) = (%f, %f, %f)", r1[0], r1[1], t1)
+    logger.debug("(x2, y2, t2) = (%f, %f, %f)", r2[0], r2[1], t2)
+    logger.debug("(x3, y3, t3) = (%f, %f, %f)", r3[0], r3[1], t3)
 
-        logger.debug("Test case solution available at creation:")
-        logger.debug("(x, y) = (%f, %f)", r0[0], r0[1])
+    test_case.output['x'] = r0[0]
+    test_case.output['y'] = r0[1]
 
-        return test_case
+    logger.debug("Test case solution available at creation:")
+    logger.debug("(x, y) = (%f, %f)", r0[0], r0[1])
 
-    def solve_test_case(self, test_case):
-        v = self.constants['v']
+    return test_case
 
-        x1, y1, t1 = test_case.input['x1'], test_case.input['y1'], test_case.input['t1']
-        x2, y2, t2 = test_case.input['x2'], test_case.input['y2'], test_case.input['t2']
-        x3, y3, t3 = test_case.input['x3'], test_case.input['y3'], test_case.input['t3']
 
-        # TODO: Find my derivation and write down the steps/logic here.
+def solve_test_case(test_case):
+    v = PHYSICAL_CONSTANTS['v']
 
-        r1 = v*t1
-        r2 = v*t2
-        r3 = v*t3
+    x1, y1, t1 = test_case.input['x1'], test_case.input['y1'], test_case.input['t1']
+    x2, y2, t2 = test_case.input['x2'], test_case.input['y2'], test_case.input['t2']
+    x3, y3, t3 = test_case.input['x3'], test_case.input['y3'], test_case.input['t3']
 
-        # Setting up the equations, we get two simultaneous linear equations for
-        # x0 and y0, namely ax + by = e and cx + dy = f where
+    # TODO: Find my derivation and write down the steps/logic here.
 
-        a = 2*(x2-x1)
-        b = 2*(y2-y1)
-        c = 2*(x3-x1)
-        d = 2*(y3-y1)
-        e = r1**2 - x1**2 - y1**2 - r2**2 + x2**2 + y2**2
-        f = r1**2 - x1**2 - y1**2 - r3**2 + x3**2 + y3**2
+    r1 = v*t1
+    r2 = v*t2
+    r3 = v*t3
 
-        # Solving ax + by = e and cx + dy = f for x,y gives
-        x = (b*f - d*e) / (b*c - a*d)
-        y = (c*e - a*f) / (b*c - a*d)
+    # Setting up the equations, we get two simultaneous linear equations for
+    # x0 and y0, namely ax + by = e and cx + dy = f where
 
-        if test_case.output:  # Testing if output dict is non-empty.
-            logger.warning("Test case already has solution:")
-            logger.warning("(x, y) = (%f, %f)", test_case.output['x'], test_case.output['y'])
-            logger.warning("Overwriting with new solution.")
+    a = 2*(x2-x1)
+    b = 2*(y2-y1)
+    c = 2*(x3-x1)
+    d = 2*(y3-y1)
+    e = r1**2 - x1**2 - y1**2 - r2**2 + x2**2 + y2**2
+    f = r1**2 - x1**2 - y1**2 - r3**2 + x3**2 + y3**2
 
-        test_case.output['x'] = x
-        test_case.output['y'] = y
+    # Solving ax + by = e and cx + dy = f for x,y gives
+    x = (b*f - d*e) / (b*c - a*d)
+    y = (c*e - a*f) / (b*c - a*d)
 
-        logger.debug("Test case solution:")
-        logger.debug("(x, y) = (%f, %f)", x, y)
+    if test_case.output:  # Testing if output dict is non-empty.
+        logger.warning("Test case already has solution:")
+        logger.warning("(x, y) = (%f, %f)", test_case.output['x'], test_case.output['y'])
+        logger.warning("Overwriting with new solution.")
 
-        return
+    test_case.output['x'] = x
+    test_case.output['y'] = y
 
-    def test_our_solution(self):
-        # Just solve the test cases we already have from initialization and verify them.
-        logger.info("Testing Problem1...")
-        for tc in self.test_cases:
-            self.solve_test_case(tc)
-            if not self.verify_user_solution(tc.input_str(), tc.output_str()):
-                # TODO: This should fail or throw an exception if something is wrong.
-                logger.critical("Our own solution is incorrect!")
-        return
+    logger.debug("Test case solution:")
+    logger.debug("(x, y) = (%f, %f)", x, y)
 
-    def verify_user_solution(self, user_input_str, user_output_str):
-        logger.info("Verifying user solution...")
-        logger.debug("User input string: %s", user_input_str)
-        logger.debug("User output string: %s", user_output_str)
+    return
 
-        # Build TestCase object out of user's input string.
-        tmp_test_case = TestCase1(TestCase1Type.UNKNOWN)
 
-        inputs = list(map(float, user_input_str.split()))
-        x1, y1, t1, x2, y2, t2, x3, y3, t3 = inputs
+def test_our_solution():
+    # TODO: Should this be a unit test?
+    # Just solve the test cases we already have from initialization and verify them.
+    logger.info("Testing Problem1...")
+    for tc in self.test_cases:
+        self.solve_test_case(tc)
+        if not self.verify_user_solution(tc.input_str(), tc.output_str()):
+            # TODO: This should fail or throw an exception if something is wrong.
+            # TODO: How should we be throwing exceptions? Should everything be in a try-catch block? Do this later?
+            logger.critical("Our own solution is incorrect!")
+    return
 
-        tmp_test_case.input = {'x1': x1, 'y1': y1, 't1': t1,
-                               'x2': x2, 'y2': y2, 't2': t2,
-                               'x3': x3, 'y3': y3, 't3': t3}
 
-        # Solve the problem with this TestCase so we have our own solution, and extract the solution.
-        self.solve_test_case(tmp_test_case)
-        x = tmp_test_case.output['x']
-        y = tmp_test_case.output['y']
+def verify_user_solution(user_input_str, user_output_str):
+    logger.info("Verifying user solution...")
+    logger.debug("User input string: %s", user_input_str)
+    logger.debug("User output string: %s", user_output_str)
 
-        # Extract user solution.
-        outputs = list(map(float, user_output_str.split()))
-        user_x = outputs[0]
-        user_y = outputs[1]
+    # Build TestCase object out of user's input string.
+    tmp_test_case = TestCase1(TestCase1Type.UNKNOWN)
 
-        # Compare our solution with user's solution.
-        error_tol = self.testing['error_tol']
-        error_distance = np.sqrt((x - user_x)**2 + (y - user_y)**2)  # [km]
+    inputs = list(map(float, user_input_str.split()))
+    x1, y1, t1, x2, y2, t2, x3, y3, t3 = inputs
 
-        logger.debug("User solution:")
-        logger.debug("(x, y) = (%f, %f)", user_x, user_y)
-        logger.debug("Our solution:")
-        logger.debug("(x, y) = (%f, %f)", x, y)
-        logger.debug("Error tolerance = %e. Error distance: %e.", error_tol, error_distance)
+    tmp_test_case.input = {'x1': x1, 'y1': y1, 't1': t1,
+                           'x2': x2, 'y2': y2, 't2': t2,
+                           'x3': x3, 'y3': y3, 't3': t3}
 
-        if error_distance < error_tol:
-            logger.info("User solution correct within error margin.")
-            return True
-        else:
-            logger.info("User solution incorrect within error margin.")
-            return False
+    # Solve the problem with this TestCase so we have our own solution, and extract the solution.
+    solve_test_case(tmp_test_case)
+    x = tmp_test_case.output['x']
+    y = tmp_test_case.output['y']
 
-if __name__ == '__main__':
-    Problem1().test_our_solution()
+    # Extract user solution.
+    outputs = list(map(float, user_output_str.split()))
+    user_x = outputs[0]
+    user_y = outputs[1]
+
+    # Compare our solution with user's solution.
+    error_tol = TESTING_CONSTANTS['error_tol']
+    error_distance = np.sqrt((x - user_x)**2 + (y - user_y)**2)  # [km]
+
+    logger.debug("User solution:")
+    logger.debug("(x, y) = (%f, %f)", user_x, user_y)
+    logger.debug("Our solution:")
+    logger.debug("(x, y) = (%f, %f)", x, y)
+    logger.debug("Error tolerance = %e. Error distance: %e.", error_tol, error_distance)
+
+    if error_distance < error_tol:
+        logger.info("User solution correct within error margin.")
+        return True
+    else:
+        logger.info("User solution incorrect within error margin.")
+        return False
