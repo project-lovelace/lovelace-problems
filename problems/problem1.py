@@ -1,21 +1,11 @@
 import logging
 import numpy as np
-from typing import List
 
 from problems.test_case import TestCase, TestCaseTypeEnum
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('[%(asctime)s] %(name)s:%(levelname)s: %(message)s')
-
-# Problem-specific constants.
-PHYSICAL_CONSTANTS = {
-    'v': 3.0  # [km/s], velocity of seismic waves
-}
-
-TESTING_CONSTANTS = {
-    'error_tol': 0.0001  # [km]
-}
 
 
 class TestCase1Type(TestCaseTypeEnum):
@@ -50,26 +40,17 @@ class TestCase1(TestCase):
         return str(self.output['x']) + ' ' + str(self.output['y'])
 
 
-def generate_test_cases() -> List[TestCase1]:
-    """Generates a bunch of TestCase objects used to check the user's submitted code."""
-    # TODO: This method will look the same for every module. Any way to reuse this code?
-    logger.info("Generating test cases...")
-    test_cases = []
+TEST_CASE_TYPE_ENUM = TestCase1Type
+TEST_CASE_CLASS = TestCase1
 
-    # Count number of test cases we'll be generating in total.
-    num_cases = 0
-    for test_type in TestCase1Type:
-        num_cases += test_type.multiplicity
+# Problem-specific constants.
+PHYSICAL_CONSTANTS = {
+    'v': 3.0  # [km/s], velocity of seismic waves
+}
 
-    # Generate all the cases and store them in test_cases.
-    n = 1
-    for test_type in TestCase1Type:
-        for _ in range(test_type.multiplicity):
-            logger.debug("Generating test case %d/%d...", n, num_cases)
-            test_cases.append(generate_input(test_type))
-            n = n+1
-
-    return test_cases
+TESTING_CONSTANTS = {
+    'error_tol': 0.0001  # [km]
+}
 
 
 def generate_input(test_type: TestCase1Type) -> TestCase1:
