@@ -1,5 +1,6 @@
 import logging
 import numpy as np
+from typing import List
 
 from problems.test_case import TestCase, TestCaseTypeEnum
 
@@ -39,17 +40,17 @@ class TestCase1(TestCase):
     # Outputs:
     #   x, y: coordinates of earthquake epicenter
 
-    def input_str(self):
+    def input_str(self) -> str:
         input_str = str(self.input['x1']) + ' ' + str(self.input['y1']) + ' ' + str(self.input['t1']) + ' '
         input_str += str(self.input['x2']) + ' ' + str(self.input['y2']) + ' ' + str(self.input['t2']) + ' '
         input_str += str(self.input['x3']) + ' ' + str(self.input['y3']) + ' ' + str(self.input['t3'])
         return input_str
 
-    def output_str(self):
+    def output_str(self) -> str:
         return str(self.output['x']) + ' ' + str(self.output['y'])
 
 
-def generate_test_cases():
+def generate_test_cases() -> List[TestCase1]:
     """Generates a bunch of TestCase objects used to check the user's submitted code."""
     # TODO: This method will look the same for every module. Any way to reuse this code?
     logger.info("Generating test cases...")
@@ -71,7 +72,7 @@ def generate_test_cases():
     return test_cases
 
 
-def generate_input(test_type):
+def generate_input(test_type: TestCase1Type) -> TestCase1:
     """Create the input(s) for a problem and return them as a TestCase object. If the solution is known at input
     creation time, it should be included in the TestCase. It would be called generate_test_case except that it is
     only expected to generate the input, not the output."""
@@ -139,7 +140,7 @@ def generate_input(test_type):
     return test_case
 
 
-def solve_test_case(test_case):
+def solve_test_case(test_case: TestCase1) -> None:
     """Solve a problem given a TestCase object with an input and update the TestCase object with the solution."""
     v = PHYSICAL_CONSTANTS['v']
 
@@ -181,23 +182,25 @@ def solve_test_case(test_case):
     return
 
 
-def test_our_solution():
+def test_our_solution() -> None:
     """Just a method used to test that our code all works (no errors) and that our solution is correct (which will
     probably involve some solution checking by humans). It should test the generate_input and solve_problem methods
     extensively. It will probably just be run occasionally to ensure our code still works in between updates."""
     # TODO: Should this be a unit test?
     # Just solve the test cases we already have from initialization and verify them.
     logger.info("Testing Problem1...")
-    for tc in self.test_cases:
-        self.solve_test_case(tc)
-        if not self.verify_user_solution(tc.input_str(), tc.output_str()):
+
+    test_cases = generate_test_cases()
+    for tc in test_cases:
+        solve_test_case(tc)
+        if not verify_user_solution(tc.input_str(), tc.output_str()):
             # TODO: This should fail or throw an exception if something is wrong.
             # TODO: How should we be throwing exceptions? Should everything be in a try-catch block? Do this later?
             logger.critical("Our own solution is incorrect!")
     return
 
 
-def verify_user_solution(user_input_str, user_output_str):
+def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     """Given the user's input and output (solution) strings, verify that they have solved the problem correctly by
     solving the test case ourselves. Return True if their solution is correct, else False."""
     logger.info("Verifying user solution...")
