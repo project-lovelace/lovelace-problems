@@ -50,6 +50,7 @@ class TestCase1(TestCase):
 
 
 def generate_test_cases():
+    """Generates a bunch of TestCase objects used to check the user's submitted code."""
     # TODO: This method will look the same for every module. Any way to reuse this code?
     logger.info("Generating test cases...")
     test_cases = []
@@ -71,6 +72,9 @@ def generate_test_cases():
 
 
 def generate_input(test_type):
+    """Create the input(s) for a problem and return them as a TestCase object. If the solution is known at input
+    creation time, it should be included in the TestCase. It would be called generate_test_case except that it is
+    only expected to generate the input, not the output."""
     if not isinstance(test_type, TestCase1Type):
         logger.critical('test_type is not of type TestCase1Type!')
         raise TypeError('test_type is not of type TestCase1Type!')
@@ -136,6 +140,7 @@ def generate_input(test_type):
 
 
 def solve_test_case(test_case):
+    """Solve a problem given a TestCase object with an input and update the TestCase object with the solution."""
     v = PHYSICAL_CONSTANTS['v']
 
     x1, y1, t1 = test_case.input['x1'], test_case.input['y1'], test_case.input['t1']
@@ -177,6 +182,9 @@ def solve_test_case(test_case):
 
 
 def test_our_solution():
+    """Just a method used to test that our code all works (no errors) and that our solution is correct (which will
+    probably involve some solution checking by humans). It should test the generate_input and solve_problem methods
+    extensively. It will probably just be run occasionally to ensure our code still works in between updates."""
     # TODO: Should this be a unit test?
     # Just solve the test cases we already have from initialization and verify them.
     logger.info("Testing Problem1...")
@@ -190,6 +198,8 @@ def test_our_solution():
 
 
 def verify_user_solution(user_input_str, user_output_str):
+    """Given the user's input and output (solution) strings, verify that they have solved the problem correctly by
+    solving the test case ourselves. Return True if their solution is correct, else False."""
     logger.info("Verifying user solution...")
     logger.debug("User input string: %s", user_input_str)
     logger.debug("User output string: %s", user_output_str)
