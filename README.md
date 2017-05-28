@@ -5,12 +5,16 @@ Every problem is a module containing three mandatory functions that [lovelace-en
 
 `problem_template.py` provides all this boilerplate needed to create a problem.
 
-### Mandatory functions
+### Problem module functions
+#### Mandatory
 * `generate_input(test_type: TestCaseTypeEnum) -> TestCase`: Creates the input(s) for a problem of type `test_type` and returns a TestCase object. The test case's inputs are stored in the `input` dictionary of a `TestCase` object. If the solution is known at this time, it should be included in the `output` dictionary, but there is no expectation that the solution will be included.
 
 * `solve_test_case(test_case: TestCase) -> None`: Solve the problem described by `test_case` in its `input` dictionary and update its `output` dictionary with the full solution.
 
 * `user_solution_correct(user_input_str: str, user_output_str: str) -> bool`: Given the user's input and output (solution) strings, verify that they have solved the problem correctly. Returns True if their solution is correct, otherwise False.
+
+#### Optional (as needed)
+* `generate_test_cases() -> List[TestCase]`: if `CUSTOM_TEST_CASE_GENERATION` is `True`.
 
 ### Test case structures
 * `TestCaseTypeEnum`: Contains all the different types of test cases. Will typically be called `TestCaseXType` where `X` is the problem's integer ID. Modeled after the [Planet Enum example](https://docs.python.org/3/library/enum.html#planet) from the official Python documentation. Each test case type has three values:
