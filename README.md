@@ -1,9 +1,9 @@
 # Project Lovelace problem repository
 
 ## How to create a problem
-Every problem is a module containing three mandatory functions that [lovelace-engine](https://github.com/project-lovelace/lovelace-engine) expects the problem module to have implemented otherwise user submissions cannot be tested. Problem modules must also implement the test case data structures in `test_case.py`, namely the `TestCase` and `TestCaseTypeEnum` classes. Finally, each problem must provide some metadata about itself in the form of a `ProblemMetadata` object.
+Every problem is a module containing three mandatory functions that [lovelace-engine](https://github.com/project-lovelace/lovelace-engine) expects the problem module to have implemented otherwise user submissions cannot be tested. Problem modules must also implement the test case data structures in [`test_case.py`](problems/test_case.py), namely the `TestCase` and `TestCaseTypeEnum` classes. Finally, each problem must provide some metadata about itself in the form of a `ProblemMetadata` object.
 
-`problem_template.py` provides all this boilerplate needed to create a problem.
+[`problem_template.py`](problems/problem_template.py) provides all this boilerplate needed to create a problem.
 
 ### Problem module functions
 #### Mandatory
@@ -16,20 +16,25 @@ Every problem is a module containing three mandatory functions that [lovelace-en
 #### Optional (as needed)
 * `generate_test_cases() -> List[TestCase]`: if `CUSTOM_TEST_CASE_GENERATION` is `True`.
 
-### Test case structures
-* `TestCaseTypeEnum`: Contains all the different types of test cases. Will typically be called `TestCaseXType` where `X` is the problem's integer ID. Modeled after the [Planet Enum example](https://docs.python.org/3/library/enum.html#planet) from the official Python documentation. Each test case type has three values:
-  * `test_name`: A short name describing the test case, e.g. general case, sphere, lorem ipsum, n=2 case, glider gun. This will be shown to the user so it should be descriptive enough to be useful to them.
-  * `debug_description` (optional): A longer, more detailed description of the test case in case this extra description helps in debugging issues. Might also be useful as an 
-  * `multiplicity`: The number of times this test case should be used, e.g. you might want to test the user's code against three general cases but only one n=2 case.
+### Test case types
+A class inherited from `TestCaseTypeEnum` should contain all the different types of test cases. It will typically be called `TestCaseXType` where `X` is the problem's integer ID. Modeled after the [Planet Enum example](https://docs.python.org/3/library/enum.html#planet) from the official Python documentation. Each test case type has three values:
+* `test_name`: A short name describing the test case, e.g. general case, sphere, lorem ipsum, n=2 case, glider gun. This will be shown to the user so it should be descriptive enough to be useful to them.
+* `debug_description` (optional): A longer, more detailed description of the test case in case this extra description helps in debugging issues. Might also be useful as an 
+* `multiplicity`: The number of times this test case should be used, e.g. you might want to test the user's code against three general cases but only one n=2 case.
+
+### Test case structure
 * `TestCase`: The input and output dictionaries should never be accessed outside of the problem module so it is up to you to store input/outputs in them in any way. The engine will access them using methods like `input_str()` and `output_str()`. Will typically be called `TestCaseX` where `X` is the problem's integer ID.
-  * Member variables:
-    * `test_type`: of type `TestCaseXType`.
-    * `input`: dictionary holding all the inputs.
-    * `output`: dictionary holding all the outputs.
-  * Methods:
-    * `input_str() -> str`: Returns the input string the user sees for this test case.
-    * `output_str() -> str`: If the solution/output is known, return the output string expected by `user_solution_correct()`.
-    * `aux_dict() -> dict`: See `AUXILIARY_DICTIONARY`.
+
+#### Minimal structure
+All `TestCase` classes must implement these functions and methods.
+* `test_type`: of type `TestCaseXType`.
+* `input`: dictionary holding all the inputs.
+* `output`: dictionary holding all the outputs.
+* `input_str() -> str`: Returns the input string the user sees for this test case.
+* `output_str() -> str`: If the solution/output is known, return the output string expected by `user_solution_correct()`.
+
+#### Optional (as needed)
+* `aux_dict() -> dict`: See `AUXILIARY_DICTIONARY`.
 
 ### Problem metadata
 The metadata stores some actual metadata but is mostly used to instruct the engine on how to process test cases for this problem and what information to send back to the user/client and in what form.
