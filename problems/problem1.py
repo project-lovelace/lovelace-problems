@@ -54,9 +54,6 @@ TESTING_CONSTANTS = {
 
 
 def generate_input(test_type: TestCase1Type) -> TestCase1:
-    """Create the input(s) for a problem and return them as a TestCase object. If the solution is known at input
-    creation time, it should be included in the TestCase. It would be called generate_test_case except that it is
-    only expected to generate the input, not the output."""
     if not isinstance(test_type, TestCase1Type):
         logger.critical('test_type is not of type TestCase1Type!')
         raise TypeError('test_type is not of type TestCase1Type!')
@@ -122,14 +119,11 @@ def generate_input(test_type: TestCase1Type) -> TestCase1:
 
 
 def solve_test_case(test_case: TestCase1) -> None:
-    """Solve a problem given a TestCase object with an input and update the TestCase object with the solution."""
     v = PHYSICAL_CONSTANTS['v']
 
     x1, y1, t1 = test_case.input['x1'], test_case.input['y1'], test_case.input['t1']
     x2, y2, t2 = test_case.input['x2'], test_case.input['y2'], test_case.input['t2']
     x3, y3, t3 = test_case.input['x3'], test_case.input['y3'], test_case.input['t3']
-
-    # TODO: Find my derivation and write down the steps/logic here.
 
     r1 = v*t1
     r2 = v*t2
@@ -182,8 +176,6 @@ def test_our_solution() -> None:
 
 
 def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
-    """Given the user's input and output (solution) strings, verify that they have solved the problem correctly by
-    solving the test case ourselves. Return True if their solution is correct, else False."""
     logger.info("Verifying user solution...")
     logger.debug("User input string: %s", user_input_str)
     logger.debug("User output string: %s", user_output_str)

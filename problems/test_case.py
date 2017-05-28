@@ -14,9 +14,8 @@ class TestCase:
         self.input = {}
         self.output = {}
 
-    def input_str(self):
-        """Should return the input string the user sees for this test case."""
+    def input_str(self) -> str:
+        pass
 
-    def output_str(self):
-        """If the solution/output is known, this should return the output string expected by
-        AbstractProblem.verify_user_solution."""
+    def output_str(self) -> str:
+        pass
