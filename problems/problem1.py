@@ -157,24 +157,6 @@ def solve_test_case(test_case: TestCase1) -> None:
     return
 
 
-def test_our_solution() -> None:
-    """Just a method used to test that our code all works (no errors) and that our solution is correct (which will
-    probably involve some solution checking by humans). It should test the generate_input and solve_problem methods
-    extensively. It will probably just be run occasionally to ensure our code still works in between updates."""
-    # TODO: Should this be a unit test?
-    # Just solve the test cases we already have from initialization and verify them.
-    logger.info("Testing Problem1...")
-
-    test_cases = generate_test_cases()
-    for tc in test_cases:
-        solve_test_case(tc)
-        if not verify_user_solution(tc.input_str(), tc.output_str()):
-            # TODO: This should fail or throw an exception if something is wrong.
-            # TODO: How should we be throwing exceptions? Should everything be in a try-catch block? Do this later?
-            logger.critical("Our own solution is incorrect!")
-    return
-
-
 def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     logger.info("Verifying user solution...")
     logger.debug("User input string: %s", user_input_str)
