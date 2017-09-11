@@ -8,7 +8,7 @@ class TestCaseTypeEnum(Enum):
         self.multiplicity = multiplicity
 
 
-class TestCase:
+class TestCase(object):
     def __init__(self, test_type):
         self.test_type = test_type
         self.input = {}

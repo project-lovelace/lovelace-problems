@@ -25,13 +25,13 @@ class TestCase1Type(TestCaseTypeEnum):
 
 
 class TestCase1(TestCase):
-    # TestCase1 input and output data structure:
-    # Inputs:
-    #   x1, y1, t1, x2, y2, t2, x3, y3, t3 (all floats)
-    #
-    # Outputs:
-    #   x, y: coordinates of earthquake epicenter
+    """TestCase1 input and output data structure:
+    Inputs:
+      x1, y1, t1, x2, y2, t2, x3, y3, t3 (all floats)
 
+    Outputs:
+      x, y: coordinates of earthquake epicenter
+    """
     def input_str(self) -> str:
         input_str = str(self.input['x1']) + ' ' + str(self.input['y1']) + ' ' + str(self.input['t1']) + ' '
         input_str += str(self.input['x2']) + ' ' + str(self.input['y2']) + ' ' + str(self.input['t2']) + ' '
