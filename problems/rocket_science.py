@@ -28,7 +28,7 @@ class TestCaseI1(TestCase):
         return str(self.input['v'])
 
     def output_str(self) -> str:
-        return '\n'.join(map(str, self.output['x']))
+        return str(self.output['m_fuel'])
 
 
 TEST_CASE_TYPE_ENUM = TestCaseI1Type
