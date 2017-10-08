@@ -1,5 +1,3 @@
-import numpy as np
-
 from problems.test_case import TestCase, TestCaseTypeEnum
 
 from os import path
