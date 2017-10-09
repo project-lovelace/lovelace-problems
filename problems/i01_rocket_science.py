@@ -39,7 +39,9 @@ PHYSICAL_CONSTANTS = {
     'v_e': 250,  # [m/s]
     'M': 12000  # [kg]
 }
-TESTING_CONSTANTS = {}
+TESTING_CONSTANTS = {
+    'error_tol': 0.001  # [kg]
+}
 
 
 def generate_input(test_type: TestCaseI1Type) -> TestCaseI1:
@@ -72,4 +74,36 @@ def solve_test_case(test_case: TestCaseI1) -> None:
 
 
 def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
-    pass
+    logger.info("Verifying user solution...")
+    logger.debug("User input string: %s", user_input_str)
+    logger.debug("User output string: %s", user_output_str)
+
+    # Build TestCase object out of user's input string.
+    tmp_test_case = TestCaseI1(TestCaseI1Type.UNKNOWN)
+
+    v = float(user_input_str)
+    tmp_test_case.input = {'v': v}
+
+    # Solve the problem with this TestCase so we have our own solution, and extract the solution.
+    solve_test_case(tmp_test_case)
+    m_fuel = tmp_test_case.output['m_fuel']
+
+    # Extract user solution.
+    user_m_fuel = float(user_output_str)
+
+    # Compare our solution with user's solution.
+    error_tol = TESTING_CONSTANTS['error_tol']
+    error_m_fuel = np.abs(m_fuel - user_m_fuel)  # [kg]
+
+    logger.debug("User solution:")
+    logger.debug("m_fuel = %f", user_m_fuel)
+    logger.debug("Engine solution:")
+    logger.debug("m_fuel = %f", m_fuel)
+    logger.debug("Error tolerance = %e. Error m_fuel: %e.", error_tol, error_m_fuel)
+
+    if error_m_fuel < error_tol:
+        logger.info("User solution correct within error margin.")
+        return True
+    else:
+        logger.info("User solution incorrect within error margin.")
+        return False
