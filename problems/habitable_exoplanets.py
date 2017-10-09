@@ -68,5 +68,35 @@ def solve_test_case(test_case: TestCaseI2) -> None:
 
     return
 
+
 def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
-    pass
+    logger.info("Verifying user solution...")
+    logger.debug("User input string: %s", user_input_str)
+    logger.debug("User output string: %s", user_output_str)
+
+    # Build TestCase object out of user's input string.
+    tmp_test_case = TestCaseI2(TestCaseI2Type.UNKNOWN)
+
+    inputs = list(map(float, user_input_str.split()))
+    L_star, r = inputs
+    tmp_test_case.input = {'L_star': L_star, 'r': r}
+
+    # Solve the problem with this TestCase so we have our own solution, and extract the solution.
+    solve_test_case(tmp_test_case)
+    habitability = tmp_test_case.output['habitability']
+
+    # Extract user solution.
+    outputs = list(map(float, user_output_str.split()))
+    user_habitability = outputs[0]
+
+    logger.debug("User solution:")
+    logger.debug("habitability = %s", user_habitability)
+    logger.debug("Our solution:")
+    logger.debug("habitability = %s", habitability)
+
+    if habitability == user_habitability:
+        logger.info("User solution correct.")
+        return True
+    else:
+        logger.info("User solution incorrect.")
+        return False
