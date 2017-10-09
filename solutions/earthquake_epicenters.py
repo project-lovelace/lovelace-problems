@@ -1,5 +1,3 @@
-import sys
-
 input_str = str(input())
 input_list = input_str.split()
 problem = [float(number) for number in input_list]

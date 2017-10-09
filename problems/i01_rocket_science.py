@@ -56,7 +56,7 @@ def generate_input(test_type: TestCaseI1Type) -> TestCaseI1:
     elif test_type is TestCaseI1Type.PHOBOS:
         v = 0.001139
     elif test_type is TestCaseI1Type.RANDOM:
-        v = np.random.uniform(1.0, 100.0, 1)
+        v = np.random.uniform(1.0, 100.0, 1)[0]
 
     test_case.input['v'] = v
     return test_case
@@ -72,4 +72,5 @@ def solve_test_case(test_case: TestCaseI1) -> None:
 
 
 def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
-    pass
+    passed = True
+    return passed
