@@ -1,3 +1,5 @@
+import numpy as np
+
 from problems.test_case import TestCase, TestCaseTypeEnum
 
 from os import path
@@ -10,7 +12,7 @@ logging.config.fileConfig(logging_config_path)
 logger = logging.getLogger(__name__)
 
 
-class TestCase9Type(TestCaseTypeEnum):
+class TestCaseI3Type(TestCaseTypeEnum):
     DEATH = ('death', '', 1)
     QUICK_STABLE = ('quick stable', '', 1)
     FLUCTUATE_STABLE = ('fluctuate stable', '', 1)
@@ -19,7 +21,7 @@ class TestCase9Type(TestCaseTypeEnum):
     DIVERGENCE = ('divergence', '', 1)
 
 
-class TestCase9(TestCase):
+class TestCaseI3(TestCase):
     def input_str(self) -> str:
         return str(self.input['r'])
 
@@ -27,34 +29,36 @@ class TestCase9(TestCase):
         return '\n'.join(map(str, self.output['x']))
 
 
-TEST_CASE_TYPE_ENUM = TestCase9Type
-TEST_CASE_CLASS = TestCase9
+TEST_CASE_TYPE_ENUM = TestCaseI3Type
+TEST_CASE_CLASS = TestCaseI3
 
 PHYSICAL_CONSTANTS = {}
-TESTING_CONSTANTS = {}
+TESTING_CONSTANTS = {
+    'error_total_tol': 0.0001
+}
 
 
-def generate_input(test_type: TestCase9Type) -> TestCase9:
-    test_case = TestCase9(test_type)
+def generate_input(test_type: TestCaseI3Type) -> TestCaseI3:
+    test_case = TestCaseI3(test_type)
 
-    if test_type is TestCase9Type.DEATH:
+    if test_type is TestCaseI3Type.DEATH:
         r = 1
-    elif test_type is TestCase9Type.QUICK_STABLE:
+    elif test_type is TestCaseI3Type.QUICK_STABLE:
         r = 2
-    elif test_type is TestCase9Type.FLUCTUATE_STABLE:
+    elif test_type is TestCaseI3Type.FLUCTUATE_STABLE:
         r = 3
-    elif test_type is TestCase9Type.OSCILLATION:
+    elif test_type is TestCaseI3Type.OSCILLATION:
         r = 4
-    elif test_type is TestCase9Type.CHAOS:
+    elif test_type is TestCaseI3Type.CHAOS:
         r = 5
-    elif test_type is TestCase9Type.DIVERGENCE:
+    elif test_type is TestCaseI3Type.DIVERGENCE:
         r = 6
 
     test_case.input['r'] = r
     return test_case
 
 
-def solve_test_case(test_case: TestCase9) -> None:
+def solve_test_case(test_case: TestCaseI3) -> None:
     r = test_case.input['r']
 
     x = [0.5]
@@ -66,4 +70,40 @@ def solve_test_case(test_case: TestCase9) -> None:
 
 
 def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
-    pass
+    logger.info("Verifying user solution...")
+    logger.debug("User input string: %s", user_input_str)
+    logger.debug("User output string: %s", user_output_str)
+
+    # Build TestCase object out of user's input string.
+    tmp_test_case = TestCaseI3(TestCaseI3Type.UNKNOWN)
+
+    r = float(user_input_str)
+    tmp_test_case.input = {'r': r}
+
+    # Solve the problem with this TestCase so we have our own solution, and extract the solution.
+    solve_test_case(tmp_test_case)
+    x = tmp_test_case.output['x']
+
+    # Extract user solution.
+    user_x = list(map(float, user_output_str.split()))
+
+    # TODO: Assert that u and user_x are of the same size!
+
+    # Compare our solution with user's solution.
+    error_total_tol = TESTING_CONSTANTS['error_total_tol']
+    error_x = 0
+    for i in range(len(x)):
+        error_x += np.abs(x[i] - user_x[i])
+
+    logger.debug("User solution:")
+    logger.debug("x = %f", user_x)
+    logger.debug("Engine solution:")
+    logger.debug("x = %f", x)
+    logger.debug("Error tolerance = %e. Error x: %e.", error_total_tol, error_x)
+
+    if error_x < error_total_tol:
+        logger.info("User solution correct within error margin.")
+        return True
+    else:
+        logger.info("User solution incorrect within error margin.")
+        return False
