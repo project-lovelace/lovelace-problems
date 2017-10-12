@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 class TestCaseI4Type(TestCaseTypeEnum):
     RANDOM = ('Randomly generated DNA sequence', '', 5)
+    UNKNOWN = ('unknown case', 0)
 
 
 class TestCaseI4(TestCase):

@@ -14,6 +14,7 @@ class TestCaseI6Type(TestCaseTypeEnum):
     ZERO_RESISTOR = ('zero resistor', '', 1)
     FOUR_BAND = ('four band resistor', '', 3)
     FIVE_BAND = ('five band resistor', '', 3)
+    UNKNOWN = ('unknown case', 0)
 
 
 class TestCaseI6(TestCase):

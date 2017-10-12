@@ -19,6 +19,7 @@ class TestCaseI3Type(TestCaseTypeEnum):
     OSCILLATION = ('oscillation', '', 1)
     CHAOS = ('chaos', '', 1)
     DIVERGENCE = ('divergence', '', 1)
+    UNKNOWN = ('unknown case', 0)
 
 
 class TestCaseI3(TestCase):

@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 class TestCaseI5Type(TestCaseTypeEnum):
     RANDOM_STRING = ('random string', '', 1)
+    UNKNOWN = ('unknown case', 0)
 
 
 class TestCaseI5(TestCase):
