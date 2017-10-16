@@ -195,3 +195,6 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     else:
         logger.info("User solution incorrect within error margin.")
         return False
+
+if __name__ == '__main__':
+    print("Hello")

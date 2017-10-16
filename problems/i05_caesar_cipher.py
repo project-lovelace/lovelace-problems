@@ -1,24 +1,19 @@
+import logging
 import random
 import string
-
 from problems.test_case import TestCase, TestCaseTypeEnum
 
-from os import path
-import logging, logging.config
-
-logging_config_path = path.join(path.dirname(path.abspath(__file__)), '..', 'logging.ini')
-logging.config.fileConfig(logging_config_path)
 logger = logging.getLogger(__name__)
 
 
 class TestCaseI5Type(TestCaseTypeEnum):
     RANDOM_STRING = ('random string', '', 1)
-    UNKNOWN = ('unknown case', 0)
+    UNKNOWN = ('unknown case', '', 0)
 
 
 class TestCaseI5(TestCase):
     def input_str(self) -> str:
-        return ' '.join(self.input['colors'])
+        return self.input['ciphertext'] + '\n' + self.input['known_word']
 
     def output_str(self) -> str:
         pass
@@ -90,8 +85,8 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     # Build TestCase object out of user's input string.
     tmp_test_case = TestCaseI5(TestCaseI5Type.UNKNOWN)
 
-    ciphertext = user_input_str
-    tmp_test_case.input = {'ciphertext': ciphertext}
+    ciphertext, known_word = user_input_str.split('\n')
+    tmp_test_case.input = {'ciphertext': ciphertext, 'known_word': known_word}
 
     # Solve the problem with this TestCase so we have our own solution, and extract the solution.
     solve_test_case(tmp_test_case)
@@ -105,7 +100,7 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     logger.debug("Engine solution:")
     logger.debug("decrypted message = %s", decrypted_message)
 
-    if user_decrypted_message == decrypted_message
+    if user_decrypted_message == decrypted_message:
         logger.info("User solution correct.")
         return True
     else:

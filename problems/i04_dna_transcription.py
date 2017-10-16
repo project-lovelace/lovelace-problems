@@ -1,22 +1,16 @@
 # ProblemI4.py
 # RNA Transcription
 
+import logging
 import random
-
 from problems.test_case import TestCase, TestCaseTypeEnum
 
-from os import path
-import logging.config
-import logging
-
-logging_config_path = path.join(path.dirname(path.abspath(__file__)), '..', 'logging.ini')
-logging.config.fileConfig(logging_config_path)
 logger = logging.getLogger(__name__)
 
 
 class TestCaseI4Type(TestCaseTypeEnum):
     RANDOM = ('Randomly generated DNA sequence', '', 5)
-    UNKNOWN = ('unknown case', 0)
+    UNKNOWN = ('unknown case', '', 0)
 
 
 class TestCaseI4(TestCase):
@@ -62,6 +56,8 @@ def generate_input(test_type: TestCaseI4Type) -> TestCaseI4:
     if test_type == TestCaseI4Type.RANDOM:
         dna_length = random.randint(5, 100)
         dna_str = generate_dna_sequence(dna_length)
+    else:
+        raise Exception('Shitty code')
 
     test_case.input['dna_str'] = dna_str
     return test_case

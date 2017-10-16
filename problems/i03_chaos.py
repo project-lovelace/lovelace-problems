@@ -1,14 +1,7 @@
+import logging
 import numpy as np
-
 from problems.test_case import TestCase, TestCaseTypeEnum
 
-from os import path
-import logging.config
-import logging
-
-
-logging_config_path = path.join(path.dirname(path.abspath(__file__)), '..', 'logging.ini')
-logging.config.fileConfig(logging_config_path)
 logger = logging.getLogger(__name__)
 
 
@@ -19,7 +12,7 @@ class TestCaseI3Type(TestCaseTypeEnum):
     OSCILLATION = ('oscillation', '', 1)
     CHAOS = ('chaos', '', 1)
     DIVERGENCE = ('divergence', '', 1)
-    UNKNOWN = ('unknown case', 0)
+    UNKNOWN = ('unknown case', '', 0)
 
 
 class TestCaseI3(TestCase):
@@ -51,9 +44,9 @@ def generate_input(test_type: TestCaseI3Type) -> TestCaseI3:
     elif test_type is TestCaseI3Type.OSCILLATION:
         r = 4
     elif test_type is TestCaseI3Type.CHAOS:
-        r = 5
+        r = 3.5
     elif test_type is TestCaseI3Type.DIVERGENCE:
-        r = 6
+        r = 3.6
 
     test_case.input['r'] = r
     return test_case
@@ -74,7 +67,6 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     logger.info("Verifying user solution...")
     logger.debug("User input string: %s", user_input_str)
     logger.debug("User output string: %s", user_output_str)
-
     # Build TestCase object out of user's input string.
     tmp_test_case = TestCaseI3(TestCaseI3Type.UNKNOWN)
 
@@ -97,9 +89,9 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
         error_x += np.abs(x[i] - user_x[i])
 
     logger.debug("User solution:")
-    logger.debug("x = %f", user_x)
+    logger.debug("x = {}".format(user_x))
     logger.debug("Engine solution:")
-    logger.debug("x = %f", x)
+    logger.debug("x = {}".format(x))
     logger.debug("Error tolerance = %e. Error x: %e.", error_total_tol, error_x)
 
     if error_x < error_total_tol:
