@@ -79,7 +79,7 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     logger.debug("User output string: %s", user_output_str)
 
     # Build TestCase object out of user's input string.
-    tmp_test_case = TestCaseI1(TestCaseI1Type.UNKNOWN)
+    tmp_test_case = TestCaseI1(TestCaseI1Type.RANDOM)
 
     v = float(user_input_str)
     tmp_test_case.input = {'v': v}

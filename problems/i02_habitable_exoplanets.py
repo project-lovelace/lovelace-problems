@@ -22,7 +22,7 @@ class TestCaseI2Type(TestCaseTypeEnum):
 
 class TestCaseI2(TestCase):
     def input_str(self) -> str:
-        return str(self.input['L_star']) + '\n' + str(self.input['r'])
+        return str(self.input['L_star']) + ' ' + str(self.input['r'])
 
     def output_str(self) -> str:
         return self.output['habitability']
@@ -48,8 +48,8 @@ def generate_input(test_type: TestCaseI2Type) -> TestCaseI2:
         L_star = 1.43
         r = 0.242
     elif test_type is TestCaseI2Type.RANDOM:
-        L_star = np.random.uniform(0.1, 5.0, 1)
-        r = np.random.uniform(0.1, 5.0, 1)
+        L_star = np.random.uniform(0.1, 5.0, 1)[0]
+        r = np.random.uniform(0.1, 5.0, 1)[0]
 
     test_case.input['L_star'] = L_star
     test_case.input['r'] = r
@@ -76,7 +76,7 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     logger.debug("User output string: %s", user_output_str)
 
     # Build TestCase object out of user's input string.
-    tmp_test_case = TestCaseI2(TestCaseI2Type.UNKNOWN)
+    tmp_test_case = TestCaseI2(TestCaseI2Type.RANDOM)
 
     inputs = list(map(float, user_input_str.split()))
     L_star, r = inputs
@@ -87,7 +87,7 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     habitability = tmp_test_case.output['habitability']
 
     # Extract user solution.
-    outputs = list(map(float, user_output_str.split()))
+    outputs = [user_output_str]
     user_habitability = outputs[0]
 
     logger.debug("User solution:")

@@ -1,12 +1,7 @@
+import logging
 import numpy as np
-
 from problems.test_case import TestCase, TestCaseTypeEnum
 
-from os import path
-import logging, logging.config
-
-logging_config_path = path.join(path.dirname(path.abspath(__file__)), '..', 'logging.ini')
-logging.config.fileConfig(logging_config_path)
 logger = logging.getLogger(__name__)
 
 
