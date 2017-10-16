@@ -10,13 +10,14 @@ logging.config.fileConfig(logging_config_path)
 logger = logging.getLogger(__name__)
 
 
-class TestCase8Type(TestCaseTypeEnum):
+class TestCaseI6Type(TestCaseTypeEnum):
     ZERO_RESISTOR = ('zero resistor', '', 1)
     FOUR_BAND = ('four band resistor', '', 3)
     FIVE_BAND = ('five band resistor', '', 3)
+    UNKNOWN = ('unknown case', 0)
 
 
-class TestCase8(TestCase):
+class TestCaseI6(TestCase):
     def input_str(self) -> str:
         return ' '.join(self.input['colors'])
 
@@ -24,8 +25,8 @@ class TestCase8(TestCase):
         pass
 
 
-TEST_CASE_TYPE_ENUM = TestCase8Type
-TEST_CASE_CLASS = TestCase8
+TEST_CASE_TYPE_ENUM = TestCaseI6Type
+TEST_CASE_CLASS = TestCaseI6
 
 PHYSICAL_CONSTANTS = {
     'digits': {
@@ -67,25 +68,28 @@ PHYSICAL_CONSTANTS = {
         'grey': 0.0005
     }
 }
-TESTING_CONSTANTS = {}
+
+TESTING_CONSTANTS = {
+    'error_tol': 0.1  # tolerance on each resistance output [Ohm]
+}
 
 
-def generate_input(test_type: TestCase8Type) -> TestCase8:
+def generate_input(test_type: TestCaseI6Type) -> TestCaseI6:
     digits = PHYSICAL_CONSTANTS['digits']
     multiplier = PHYSICAL_CONSTANTS['multiplier']
     tolerance = PHYSICAL_CONSTANTS['tolerance']
 
-    test_case = TestCase8(test_type)
+    test_case = TestCaseI6(test_type)
 
-    if test_type is TestCase8Type.ZERO_RESISTOR:
+    if test_type is TestCaseI6Type.ZERO_RESISTOR:
         colors = ['black']
-    elif test_type is TestCase8Type.FOUR_BAND:
+    elif test_type is TestCaseI6Type.FOUR_BAND:
         band_color1 = np.random.choice(digits.keys())
         band_color2 = np.random.choice(digits.keys())
         multiplier_color = np.random.choice(multiplier.keys())
         tolerance_color = np.random.choice(tolerance.keys())
         colors = [band_color1, band_color2, multiplier_color, tolerance_color]
-    elif test_type is TestCase8Type.FIVE_BAND:
+    elif test_type is TestCaseI6Type.FIVE_BAND:
         band_color1 = np.random.choice(digits.keys())
         band_color2 = np.random.choice(digits.keys())
         band_color3 = np.random.choice(digits.keys())
@@ -97,7 +101,7 @@ def generate_input(test_type: TestCase8Type) -> TestCase8:
     return test_case
 
 
-def solve_test_case(test_case: TestCase8) -> None:
+def solve_test_case(test_case: TestCaseI6) -> None:
     digits = PHYSICAL_CONSTANTS['digits']
     multiplier = PHYSICAL_CONSTANTS['multiplier']
     tolerance = PHYSICAL_CONSTANTS['tolerance']
@@ -127,4 +131,41 @@ def solve_test_case(test_case: TestCase8) -> None:
 
 
 def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
-    pass
+    logger.info("Verifying user solution...")
+    logger.debug("User input string: %s", user_input_str)
+    logger.debug("User output string: %s", user_output_str)
+
+    # Build TestCase object out of user's input string.
+    tmp_test_case = TestCaseI6(TestCaseI6Type.UNKNOWN)
+
+    inputs = user_input_str.split()
+    colors = inputs
+    tmp_test_case.input = {'colors': colors}
+
+    # Solve the problem with this TestCase so we have our own solution, and extract the solution.
+    solve_test_case(tmp_test_case)
+    nominal_R = tmp_test_case.output['nominal_resistance']
+    minimum_R = tmp_test_case.output['minimum_resistance']
+    maximum_R = tmp_test_case.output['maximum_resistance']
+
+    # Extract user solution.
+    outputs = list(map(float, user_output_str.split()))
+    user_nominal_R = outputs[0]
+    user_minimum_R = outputs[1]
+    user_maximum_R = outputs[2]
+
+    error_tol = TESTING_CONSTANTS['error_tol']
+    error_R = abs(nominal_R - user_nominal_R) + abs(minimum_R - user_minimum_R) + abs(maximum_R - user_maximum_R)
+
+    logger.debug("User solution:")
+    logger.debug("nominal_R = %f, minimum_R = %f, maximum_R = %f", user_nominal_R, user_minimum_R, user_maximum_R)
+    logger.debug("Engine solution:")
+    logger.debug("nominal_R = %f, minimum_R = %f, maximum_R = %f", nominal_R, minimum_R, maximum_R)
+    logger.debug("Error tolerance = %e. Error x: %e.", error_tol, error_R)
+
+    if error_R < error_tol:
+        logger.info("User solution correct.")
+        return True
+    else:
+        logger.info("User solution incorrect.")
+        return False

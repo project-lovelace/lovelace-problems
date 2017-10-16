@@ -17,6 +17,7 @@ class TestCaseI2Type(TestCaseTypeEnum):
     PROXIMA_CENTAURI_b = ('Proxima Centauri b', '', 1)
     KEPLER_440b = ('Kepler 440b', '', 1)
     RANDOM = ('Randomly generated exoplanet', '', 1)
+    UNKNOWN = ('unknown case', 0)
 
 
 class TestCaseI2(TestCase):
