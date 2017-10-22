@@ -1,10 +1,12 @@
-import numpy as np
 import csv
+import numpy as np
+
+csv_filename = input()
 
 x = []
 y = []
 
-with open('xy.csv') as csvfile:
+with open(csv_filename) as csvfile:
     xy_reader = csv.reader(csvfile, delimiter=',')
     for row in xy_reader:
         x.append(float(row[0]))

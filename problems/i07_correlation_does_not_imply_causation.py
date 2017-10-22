@@ -1,4 +1,6 @@
+import csv
 import logging
+import os
 import numpy as np
 from problems.test_case import TestCase, TestCaseTypeEnum
 
@@ -12,11 +14,8 @@ class TestCaseI7Type(TestCaseTypeEnum):
 
 
 class TestCaseI7(TestCase):
-    def input_filename(self) -> str:
-        return self.input['filename']
-
     def input_str(self) -> str:
-        return ''
+        return self.input['dataset_filename'].split('/')[1]
 
     def output_str(self) -> str:
         return str(self.output['r'])
@@ -35,27 +34,25 @@ TESTING_CONSTANTS = {
 
 
 def write_random_dataset_csv(x, y):
-    import csv
-    outfile = open('random_xy.csv', "wb")
-    xy_writer = csv.writer(outfile, delimiter=',')
-
-    for i in range(len(x)):
-        xy_writer.writerow([x[i], y[i]])
-
-    outfile.close()
+    cwd = os.path.dirname(os.path.abspath(__file__))
+    csv_filename = os.path.join(cwd, '..', 'resources', 'problem_i07', 'random_xy.csv')
+    with open(csv_filename, 'w') as outfile:
+        xy_writer = csv.writer(outfile, delimiter=',')
+        for i in range(len(x)):
+            xy_writer.writerow((x[i], y[i]))
 
 
 def generate_input(test_type: TestCaseI7Type) -> TestCaseI7:
     test_case = TestCaseI7(test_type)
 
     if test_type is TestCaseI7Type.SPECIFIC_DATASET:
-        dataset_filename = 'specific_xy.dat'
-    elif test_type is TestCaseI7Type.RANDOM_DATSET:
+        dataset_filename = 'problem_i07/specific_xy.csv'
+    elif test_type is TestCaseI7Type.RANDOM_DATASET:
         N = np.random.randint(10, 100)
-        x = np.random.rand(N, 1)
-        y = np.random.rand(N, 1)
+        x = np.random.rand(N)
+        y = np.random.rand(N)
         write_random_dataset_csv(x, y)
-        dataset_filename = 'random_xy.dat'
+        dataset_filename = 'problem_i07/random_xy.csv'
     else:
         raise ValueError
 
@@ -66,10 +63,12 @@ def generate_input(test_type: TestCaseI7Type) -> TestCaseI7:
 def solve_test_case(test_case: TestCaseI7) -> None:
     import csv
 
+    csv_filename = test_case.input['dataset_filename']
+
     x = []
     y = []
 
-    with open('xy.csv') as csvfile:
+    with open(csv_filename) as csvfile:
         xy_reader = csv.reader(csvfile, delimiter=',')
         for row in xy_reader:
             x.append(float(row[0]))
@@ -107,8 +106,7 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
 
     # Build TestCase object out of user's input string.
     tmp_test_case = TestCaseI7(TestCaseI7Type.UNKNOWN)
-
-    # TODO: How do we know which dataset the user loaded in???
+    tmp_test_case.input['dataset_filename'] = user_input_str
 
     # Solve the problem with this TestCase so we have our own solution, and extract the solution.
     solve_test_case(tmp_test_case)
