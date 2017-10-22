@@ -27,6 +27,8 @@ class TestCaseI1(TestCase):
 TEST_CASE_TYPE_ENUM = TestCaseI1Type
 TEST_CASE_CLASS = TestCaseI1
 
+RESOURCES = []
+
 PHYSICAL_CONSTANTS = {
     # TODO: get actual values.
     'v_e': 250,  # [m/s]

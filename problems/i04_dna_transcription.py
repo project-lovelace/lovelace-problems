@@ -24,6 +24,8 @@ class TestCaseI4(TestCase):
 TEST_CASE_TYPE_ENUM = TestCaseI4Type
 TEST_CASE_CLASS = TestCaseI4
 
+RESOURCES = []
+
 PHYSICAL_CONSTANTS = {}
 TESTING_CONSTANTS = {}
 

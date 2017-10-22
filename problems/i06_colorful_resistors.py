@@ -23,6 +23,8 @@ class TestCaseI6(TestCase):
 TEST_CASE_TYPE_ENUM = TestCaseI6Type
 TEST_CASE_CLASS = TestCaseI6
 
+RESOURCES = []
+
 PHYSICAL_CONSTANTS = {
     'digits': {
         'black': 0,

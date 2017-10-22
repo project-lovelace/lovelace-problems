@@ -21,6 +21,8 @@ class TestCaseI8(TestCase):
 TEST_CASE_TYPE_ENUM = TestCaseI8Type
 TEST_CASE_CLASS = TestCaseI8
 
+RESOURCES = ['periodic_table.csv']
+
 PHYSICAL_CONSTANTS = {}
 
 TESTING_CONSTANTS = {
@@ -59,7 +61,7 @@ def solve_test_case(test_case: TestCaseI8) -> None:
     for symbol, number in re.findall(pattern, chemical_formula):
         if not number:
             number = 1
-        mass = mass + number * atomic_masses[symbol]
+        mass = mass + int(number) * atomic_masses[symbol]
 
     test_case.output['mass'] = mass
     return
@@ -74,7 +76,7 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     tmp_test_case = TestCaseI8(TestCaseI8Type.UNKNOWN)
 
     inputs = user_input_str.split()
-    chemical_formula = inputs
+    chemical_formula = inputs[0]
     tmp_test_case.input = {'chemical_formula': chemical_formula}
 
     # Solve the problem with this TestCase so we have our own solution, and extract the solution.
@@ -82,7 +84,7 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     mass = tmp_test_case.output['mass']
 
     # Extract user solution.
-    user_mass = float(user_output_str.split())
+    user_mass = float(user_output_str)
 
     error_tol = TESTING_CONSTANTS['error_tol']
     error_mass = abs(mass - user_mass)

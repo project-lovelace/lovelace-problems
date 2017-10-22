@@ -18,6 +18,6 @@ for symbol, number in re.findall(pattern, chemical_formula):
     if not number:
         number = 1
 
-    mass = mass + number*atomic_masses[symbol]
+    mass = mass + int(number)*atomic_masses[symbol]
 
 print('{}'.format(mass))

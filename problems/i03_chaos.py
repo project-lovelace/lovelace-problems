@@ -26,6 +26,8 @@ class TestCaseI3(TestCase):
 TEST_CASE_TYPE_ENUM = TestCaseI3Type
 TEST_CASE_CLASS = TestCaseI3
 
+RESOURCES = []
+
 PHYSICAL_CONSTANTS = {}
 TESTING_CONSTANTS = {
     'error_total_tol': 0.0001
