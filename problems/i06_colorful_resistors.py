@@ -1,12 +1,7 @@
+import logging
 import numpy as np
-
 from problems.test_case import TestCase, TestCaseTypeEnum
 
-from os import path
-import logging, logging.config
-
-logging_config_path = path.join(path.dirname(path.abspath(__file__)), '..', 'logging.ini')
-logging.config.fileConfig(logging_config_path)
 logger = logging.getLogger(__name__)
 
 
@@ -14,7 +9,7 @@ class TestCaseI6Type(TestCaseTypeEnum):
     ZERO_RESISTOR = ('zero resistor', '', 1)
     FOUR_BAND = ('four band resistor', '', 3)
     FIVE_BAND = ('five band resistor', '', 3)
-    UNKNOWN = ('unknown case', 0)
+    UNKNOWN = ('unknown case', '', 0)
 
 
 class TestCaseI6(TestCase):
@@ -84,17 +79,17 @@ def generate_input(test_type: TestCaseI6Type) -> TestCaseI6:
     if test_type is TestCaseI6Type.ZERO_RESISTOR:
         colors = ['black']
     elif test_type is TestCaseI6Type.FOUR_BAND:
-        band_color1 = np.random.choice(digits.keys())
-        band_color2 = np.random.choice(digits.keys())
-        multiplier_color = np.random.choice(multiplier.keys())
-        tolerance_color = np.random.choice(tolerance.keys())
+        band_color1 = np.random.choice(list(digits.keys()))
+        band_color2 = np.random.choice(list(digits.keys()))
+        multiplier_color = np.random.choice(list(multiplier.keys()))
+        tolerance_color = np.random.choice(list(tolerance.keys()))
         colors = [band_color1, band_color2, multiplier_color, tolerance_color]
     elif test_type is TestCaseI6Type.FIVE_BAND:
-        band_color1 = np.random.choice(digits.keys())
-        band_color2 = np.random.choice(digits.keys())
-        band_color3 = np.random.choice(digits.keys())
-        multiplier_color = np.random.choice(multiplier.keys())
-        tolerance_color = np.random.choice(tolerance.keys())
+        band_color1 = np.random.choice(list(digits.keys()))
+        band_color2 = np.random.choice(list(digits.keys()))
+        band_color3 = np.random.choice(list(digits.keys()))
+        multiplier_color = np.random.choice(list(multiplier.keys()))
+        tolerance_color = np.random.choice(list(tolerance.keys()))
         colors = [band_color1, band_color2, band_color3, multiplier_color, tolerance_color]
 
     test_case.input['colors'] = colors
