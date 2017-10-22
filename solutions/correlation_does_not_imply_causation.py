@@ -4,7 +4,7 @@ import csv
 x = []
 y = []
 
-with open('input.csv') as csvfile:
+with open('xy.csv') as csvfile:
     xy_reader = csv.reader(csvfile, delimiter=',')
     for row in xy_reader:
         x.append(float(row[0]))
