@@ -40,6 +40,8 @@ class TestCase1(TestCase):
 TEST_CASE_TYPE_ENUM = TestCase1Type
 TEST_CASE_CLASS = TestCase1
 
+RESOURCES = []
+
 # Problem-specific constants.
 PHYSICAL_CONSTANTS = {
     'v': 3.0  # [km/s], velocity of seismic waves
