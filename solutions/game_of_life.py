@@ -12,7 +12,6 @@ def neighbors(cell, distance=1):
 
 
 def advance(board):
-    """Advance the board one step and return it."""
     new_board = set()
     for cell in board:
         cell_neighbors = set(neighbors(cell))
@@ -51,15 +50,17 @@ def constrain(board, size):
     return set(cell for cell in board if cell[0] <= size and cell[1] <= size)
 
 
-board = set()
+board_filename = input()
 steps = int(input())
+
+board = set()
 
 i = 0
 j = 0
 i_max = 0
 j_max = 0
 
-with open('initial_board.txt') as board_file:
+with open(board_filename) as board_file:
     for line in board_file.readlines():
         if j > j_max:
             j_max = j
