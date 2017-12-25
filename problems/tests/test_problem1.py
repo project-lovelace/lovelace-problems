@@ -1,6 +1,6 @@
 import pytest
 
-from .. import problem1 as problem
+from .. import earthquake_epicenters as problem
 
 
 def test_general_case():
