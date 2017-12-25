@@ -3,6 +3,7 @@
 
 import logging
 import random
+
 from problems.test_case import TestCase, TestCaseTypeEnum
 
 logger = logging.getLogger(__name__)

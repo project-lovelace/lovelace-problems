@@ -3,8 +3,8 @@
 
 import logging
 import random
-import numpy as np
 
+import numpy as np
 from problems.abstract_problem import AbstractProblem
 
 log = logging.getLogger(__name__)

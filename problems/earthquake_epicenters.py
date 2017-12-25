@@ -1,5 +1,7 @@
 import logging
+
 import numpy as np
+
 from problems.test_case import TestCase, TestCaseTypeEnum
 
 logger = logging.getLogger(__name__)
@@ -39,6 +41,8 @@ class TestCase1(TestCase):
 
 TEST_CASE_TYPE_ENUM = TestCase1Type
 TEST_CASE_CLASS = TestCase1
+
+RESOURCES = []
 
 # Problem-specific constants.
 PHYSICAL_CONSTANTS = {
