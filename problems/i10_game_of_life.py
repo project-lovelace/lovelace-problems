@@ -1,7 +1,5 @@
-import csv
 import logging
-import os
-import numpy as np
+
 from problems.test_case import TestCase, TestCaseTypeEnum
 
 logger = logging.getLogger(__name__)
@@ -10,7 +8,7 @@ logger = logging.getLogger(__name__)
 class TestCaseI10Type(TestCaseTypeEnum):
     STILL_LIFE = ('still life', '', 1)
     OSCILLATORS = ('oscillators', '', 1)
-    SPACESHIPS = ('spaceships', '', 0)
+    SPACESHIPS = ('spaceships', '', 1)
     UNKNOWN = ('unknown case', '', 0)
 
 
@@ -19,7 +17,7 @@ class TestCaseI10(TestCase):
         return self.input['board_filename'].split('/')[1] + '\n' + str(self.input['steps'])
 
     def output_str(self) -> str:
-        return 'board.txt'
+        return self.output['board_str']
 
 
 TEST_CASE_TYPE_ENUM = TestCaseI10Type
@@ -36,11 +34,11 @@ def generate_input(test_type: TestCaseI10Type) -> TestCaseI10:
     test_case = TestCaseI10(test_type)
 
     if test_type is TestCaseI10Type.STILL_LIFE:
-        board_filename = 'problem_i10/still_life.txt'
+        board_filename = 'i10_game_of_life/still_life.txt'
     elif test_type is TestCaseI10Type.OSCILLATORS:
-        board_filename = 'problem_i10/oscillators.txt'
+        board_filename = 'i10_game_of_life/oscillators.txt'
     elif test_type is TestCaseI10Type.SPACESHIPS:
-        board_filename = 'problem_i10/spaceships.txt'
+        board_filename = 'i10_game_of_life/spaceships.txt'
     else:
         raise ValueError
 
@@ -132,7 +130,8 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
 
     # Build TestCase object out of user's input string.
     tmp_test_case = TestCaseI10(TestCaseI10Type.UNKNOWN)
-    tmp_test_case.input['dataset_filename'] = user_input_str
+    tmp_test_case.input['board_filename'] = user_input_str.split('\n')[0]
+    tmp_test_case.input['steps'] = int(user_input_str.split('\n')[1])
 
     # Solve the problem with this TestCase so we have our own solution, and extract the solution.
     solve_test_case(tmp_test_case)
@@ -141,8 +140,6 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     # Extract user solution.
     with open('board.txt') as board_file:
         user_board_str = board_file.read()
-
-    user_r = float(user_output_str)
 
     logger.debug("User solution:")
     logger.debug("{:s}".format(user_board_str))
