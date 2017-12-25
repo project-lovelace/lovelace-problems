@@ -54,18 +54,25 @@ def constrain(board, size):
 board = set()
 steps = int(input())
 
+i = 0
+j = 0
+i_max = 0
+j_max = 0
+
 with open('initial_board.txt') as board_file:
-    i = 0
     for line in board_file.readlines():
+        if j > j_max:
+            j_max = j
         j = 0
         for c in line:
             if c == 'o':
                 board.add((i, j))
             j = j+1
+        if i > i_max:
+            i_max = i
         i = i+1
 
-steps = 50
-size = 30
+size = max(i_max, j_max)
 
 for i in range(1, steps + 1):
     # sys.stdout.write('\033[H')  # move to the top
@@ -75,4 +82,18 @@ for i in range(1, steps + 1):
     # time.sleep(0.2)
     board = constrain(advance(board), size)
 
-print_board(board, size)
+# print_board(board, size)
+sizex = sizey = size or 0
+for x, y in board:
+    sizex = x if x > sizex else sizex
+    sizey = y if y > sizey else sizey
+
+board_str = ''
+for i in range(sizex + 1):
+    for j in range(sizey + 1):
+        char = 'o' if (i, j) in board else '.'
+        board_str = board_str + char
+    board_str = board_str + '\n'
+
+with open("board.txt", "w") as f:
+    f.write('{:s}'.format(board_str))
