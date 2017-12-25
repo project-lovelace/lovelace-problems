@@ -1,6 +1,5 @@
-import sys
-import time
 import subprocess
+import sys
 
 
 def neighbors(cell, distance=1):

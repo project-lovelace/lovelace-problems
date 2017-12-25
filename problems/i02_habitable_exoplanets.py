@@ -1,5 +1,7 @@
 import logging
+
 import numpy as np
+
 from problems.test_case import TestCase, TestCaseTypeEnum
 
 logger = logging.getLogger(__name__)

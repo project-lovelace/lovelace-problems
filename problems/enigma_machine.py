@@ -3,8 +3,8 @@
 
 import random
 import string
-import numpy as np
 
+import numpy as np
 from problems.abstract_problem import AbstractProblem
 
 
