@@ -67,7 +67,7 @@ def solve_test_case(test_case: TestCaseI9) -> None:
                 classification_str = classification_str + '{}: La Nina (MEI={})'.format(season, min_mei) + '\n'
                 break
 
-    test_case.output['classification_str'] = classification_str
+    test_case.output['classification_str'] = classification_str[:-1]  # remove newline from the end
     return
 
 
