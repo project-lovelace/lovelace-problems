@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class TestCaseI7Type(TestCaseTypeEnum):
-    SPECIFIC_DATASET = ('specific dataset', '', 1)
+    SPURIOUS_DATASET = ('spurious dataset', '', 1)
     RANDOM_DATASET = ('random dataset', '', 1)
     UNKNOWN = ('unknown case', '', 0)
 
@@ -47,8 +47,8 @@ def write_random_dataset_csv(x, y):
 def generate_input(test_type: TestCaseI7Type) -> TestCaseI7:
     test_case = TestCaseI7(test_type)
 
-    if test_type is TestCaseI7Type.SPECIFIC_DATASET:
-        dataset_filename = 'problem_i07/specific_xy.csv'
+    if test_type is TestCaseI7Type.SPURIOUS_DATASET:
+        dataset_filename = 'problem_i07/spurious_xy.csv'
     elif test_type is TestCaseI7Type.RANDOM_DATASET:
         N = np.random.randint(10, 100)
         x = np.random.rand(N)
