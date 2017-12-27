@@ -1,12 +1,18 @@
 import logging
 
+import numpy as np
+
 from problems.test_case import TestCase, TestCaseTypeEnum
 
 logger = logging.getLogger(__name__)
 
 
 class TestCaseI8Type(TestCaseTypeEnum):
-    RANDOM_CHEMICAL = ('random chemical', '', 1)
+    RUST = ('Rust (ferric oxide)', '', 1)
+    PLUTONIIM = ('Plutonium', '', 1)
+    LSD = ('LSD', '', 1)
+    HIGH_T_SUPERCONDUCTOR = ('BSCCO (high temperature superconductor)', '', 1)
+    RANDOM_CHEMICAL = ('random chemical', '', 2)
     UNKNOWN = ('unknown case', '', 0)
 
 
@@ -33,8 +39,18 @@ TESTING_CONSTANTS = {
 def generate_input(test_type: TestCaseI8Type) -> TestCaseI8:
     test_case = TestCaseI8(test_type)
 
-    if test_type is TestCaseI8Type.RANDOM_CHEMICAL:
-        chemical_formula = 'C20H25N3OCl2U4'
+    if test_type is TestCaseI8Type.RUST:
+        chemical_formula = 'Fe2O3'
+    elif test_type is TestCaseI8Type.PLUTONIUM:
+        chemical_formula = 'Pu'
+    elif test_type is TestCaseI8Type.ACETONE:
+        chemical_formula = 'CH3COCH3'
+    elif test_type is TestCaseI8Type.HIGH_T_SUPERCONDUCTOR:
+        chemical_formula = 'Bi2Sr2Ca2Cu3O10'
+    elif test_type is TestCaseI8Type.LSD:
+        chemical_formula = 'C20H25N3O'
+    elif test_type is TestCaseI8Type.RANDOM_CHEMICAL:
+        chemical_formula = np.random.choice(['CO2', 'CH4', 'C6H12O6', 'PuCoGa5', 'CH3NH2', 'W', 'C2H5OH'], 1)[0]
     else:
         raise ValueError
 
