@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 class TestCaseI8Type(TestCaseTypeEnum):
     RUST = ('Rust (ferric oxide)', '', 1)
-    PLUTONIIM = ('Plutonium', '', 1)
+    PLUTONIUM = ('Plutonium', '', 1)
     LSD = ('LSD', '', 1)
     HIGH_T_SUPERCONDUCTOR = ('BSCCO (high temperature superconductor)', '', 1)
     RANDOM_CHEMICAL = ('random chemical', '', 2)
@@ -43,8 +43,6 @@ def generate_input(test_type: TestCaseI8Type) -> TestCaseI8:
         chemical_formula = 'Fe2O3'
     elif test_type is TestCaseI8Type.PLUTONIUM:
         chemical_formula = 'Pu'
-    elif test_type is TestCaseI8Type.ACETONE:
-        chemical_formula = 'CH3COCH3'
     elif test_type is TestCaseI8Type.HIGH_T_SUPERCONDUCTOR:
         chemical_formula = 'Bi2Sr2Ca2Cu3O10'
     elif test_type is TestCaseI8Type.LSD:
