@@ -7,7 +7,7 @@ problem = [float(number) for number in input_list]
 v = problem[0]
 
 # TODO: get actual values.
-v_e = 250  # [m/s]
-M = 12000  # [kg]
+v_e = 2550  # [m/s]
+M = 250000  # [kg]
 
 print(M*(np.exp(v/v_e) - 1))
