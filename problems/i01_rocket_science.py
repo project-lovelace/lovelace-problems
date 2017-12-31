@@ -33,9 +33,10 @@ RESOURCES = []
 
 PHYSICAL_CONSTANTS = {
     # TODO: get actual values.
-    'v_e': 250,  # [m/s]
-    'M': 12000  # [kg]
+    'v_e': 2550,  # [m/s]
+    'M': 250000   # [kg]
 }
+
 TESTING_CONSTANTS = {
     'error_tol': 0.001  # [kg]
 }
@@ -45,15 +46,15 @@ def generate_input(test_type: TestCaseI1Type) -> TestCaseI1:
     test_case = TestCaseI1(test_type)
 
     if test_type is TestCaseI1Type.EARTH:
-        v = 11.186
+        v = 11186
     elif test_type is TestCaseI1Type.MOON:
-        v = 2.38
+        v = 2380
     elif test_type is TestCaseI1Type.JUPITER:
-        v = 60.20
+        v = 60200
     elif test_type is TestCaseI1Type.PLUTO:
-        v = 1.23
+        v = 1230
     elif test_type is TestCaseI1Type.PHOBOS:
-        v = 0.001139
+        v = 1.139
     elif test_type is TestCaseI1Type.RANDOM:
         v = np.random.uniform(1.0, 100.0, 1)[0]
 
