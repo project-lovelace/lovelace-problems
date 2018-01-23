@@ -26,7 +26,7 @@ class TestCaseI7(TestCase):
 TEST_CASE_TYPE_ENUM = TestCaseI7Type
 TEST_CASE_CLASS = TestCaseI7
 
-RESOURCES = []
+RESOURCES = ['spurious_xy.csv', 'random_xy.csv']
 
 PHYSICAL_CONSTANTS = {}
 
@@ -37,7 +37,7 @@ TESTING_CONSTANTS = {
 
 def write_random_dataset_csv(x, y):
     cwd = os.path.dirname(os.path.abspath(__file__))
-    csv_filename = os.path.join(cwd, '..', 'resources', 'problem_i07', 'random_xy.csv')
+    csv_filename = os.path.join(cwd, '..', 'resources', 'i07_correlation_does_not_imply_causation', 'random_xy.csv')
     with open(csv_filename, 'w') as outfile:
         xy_writer = csv.writer(outfile, delimiter=',')
         for i in range(len(x)):
@@ -48,13 +48,13 @@ def generate_input(test_type: TestCaseI7Type) -> TestCaseI7:
     test_case = TestCaseI7(test_type)
 
     if test_type is TestCaseI7Type.SPURIOUS_DATASET:
-        dataset_filename = 'problem_i07/spurious_xy.csv'
+        dataset_filename = 'i07_correlation_does_not_imply_causation/spurious_xy.csv'
     elif test_type is TestCaseI7Type.RANDOM_DATASET:
         N = np.random.randint(10, 100)
         x = np.random.rand(N)
         y = np.random.rand(N)
         write_random_dataset_csv(x, y)
-        dataset_filename = 'problem_i07/random_xy.csv'
+        dataset_filename = 'i07_correlation_does_not_imply_causation/random_xy.csv'
     else:
         raise ValueError
 
@@ -70,6 +70,7 @@ def solve_test_case(test_case: TestCaseI7) -> None:
     x = []
     y = []
 
+    # TODO TODO TODO: don't do non-full path imports; not portable
     with open(csv_filename) as csvfile:
         xy_reader = csv.reader(csvfile, delimiter=',')
         for row in xy_reader:
