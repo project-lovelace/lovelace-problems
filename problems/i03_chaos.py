@@ -24,6 +24,12 @@ class TestCaseI3(TestCase):
     def output_str(self) -> str:
         return '\n'.join(map(str, self.output['x']))
 
+    def input_tuple(self) -> tuple:
+        return self.input['r'],
+
+    def output_tuple(self) -> tuple:
+        return self.output['x'],
+
 
 TEST_CASE_TYPE_ENUM = TestCaseI3Type
 TEST_CASE_CLASS = TestCaseI3
@@ -67,14 +73,15 @@ def solve_test_case(test_case: TestCaseI3) -> None:
     return
 
 
-def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
+def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.info("Verifying user solution...")
-    logger.debug("User input string: %s", user_input_str)
-    logger.debug("User output string: %s", user_output_str)
+    logger.debug("User input string: %s", user_input)
+    logger.debug("User output string: %s", user_output)
+
     # Build TestCase object out of user's input string.
     tmp_test_case = TestCaseI3(TestCaseI3Type.UNKNOWN)
 
-    r = float(user_input_str)
+    r = user_input[0]
     tmp_test_case.input = {'r': r}
 
     # Solve the problem with this TestCase so we have our own solution, and extract the solution.
@@ -82,9 +89,10 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     x = tmp_test_case.output['x']
 
     # Extract user solution.
-    user_x = list(map(float, user_output_str.split()))
+    user_x = user_output[0]
 
-    # TODO: Assert that u and user_x are of the same size!
+    if len(x) != len(user_x):
+        return False
 
     # Compare our solution with user's solution.
     error_total_tol = TESTING_CONSTANTS['error_total_tol']

@@ -22,6 +22,12 @@ class TestCaseI2(TestCase):
     def output_str(self) -> str:
         return self.output['habitability']
 
+    def input_tuple(self) -> tuple:
+        return self.input['L_star'], self.input['r']
+
+    def output_tuple(self) -> tuple:
+        return self.output['habitability'],
+
 
 TEST_CASE_TYPE_ENUM = TestCaseI2Type
 TEST_CASE_CLASS = TestCaseI2
@@ -64,19 +70,16 @@ def solve_test_case(test_case: TestCaseI2) -> None:
     else:
         test_case.output['habitability'] = 'just right'
 
-    return
 
-
-def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
+def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.info("Verifying user solution...")
-    logger.debug("User input string: %s", user_input_str)
-    logger.debug("User output string: %s", user_output_str)
+    logger.debug("User input: %s", user_input)
+    logger.debug("User output: %s", user_output)
 
     # Build TestCase object out of user's input string.
     tmp_test_case = TestCaseI2(TestCaseI2Type.RANDOM)
 
-    inputs = list(map(float, user_input_str.split()))
-    L_star, r = inputs
+    L_star, r = user_input
     tmp_test_case.input = {'L_star': L_star, 'r': r}
 
     # Solve the problem with this TestCase so we have our own solution, and extract the solution.
@@ -84,8 +87,7 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     habitability = tmp_test_case.output['habitability']
 
     # Extract user solution.
-    outputs = [user_output_str]
-    user_habitability = outputs[0]
+    user_habitability = user_output[0]
 
     logger.debug("User solution:")
     logger.debug("habitability = %s", user_habitability)
