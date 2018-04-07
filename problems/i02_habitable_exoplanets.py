@@ -51,8 +51,8 @@ def generate_input(test_type: TestCaseI2Type) -> TestCaseI2:
         L_star = 1.43
         r = 0.242
     elif test_type is TestCaseI2Type.RANDOM:
-        L_star = np.random.uniform(0.1, 5.0, 1)[0]
-        r = np.random.uniform(0.1, 5.0, 1)[0]
+        L_star = float(np.random.uniform(0.1, 5.0, 1)[0])
+        r = float(np.random.uniform(0.1, 5.0, 1)[0])
 
     test_case.input['L_star'] = L_star
     test_case.input['r'] = r

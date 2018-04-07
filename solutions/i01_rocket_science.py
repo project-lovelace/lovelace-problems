@@ -1,8 +1,8 @@
-import numpy as np
+import math
 
 v_e = 2550  # [m/s]
 M = 250000  # [kg]
 
 
 def solution(v):
-    return M * (np.exp(v / v_e) - 1)
+    return M * (math.exp(v / v_e) - 1)
