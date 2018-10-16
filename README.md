@@ -1,5 +1,7 @@
 # Project Lovelace problem module and solution repository
 
+As of alpha2018 this is under construction...
+
 ## How to create a problem module
 Every problem is a module containing three mandatory functions that [lovelace-engine](https://github.com/project-lovelace/lovelace-engine) expects the problem module to have implemented otherwise user submissions cannot be tested. Problem modules must also implement the test case data structures in [`test_case.py`](problems/test_case.py), namely the `TestCase` and `TestCaseTypeEnum` classes. Finally, each problem must provide some metadata about itself stored as module variables.
 
