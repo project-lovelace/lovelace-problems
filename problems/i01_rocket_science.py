@@ -13,8 +13,6 @@ class TestCaseI1Type(TestCaseTypeEnum):
     JUPITER = ('Jupiter', '', 1)
     PLUTO = ('Pluto', '', 1)
     PHOBOS = ('Phobos', '', 1)
-    # TITAN = ('Titan', '', 1)
-    # HALLEY = ('Halley\'s comet', '', 1)
     RANDOM = ('Random', '', 1)
 
 
@@ -25,6 +23,12 @@ class TestCaseI1(TestCase):
     def output_str(self) -> str:
         return str(self.output['m_fuel'])
 
+    def input_tuple(self) -> tuple:
+        return self.input['v'],
+
+    def output_tuple(self) -> tuple:
+        return self.output['m_fuel'],
+
 
 TEST_CASE_TYPE_ENUM = TestCaseI1Type
 TEST_CASE_CLASS = TestCaseI1
@@ -32,7 +36,6 @@ TEST_CASE_CLASS = TestCaseI1
 RESOURCES = []
 
 PHYSICAL_CONSTANTS = {
-    # TODO: get actual values.
     'v_e': 2550,  # [m/s]
     'M': 250000   # [kg]
 }
@@ -56,7 +59,7 @@ def generate_input(test_type: TestCaseI1Type) -> TestCaseI1:
     elif test_type is TestCaseI1Type.PHOBOS:
         v = 1.139
     elif test_type is TestCaseI1Type.RANDOM:
-        v = np.random.uniform(1.0, 100.0, 1)[0]
+        v = float(np.random.uniform(1.0, 100.0, 1)[0])
 
     test_case.input['v'] = v
     return test_case
@@ -71,15 +74,15 @@ def solve_test_case(test_case: TestCaseI1) -> None:
     return
 
 
-def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
+def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.info("Verifying user solution...")
-    logger.debug("User input string: %s", user_input_str)
-    logger.debug("User output string: %s", user_output_str)
+    logger.debug("User input string: %s", user_input)
+    logger.debug("User output string: %s", user_output)
 
     # Build TestCase object out of user's input string.
     tmp_test_case = TestCaseI1(TestCaseI1Type.RANDOM)
 
-    v = float(user_input_str)
+    v = user_input[0]
     tmp_test_case.input = {'v': v}
 
     # Solve the problem with this TestCase so we have our own solution, and extract the solution.
@@ -87,7 +90,7 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     m_fuel = tmp_test_case.output['m_fuel']
 
     # Extract user solution.
-    user_m_fuel = float(user_output_str)
+    user_m_fuel = user_output[0]
 
     # Compare our solution with user's solution.
     error_tol = TESTING_CONSTANTS['error_tol']
