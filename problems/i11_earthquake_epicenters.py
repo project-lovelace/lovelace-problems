@@ -7,42 +7,29 @@ from problems.test_case import TestCase, TestCaseTypeEnum
 logger = logging.getLogger(__name__)
 
 
-class TestCase1Type(TestCaseTypeEnum):
-    GENERAL = ('general case', '', 3)
-    ZERO_CASE = ('Zero case',
-                 'One of the three stations is randomly placed exactly on top of the earthquake epicenter.',
-                 1)
-    EQUIDISTANT = ('equidistant case',
-                   'All three stations are the same distance from the earthquake epicenter.',
-                   1)
-    UNKNOWN = ('unknown case',
-               'Used when given the input of a test case but not its type. Primarily used by '
-               + 'AbstractProblem.verify_user_solution.',
-               0)
+class TestCase11Type(TestCaseTypeEnum):
+    GENERAL = ('General case', 3)
+    ZERO_CASE = ('Zero case', 1)
+    EQUIDISTANT = ('Equidistant case', 1)
 
 
-class TestCase1(TestCase):
-    """TestCase1 input and output data structure:
-    Inputs:
-      x1, y1, t1, x2, y2, t2, x3, y3, t3 (all floats)
-
-    Outputs:
-      x, y: coordinates of earthquake epicenter
-    """
-    def input_str(self) -> str:
+class TestCase11(TestCase):
+    def input_tuple(self) -> tuple:
         input_str = str(self.input['x1']) + ' ' + str(self.input['y1']) + ' ' + str(self.input['t1']) + ' '
         input_str += str(self.input['x2']) + ' ' + str(self.input['y2']) + ' ' + str(self.input['t2']) + ' '
         input_str += str(self.input['x3']) + ' ' + str(self.input['y3']) + ' ' + str(self.input['t3'])
-        return input_str
+        return (self.input['x1'], self.input['y1'], self.input['t1'],
+        	self.input['x2'], self.input['y2'], self.input['t2'],
+        	self.input['x3'], self.input['y3'], self.input['t3'])
 
-    def output_str(self) -> str:
-        return str(self.output['x']) + ' ' + str(self.output['y'])
+    def output_tuple(self) -> tuple:
+        return (self.output['x'], self.output['y'])
 
 
-TEST_CASE_TYPE_ENUM = TestCase1Type
-TEST_CASE_CLASS = TestCase1
+TEST_CASE_TYPE_ENUM = TestCase11Type
+TEST_CASE_CLASS = TestCase11
 
-RESOURCES = []
+STATIC_RESOURCES = []
 
 # Problem-specific constants.
 PHYSICAL_CONSTANTS = {
@@ -54,20 +41,20 @@ TESTING_CONSTANTS = {
 }
 
 
-def generate_input(test_type: TestCase1Type) -> TestCase1:
-    if not isinstance(test_type, TestCase1Type):
-        logger.critical('test_type is not of type TestCase1Type!')
-        raise TypeError('test_type is not of type TestCase1Type!')
+def generate_test_case(test_type: TestCase11Type) -> TestCase11:
+    if not isinstance(test_type, TestCase11Type):
+        logger.critical('test_type is not of type TestCase11Type!')
+        raise TypeError('test_type is not of type TestCase11Type!')
 
-    test_case = TestCase1(test_type)
+    test_case = TestCase11(test_type)
     logger.debug("Generating %s...", test_type.test_name)
 
-    if test_type is TestCase1Type.GENERAL:
+    if test_type is TestCase11Type.GENERAL:
         r0 = np.random.uniform(-100, 100, 2)
         r1 = np.random.uniform(-100, 100, 2)
         r2 = np.random.uniform(-100, 100, 2)
         r3 = np.random.uniform(-100, 100, 2)
-    elif test_type is TestCase1Type.ZERO_CASE:
+    elif test_type is TestCase11Type.ZERO_CASE:
         r0 = np.random.uniform(-100, 100, 2)
 
         zero_station = np.random.choice([1, 2, 3])
@@ -83,7 +70,7 @@ def generate_input(test_type: TestCase1Type) -> TestCase1:
             r1 = np.random.uniform(-100, 100, 2)
             r2 = np.random.uniform(-100, 100, 2)
             r3 = r0
-    elif test_type is TestCase1Type.EQUIDISTANT:
+    elif test_type is TestCase11Type.EQUIDISTANT:
         r0 = np.random.uniform(-10, 10, 2)  # Place the earthquake near the origin.
         d = np.random.uniform(10, 90)  # Distance to all the stations. Max=90 ensures we stay inside the box.
         theta = np.random.uniform(0, 2*np.pi, 3)  # Choose three angles to place the stations at a distance d away.
@@ -101,9 +88,18 @@ def generate_input(test_type: TestCase1Type) -> TestCase1:
     t2 = np.linalg.norm(r2-r0) / v
     t3 = np.linalg.norm(r3-r0) / v
 
-    test_case.input = {'x1': r1[0], 'y1': r1[1], 't1': t1,
-                       'x2': r2[0], 'y2': r2[1], 't2': t2,
-                       'x3': r3[0], 'y3': r3[1], 't3': t3}
+    # Convert to float so the user gets Python floats and not numpy floats.
+    test_case.input = {
+    	'x1': float(r1[0]),
+    	'y1': float(r1[1]),
+    	't1': float(t1),
+    	'x2': float(r2[0]),
+    	'y2': float(r2[1]),
+    	't2': float(t2),
+    	'x3': float(r3[0]),
+    	'y3': float(r3[1]),
+    	't3': float(t3)
+    }
 
     logger.debug("Test case input:")
     logger.debug("(x1, y1, t1) = (%f, %f, %f)", r1[0], r1[1], t1)
@@ -119,7 +115,7 @@ def generate_input(test_type: TestCase1Type) -> TestCase1:
     return test_case
 
 
-def solve_test_case(test_case: TestCase1) -> None:
+def solve_test_case(test_case: TestCase11) -> None:
     v = PHYSICAL_CONSTANTS['v']
 
     x1, y1, t1 = test_case.input['x1'], test_case.input['y1'], test_case.input['t1']
@@ -158,16 +154,15 @@ def solve_test_case(test_case: TestCase1) -> None:
     return
 
 
-def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
+def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.info("Verifying user solution...")
-    logger.debug("User input string: %s", user_input_str)
-    logger.debug("User output string: %s", user_output_str)
+    logger.debug("User input: %s", user_input)
+    logger.debug("User output: %s", user_output)
 
     # Build TestCase object out of user's input string.
-    tmp_test_case = TestCase1(TestCase1Type.UNKNOWN)
+    tmp_test_case = TestCase11()
 
-    inputs = list(map(float, user_input_str.split()))
-    x1, y1, t1, x2, y2, t2, x3, y3, t3 = inputs
+    x1, y1, t1, x2, y2, t2, x3, y3, t3 = user_input
 
     tmp_test_case.input = {'x1': x1, 'y1': y1, 't1': t1,
                            'x2': x2, 'y2': y2, 't2': t2,
@@ -179,9 +174,7 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     y = tmp_test_case.output['y']
 
     # Extract user solution.
-    outputs = list(map(float, user_output_str.split()))
-    user_x = outputs[0]
-    user_y = outputs[1]
+    user_x, user_y = user_output
 
     # Compare our solution with user's solution.
     error_tol = TESTING_CONSTANTS['error_tol']
@@ -194,11 +187,9 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     logger.debug("Error tolerance = %e. Error distance: %e.", error_tol, error_distance)
 
     if error_distance < error_tol:
-        logger.info("User solution correct within error margin.")
+        logger.info("User solution correct within error tolerance of {:g}.".format(error_tol))
         return True
     else:
-        logger.info("User solution incorrect within error margin.")
+        logger.info("User solution incorrect.")
+        logger.info("Error tolerance = %e. Error distance: %e.", error_tol, error_distance)
         return False
-
-if __name__ == '__main__':
-    print("Hello")
