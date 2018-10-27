@@ -6,12 +6,8 @@ def caesar_cipher(plaintext, shift):
     table = str.maketrans(alphabet, shifted_alphabet)
     return plaintext.translate(table)
 
-ciphertext = input()
-known_word = input()
-
-for shift in range(len(string.ascii_uppercase)):
-    if known_word in caesar_cipher(ciphertext, shift).split():
-        decrypted_message = caesar_cipher(ciphertext, shift)
-        break
-
-print(decrypted_message)
+def solution(ciphertext, known_word):
+    for shift in range(len(string.ascii_uppercase)):
+        if known_word in caesar_cipher(ciphertext, shift).split():
+            decrypted_message = caesar_cipher(ciphertext, shift)
+            return decrypted_message
