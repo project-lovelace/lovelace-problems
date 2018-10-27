@@ -7,23 +7,25 @@ from problems.test_case import TestCase, TestCaseTypeEnum
 logger = logging.getLogger(__name__)
 
 
-class TestCaseI6Type(TestCaseTypeEnum):
-    ZERO_RESISTOR = ('zero resistor', '', 1)
-    FOUR_BAND = ('four band resistor', '', 3)
-    FIVE_BAND = ('five band resistor', '', 3)
-    UNKNOWN = ('unknown case', '', 0)
+class TestCase6Type(TestCaseTypeEnum):
+    ZERO_RESISTOR = ('zero resistor', 0)
+    FOUR_BAND = ('four band resistor', 3)
+    FIVE_BAND = ('five band resistor', 3)
 
 
-class TestCaseI6(TestCase):
-    def input_str(self) -> str:
-        return ' '.join(self.input['colors'])
+class TestCase6(TestCase):
+    def input_tuple(self) -> str:
+        return (self.input['colors'],)
 
-    def output_str(self) -> str:
-        pass
+    def output_tuple(self) -> str:
+        nominal_R = tmp_test_case.output['nominal_resistance']
+        minimum_R = tmp_test_case.output['minimum_resistance']
+        maximum_R = tmp_test_case.output['maximum_resistance']
+        return (nominal_R, minimum_R, maximum_R)
 
 
-TEST_CASE_TYPE_ENUM = TestCaseI6Type
-TEST_CASE_CLASS = TestCaseI6
+TEST_CASE_TYPE_ENUM = TestCase6Type
+TEST_CASE_CLASS = TestCase6
 
 RESOURCES = []
 
@@ -73,34 +75,37 @@ TESTING_CONSTANTS = {
 }
 
 
-def generate_input(test_type: TestCaseI6Type) -> TestCaseI6:
+def generate_test_case(test_type: TestCase6Type) -> TestCase6:
     digits = PHYSICAL_CONSTANTS['digits']
     multiplier = PHYSICAL_CONSTANTS['multiplier']
     tolerance = PHYSICAL_CONSTANTS['tolerance']
 
-    test_case = TestCaseI6(test_type)
+    test_case = TestCase6(test_type)
 
-    if test_type is TestCaseI6Type.ZERO_RESISTOR:
+    # We have the str() of each random choice as np.random.choice()
+    # returns an np.str_ object and the test cases will fail if the user
+    # hasn't imported numpy.
+    if test_type is TestCase6Type.ZERO_RESISTOR:
         colors = ['black']
-    elif test_type is TestCaseI6Type.FOUR_BAND:
-        band_color1 = np.random.choice(list(digits.keys()))
-        band_color2 = np.random.choice(list(digits.keys()))
-        multiplier_color = np.random.choice(list(multiplier.keys()))
-        tolerance_color = np.random.choice(list(tolerance.keys()))
+    elif test_type is TestCase6Type.FOUR_BAND:
+        band_color1 = str(np.random.choice(list(digits.keys())))
+        band_color2 = str(np.random.choice(list(digits.keys())))
+        multiplier_color = str(np.random.choice(list(multiplier.keys())))
+        tolerance_color = str(np.random.choice(list(tolerance.keys())))
         colors = [band_color1, band_color2, multiplier_color, tolerance_color]
-    elif test_type is TestCaseI6Type.FIVE_BAND:
-        band_color1 = np.random.choice(list(digits.keys()))
-        band_color2 = np.random.choice(list(digits.keys()))
-        band_color3 = np.random.choice(list(digits.keys()))
-        multiplier_color = np.random.choice(list(multiplier.keys()))
-        tolerance_color = np.random.choice(list(tolerance.keys()))
+    elif test_type is TestCase6Type.FIVE_BAND:
+        band_color1 = str(np.random.choice(list(digits.keys())))
+        band_color2 = str(np.random.choice(list(digits.keys())))
+        band_color3 = str(np.random.choice(list(digits.keys())))
+        multiplier_color = str(np.random.choice(list(multiplier.keys())))
+        tolerance_color = str(np.random.choice(list(tolerance.keys())))
         colors = [band_color1, band_color2, band_color3, multiplier_color, tolerance_color]
 
     test_case.input['colors'] = colors
     return test_case
 
 
-def solve_test_case(test_case: TestCaseI6) -> None:
+def solve_test_case(test_case: TestCase6) -> None:
     digits = PHYSICAL_CONSTANTS['digits']
     multiplier = PHYSICAL_CONSTANTS['multiplier']
     tolerance = PHYSICAL_CONSTANTS['tolerance']
@@ -129,16 +134,15 @@ def solve_test_case(test_case: TestCaseI6) -> None:
     return
 
 
-def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
+def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.info("Verifying user solution...")
-    logger.debug("User input string: %s", user_input_str)
-    logger.debug("User output string: %s", user_output_str)
+    logger.debug("User input: %s", user_input)
+    logger.debug("User output: %s", user_output)
 
     # Build TestCase object out of user's input string.
-    tmp_test_case = TestCaseI6(TestCaseI6Type.UNKNOWN)
+    tmp_test_case = TestCase6()
 
-    inputs = user_input_str.split()
-    colors = inputs
+    colors = user_input[0]
     tmp_test_case.input = {'colors': colors}
 
     # Solve the problem with this TestCase so we have our own solution, and extract the solution.
@@ -148,10 +152,7 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     maximum_R = tmp_test_case.output['maximum_resistance']
 
     # Extract user solution.
-    outputs = list(map(float, user_output_str.split()))
-    user_nominal_R = outputs[0]
-    user_minimum_R = outputs[1]
-    user_maximum_R = outputs[2]
+    user_nominal_R, user_minimum_R, user_maximum_R = user_output
 
     error_tol = TESTING_CONSTANTS['error_tol']
     error_R = abs(nominal_R - user_nominal_R) + abs(minimum_R - user_minimum_R) + abs(maximum_R - user_maximum_R)
@@ -163,7 +164,7 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     logger.debug("Error tolerance = %e. Error x: %e.", error_tol, error_R)
 
     if error_R < error_tol:
-        logger.info("User solution correct.")
+        logger.info("User solution correct within error tolerance of {:g}.".format(error_tol))
         return True
     else:
         logger.info("User solution incorrect.")
