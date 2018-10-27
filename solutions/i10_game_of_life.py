@@ -49,51 +49,49 @@ def constrain(board, size):
     return set(cell for cell in board if cell[0] <= size and cell[1] <= size)
 
 
-board_filename = input()
-steps = int(input())
+def solution(board_filename, steps):
+    board = set()
 
-board = set()
+    i = 0
+    j = 0
+    i_max = 0
+    j_max = 0
 
-i = 0
-j = 0
-i_max = 0
-j_max = 0
+    with open(board_filename) as board_file:
+        for line in board_file.readlines():
+            if j > j_max:
+                j_max = j
+            j = 0
+            for c in line:
+                if c == 'o':
+                    board.add((i, j))
+                j = j+1
+            if i > i_max:
+                i_max = i
+            i = i+1
 
-with open(board_filename) as board_file:
-    for line in board_file.readlines():
-        if j > j_max:
-            j_max = j
-        j = 0
-        for c in line:
-            if c == 'o':
-                board.add((i, j))
-            j = j+1
-        if i > i_max:
-            i_max = i
-        i = i+1
+    size = max(i_max, j_max)
 
-size = max(i_max, j_max)
+    for i in range(1, steps + 1):
+        # sys.stdout.write('\033[H')  # move to the top
+        # sys.stdout.write('\033[J')  # clear the screen
+        # print('step:', i, '/', steps)
+        # print_board(board, size)
+        # time.sleep(0.2)
+        board = constrain(advance(board), size)
 
-for i in range(1, steps + 1):
-    # sys.stdout.write('\033[H')  # move to the top
-    # sys.stdout.write('\033[J')  # clear the screen
-    # print('step:', i, '/', steps)
     # print_board(board, size)
-    # time.sleep(0.2)
-    board = constrain(advance(board), size)
+    sizex = sizey = size or 0
+    for x, y in board:
+        sizex = x if x > sizex else sizex
+        sizey = y if y > sizey else sizey
 
-# print_board(board, size)
-sizex = sizey = size or 0
-for x, y in board:
-    sizex = x if x > sizex else sizex
-    sizey = y if y > sizey else sizey
+    board_str = ''
+    for i in range(sizex + 1):
+        for j in range(sizey + 1):
+            char = 'o' if (i, j) in board else '.'
+            board_str = board_str + char
+        board_str = board_str + '\n'
 
-board_str = ''
-for i in range(sizex + 1):
-    for j in range(sizey + 1):
-        char = 'o' if (i, j) in board else '.'
-        board_str = board_str + char
-    board_str = board_str + '\n'
-
-with open("board.txt", "w") as f:
-    f.write('{:s}'.format(board_str))
+    with open("board.txt", "w") as f:
+        f.write('{:s}'.format(board_str))

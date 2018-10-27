@@ -5,45 +5,44 @@ from problems.test_case import TestCase, TestCaseTypeEnum
 logger = logging.getLogger(__name__)
 
 
-class TestCaseI10Type(TestCaseTypeEnum):
-    STILL_LIFE = ('still life', '', 1)
-    OSCILLATORS = ('oscillators', '', 1)
-    SPACESHIPS = ('spaceships', '', 1)
-    UNKNOWN = ('unknown case', '', 0)
+class TestCase10Type(TestCaseTypeEnum):
+    STILL_LIFE = ('still life', 1)
+    OSCILLATORS = ('oscillators', 1)
+    SPACESHIPS = ('spaceships', 1)
 
 
-class TestCaseI10(TestCase):
-    def input_str(self) -> str:
-        return self.input['board_filename'].split('/')[1] + '\n' + str(self.input['steps'])
+class TestCase10(TestCase):
+    def input_tuple(self) -> tuple:
+        return (self.input['board_filename'].split('/')[1], self.input['steps'])
 
-    def output_str(self) -> str:
-        return self.output['board_str']
+    def output_tuple(self) -> str:
+        return (self.output['board_str'],)
 
 
-TEST_CASE_TYPE_ENUM = TestCaseI10Type
-TEST_CASE_CLASS = TestCaseI10
+TEST_CASE_TYPE_ENUM = TestCase10Type
+TEST_CASE_CLASS = TestCase10
 
-RESOURCES = ['still_life.txt', 'oscillators.txt', 'spaceships.txt']
+STATIC_RESOURCES = ['still_life.txt', 'oscillators.txt', 'spaceships.txt']
 
 PHYSICAL_CONSTANTS = {}
-
 TESTING_CONSTANTS = {}
 
 
-def generate_input(test_type: TestCaseI10Type) -> TestCaseI10:
-    test_case = TestCaseI10(test_type)
+def generate_test_case(test_type: TestCase10Type) -> TestCase10:
+    test_case = TestCase10(test_type)
 
-    if test_type is TestCaseI10Type.STILL_LIFE:
+    if test_type is TestCase10Type.STILL_LIFE:
         board_filename = 'i10_game_of_life/still_life.txt'
-    elif test_type is TestCaseI10Type.OSCILLATORS:
+    elif test_type is TestCase10Type.OSCILLATORS:
         board_filename = 'i10_game_of_life/oscillators.txt'
-    elif test_type is TestCaseI10Type.SPACESHIPS:
+    elif test_type is TestCase10Type.SPACESHIPS:
         board_filename = 'i10_game_of_life/spaceships.txt'
     else:
         raise ValueError
 
     test_case.input['board_filename'] = board_filename
     test_case.input['steps'] = 15
+    test_case.input['USER_GENERATED_FILES'] = ['board.txt']
     return test_case
 
 
@@ -78,7 +77,7 @@ def constrain(board, size):
     return set(cell for cell in board if cell[0] <= size and cell[1] <= size)
 
 
-def solve_test_case(test_case: TestCaseI10) -> None:
+def solve_test_case(test_case: TestCase10) -> None:
     board_filename = test_case.input['board_filename']
     steps = test_case.input['steps']
 
@@ -123,15 +122,15 @@ def solve_test_case(test_case: TestCaseI10) -> None:
     return
 
 
-def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
+def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.info("Verifying user solution...")
-    logger.debug("User input string: %s", user_input_str)
-    logger.debug("User output string: %s", user_output_str)
+    logger.debug("User input: %s", user_input)
+    logger.debug("User output: %s", user_output)
 
     # Build TestCase object out of user's input string.
-    tmp_test_case = TestCaseI10(TestCaseI10Type.UNKNOWN)
-    tmp_test_case.input['board_filename'] = user_input_str.split('\n')[0]
-    tmp_test_case.input['steps'] = int(user_input_str.split('\n')[1])
+    tmp_test_case = TestCase10()
+    tmp_test_case.input['board_filename'] = user_input[0]
+    tmp_test_case.input['steps'] = user_input[1]
 
     # Solve the problem with this TestCase so we have our own solution, and extract the solution.
     solve_test_case(tmp_test_case)
