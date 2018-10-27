@@ -7,27 +7,26 @@ from problems.test_case import TestCase, TestCaseTypeEnum
 logger = logging.getLogger(__name__)
 
 
-class TestCaseI8Type(TestCaseTypeEnum):
-    RUST = ('Rust (ferric oxide)', '', 1)
-    PLUTONIUM = ('Plutonium', '', 1)
-    LSD = ('LSD', '', 1)
-    HIGH_T_SUPERCONDUCTOR = ('BSCCO (high temperature superconductor)', '', 1)
-    RANDOM_CHEMICAL = ('random chemical', '', 2)
-    UNKNOWN = ('unknown case', '', 0)
+class TestCase8Type(TestCaseTypeEnum):
+    RUST = ('Rust (ferric oxide)', 1)
+    PLUTONIUM = ('Plutonium', 1)
+    LSD = ('LSD', 1)
+    HIGH_T_SUPERCONDUCTOR = ('BSCCO (high temperature superconductor)', 1)
+    RANDOM_CHEMICAL = ('random chemical', 2)
 
 
-class TestCaseI8(TestCase):
-    def input_str(self) -> str:
-        return self.input['chemical_formula']
+class TestCase8(TestCase):
+    def input_tuple(self) -> tuple:
+        return (self.input['chemical_formula'],)
 
-    def output_str(self) -> str:
-        return float(self.output['mass'])
+    def output_tuple(self) -> tuple:
+        return (self.output['mass'],)
 
 
-TEST_CASE_TYPE_ENUM = TestCaseI8Type
-TEST_CASE_CLASS = TestCaseI8
+TEST_CASE_TYPE_ENUM = TestCase8Type
+TEST_CASE_CLASS = TestCase8
 
-RESOURCES = ['periodic_table.csv']
+STATIC_RESOURCES = ['periodic_table.csv']
 
 PHYSICAL_CONSTANTS = {}
 
@@ -36,18 +35,18 @@ TESTING_CONSTANTS = {
 }
 
 
-def generate_input(test_type: TestCaseI8Type) -> TestCaseI8:
-    test_case = TestCaseI8(test_type)
+def generate_test_case(test_type: TestCase8Type) -> TestCase8:
+    test_case = TestCase8(test_type)
 
-    if test_type is TestCaseI8Type.RUST:
+    if test_type is TestCase8Type.RUST:
         chemical_formula = 'Fe2O3'
-    elif test_type is TestCaseI8Type.PLUTONIUM:
+    elif test_type is TestCase8Type.PLUTONIUM:
         chemical_formula = 'Pu'
-    elif test_type is TestCaseI8Type.HIGH_T_SUPERCONDUCTOR:
+    elif test_type is TestCase8Type.HIGH_T_SUPERCONDUCTOR:
         chemical_formula = 'Bi2Sr2Ca2Cu3O10'
-    elif test_type is TestCaseI8Type.LSD:
+    elif test_type is TestCase8Type.LSD:
         chemical_formula = 'C20H25N3O'
-    elif test_type is TestCaseI8Type.RANDOM_CHEMICAL:
+    elif test_type is TestCase8Type.RANDOM_CHEMICAL:
         chemical_formula = np.random.choice(['CO2', 'CH4', 'C6H12O6', 'PuCoGa5', 'CH3NH2', 'W', 'C2H5OH'], 1)[0]
     else:
         raise ValueError
@@ -56,7 +55,7 @@ def generate_input(test_type: TestCaseI8Type) -> TestCaseI8:
     return test_case
 
 
-def solve_test_case(test_case: TestCaseI8) -> None:
+def solve_test_case(test_case: TestCase8) -> None:
     import csv
     import re
 
@@ -81,16 +80,15 @@ def solve_test_case(test_case: TestCaseI8) -> None:
     return
 
 
-def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
+def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.info("Verifying user solution...")
-    logger.debug("User input string: %s", user_input_str)
-    logger.debug("User output string: %s", user_output_str)
+    logger.debug("User input: %s", user_input)
+    logger.debug("User output: %s", user_output)
 
     # Build TestCase object out of user's input string.
-    tmp_test_case = TestCaseI8(TestCaseI8Type.UNKNOWN)
+    tmp_test_case = TestCase8()
 
-    inputs = user_input_str.split()
-    chemical_formula = inputs[0]
+    chemical_formula = user_input[0]
     tmp_test_case.input = {'chemical_formula': chemical_formula}
 
     # Solve the problem with this TestCase so we have our own solution, and extract the solution.
@@ -98,7 +96,7 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     mass = tmp_test_case.output['mass']
 
     # Extract user solution.
-    user_mass = float(user_output_str)
+    user_mass = user_output[0]
 
     error_tol = TESTING_CONSTANTS['error_tol']
     error_mass = abs(mass - user_mass)
@@ -110,7 +108,7 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     logger.debug("Error tolerance = %e. Error mass: %e.", error_tol, error_mass)
 
     if error_mass < error_tol:
-        logger.info("User solution correct.")
+        logger.info("User solution correct within error tolerance of {:g}.".format(error_tol))
         return True
     else:
         logger.info("User solution incorrect.")
