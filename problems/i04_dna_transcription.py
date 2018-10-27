@@ -9,23 +9,22 @@ from problems.test_case import TestCase, TestCaseTypeEnum
 logger = logging.getLogger(__name__)
 
 
-class TestCaseI4Type(TestCaseTypeEnum):
-    SHORT_TRNA = ('tRNA-SeC-TCA-2-1', '', 1)
-    INSULIN = ('Insulin [Homo sapiens (human)]', '', 1)
-    RANDOM = ('Randomly generated DNA sequence', '', 1)
-    UNKNOWN = ('unknown case', '', 0)
+class TestCase4Type(TestCaseTypeEnum):
+    SHORT_TRNA = ('tRNA-SeC-TCA-2-1', 1)
+    INSULIN = ('Insulin [Homo sapiens (human)]', 1)
+    RANDOM = ('Randomly generated DNA sequence', 1)
 
 
-class TestCaseI4(TestCase):
-    def input_str(self) -> str:
-        return str(self.input['dna_str'])
+class TestCase4(TestCase):
+    def input_tuple(self) -> str:
+        return (self.input['dna_str'],)
 
-    def output_str(self) -> str:
-        return self.output['rna_str']
+    def output_tuple(self) -> str:
+        return (self.output['rna_str'],)
 
 
-TEST_CASE_TYPE_ENUM = TestCaseI4Type
-TEST_CASE_CLASS = TestCaseI4
+TEST_CASE_TYPE_ENUM = TestCase4Type
+TEST_CASE_CLASS = TestCase4
 
 RESOURCES = []
 
@@ -55,15 +54,15 @@ def dna_complement(seq):
     return ''.join(complement)
 
 
-def generate_input(test_type: TestCaseI4Type) -> TestCaseI4:
-    test_case = TestCaseI4(test_type)
+def generate_test_case(test_type: TestCase4Type) -> TestCase4:
+    test_case = TestCase4(test_type)
 
-    if test_type == TestCaseI4Type.RANDOM:
+    if test_type == TestCase4Type.RANDOM:
         dna_length = random.randint(5, 100)
         dna_str = generate_dna_sequence(dna_length)
-    elif test_type == TestCaseI4Type.SHORT_TRNA:
+    elif test_type == TestCase4Type.SHORT_TRNA:
         dna_str = 'CTCGGATGATCCTCAGTGGTCTGGGGTGCAGGCTTCAAACCTGTAGCTGTCTAGTGACAGAGTGGTTCAATTCCACCTTTGTAGG'
-    elif test_type == TestCaseI4Type.INSULIN:
+    elif test_type == TestCase4Type.INSULIN:
         dna_str = 'GAGAGCCACTGCATGCTGGGCCTGGCCGGCGTTGGCACCTGTGGGCACCCAGAGAGCGTGGAGAGAGCTGGGAGGGGCTCACAACAGTGCCGGGAAGTGGGGCTTGGCCCAGGGCCCCCAAGACACACAGACGGCACAGCAGGGCTGGTTCAAGGGCTTTATTCCATCTCTCTCGGTGCAGGAGGCGGCGGGTGTGGGGCTGCCTGCGGGCTGCGTCTAGTTGCAGTAGTTCTCCAGCTGGTAGAGGGAGCAGATGCTGGTACAGCATTGTTCCACAATGCCACGCTTCTGCAGGGACCCCTCCAGGGCCAAGGGCTGCAGGCTGCCTGCACCAGGGCCCCCGCCCAGCTCCACCTGCCCCACTGCCAGGACGTGCCGCGCAGAGCAGGTTCCGGAACAGCGGCGAGGCAGAGGGACACAGGAGGACACAGTCAGGGAGACACAGTGCCCGCCTGCCCGCCAGCCCTAGGTCGCACTCCCACCCATCTCCAGCCGGGCTGGACCCAGGTTAGAGGGAGGGTCACCCACACTGGGTGTGGACCTACAGGCCCCAACGCCCACATGTCCCACCTCCTTCCCCCGCCCCGGGGCAGCGTCACAGTGGGAGCCTGAACAGGTGATCCCAGTACTTCTCCCCAGGGCCTGTCCCCAGCATCTTCCCCATCTCCTGACTATGGAGCTGCCGTGAGGCCTGGCGACAGGGGTCTGGCCCACTCAGGCAGGCAGCCACGCCCTCCTCCGGGCGTGATGGGGTGTTCGCCCAGAGGCAGGCAGCGTGGGGCACCCTGTGACCCCAGGTCACCCAGGACTTTACTTAACAAAACACTTGAATCTGCGGTCATCAAATGAGGGTGGAGAAATGGGCTGCGGGGCATTTGTTTGAGGGGCGAGTGGAGGGAGGAGCGTGCCCACCCTCTGATGTATCTCGGGGCTGCCGAAGCCAACACCGTCCTCAGGCTGAGATTCTGACTGGGCCACAGGGAGCTGGTCACTTTTAGGACGTGACCAAGAGAACTTCTTTTTAAAAAAGTGCACCTGACCCCCTGCTGGGTGGCAGCCTCCTGCCCCCTTCTGCCCATGCTGGGTGGGAGCGCCAGGAGCAGGGGGTGGCTGGGGGCGGCCAGGGGCAGCAATGGGCAGTTGGCTCACCCTGCAGGTCCTCTGCCTCCCGGCGGGTCTTGGGTGTGTAGAAGAAGCCTCGTTCCCCGCACACTAGGTAGAGAGCTTCCACCAGGTGTGAGCCGCACAGGTGTTGGTTCACAAAGGCTGCGGCTGGGTCAGGTCCCCAGAGGGCCAGCAGCGCCAGCAGGGGCAGGAGGCGCATCCACAGGGCCATGGCAGAAGGACAGTGATCTGGGAGACAGGCAGGGCTGAGGCAGGCTGAAGGCCAGGTGCCCTGCCTTGGGGCCCCTGGGCTCACCCCCACATGCTTCACGAGCCCAGCCACGTCCTCCCTGCTGCAGAGCTGGGGCCTGGGGTCCAGCCACCCTGGAATCCTGAGCCCACCTGACGCAAAGGCCCTTGGAACAGACCTGCTTGATGGCCTCTTCTGATGCAGCCTGTCCTGGAGGGCTGAGGGCTGCTGGGCCCCCGCTGGCTTTATAGTCTCAGAGCCCATCTCCCCTACCTCTCAACCCCTGCCGCCTGGCCCATTAGGGCCTGGGGTGGGGGGGTCGGCAGATGGCTGGGGGCTGAGGCTGCAATTTCCGGACCATTT'
     else:
         raise Exception('Shitty code')
@@ -72,21 +71,21 @@ def generate_input(test_type: TestCaseI4Type) -> TestCaseI4:
     return test_case
 
 
-def solve_test_case(test_case: TestCaseI4) -> None:
+def solve_test_case(test_case: TestCase4) -> None:
     dna_str = test_case.input['dna_str']
     test_case.output['rna_str'] = dna_complement(dna_str)
     return
 
 
-def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
+def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.info("Verifying user solution...")
-    logger.debug("User input string: %s", user_input_str)
-    logger.debug("User output string: %s", user_output_str)
+    logger.debug("User input: %s", user_input)
+    logger.debug("User output: %s", user_output)
 
     # Build TestCase object out of user's input string.
-    tmp_test_case = TestCaseI4(TestCaseI4Type.UNKNOWN)
+    tmp_test_case = TestCase4()
 
-    dna_str = user_input_str
+    dna_str = user_input[0]
     tmp_test_case.input = {'dna_str': dna_str}
 
     # Solve the problem with this TestCase so we have our own solution, and extract the solution.
@@ -94,7 +93,7 @@ def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
     rna_str = tmp_test_case.output['rna_str']
 
     # Extract user solution.
-    user_rna_str = user_output_str
+    user_rna_str = user_output[0]
 
     logger.debug("User solution:")
     logger.debug("rna_str = %s", user_rna_str)

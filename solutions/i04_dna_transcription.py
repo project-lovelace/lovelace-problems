@@ -3,5 +3,5 @@ def dna_complement(seq):
     complement = [base_pairs[base] for base in list(seq)]
     return ''.join(complement)
 
-dna_str = str(input())
-print(dna_complement(dna_str))
+def solution(dna):
+    return dna_complement(dna)
