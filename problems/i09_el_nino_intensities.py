@@ -5,42 +5,33 @@ from problems.test_case import TestCase, TestCaseTypeEnum
 logger = logging.getLogger(__name__)
 
 
-class TestCaseI9Type(TestCaseTypeEnum):
-    EXTENDED_MEI = ('Extended MEI index', '', 1)
-    UNKNOWN = ('unknown case', '', 0)
+class TestCase9Type(TestCaseTypeEnum):
+    EXTENDED_MEI = ('Extended MEI index', 1)
 
 
-class TestCaseI9(TestCase):
-    def input_str(self) -> str:
-        return ''
+class TestCase9(TestCase):
+    def input_tuple(self) -> tuple:
+        return ()
 
-    def output_str(self) -> str:
-        return self.output['classification_str']
+    def output_tuple(self) -> str:
+        return (self.output['classification_str'],)
 
 
-TEST_CASE_TYPE_ENUM = TestCaseI9Type
-TEST_CASE_CLASS = TestCaseI9
+TEST_CASE_TYPE_ENUM = TestCase9Type
+TEST_CASE_CLASS = TestCase9
 
-RESOURCES = ['mei.ext_index.txt']
+STATIC_RESOURCES = ['mei.ext_index.txt']
 
 PHYSICAL_CONSTANTS = {}
-
 TESTING_CONSTANTS = {}
 
 
-def generate_input(test_type: TestCaseI9Type) -> TestCaseI9:
-    test_case = TestCaseI9(test_type)
-
-    if test_type is TestCaseI9Type.EXTENDED_MEI:
-        data_filename = 'mei.ext_index.txt'
-    else:
-        raise ValueError
-
-    test_case.input['data_filename'] = data_filename
+def generate_test_case(test_type: TestCase9Type) -> TestCase9:
+    test_case = TestCase9(test_type)
     return test_case
 
 
-def solve_test_case(test_case: TestCaseI9) -> None:
+def solve_test_case(test_case: TestCase9) -> None:
     import csv
 
     years = []
@@ -71,20 +62,20 @@ def solve_test_case(test_case: TestCaseI9) -> None:
     return
 
 
-def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
+def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.info("Verifying user solution...")
-    logger.debug("User input string: %s", user_input_str)
-    logger.debug("User output string: %s", user_output_str)
+    logger.debug("User input string: %s", user_input)
+    logger.debug("User output string: %s", user_output)
 
     # Build TestCase object out of user's input string.
-    tmp_test_case = TestCaseI9(TestCaseI9Type.UNKNOWN)
+    tmp_test_case = TestCase9()
 
     # Solve the problem with this TestCase so we have our own solution, and extract the solution.
     solve_test_case(tmp_test_case)
     classification_str = tmp_test_case.output['classification_str']
 
     # Extract user solution.
-    user_classification_str = user_output_str
+    user_classification_str = user_output[0]
 
     logger.debug("User solution:")
     logger.debug("{:s}".format(user_classification_str))
