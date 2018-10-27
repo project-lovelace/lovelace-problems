@@ -7,30 +7,23 @@ from problems.test_case import TestCase, TestCaseTypeEnum
 logger = logging.getLogger(__name__)
 
 
-class TestCaseI2Type(TestCaseTypeEnum):
-    EARTH = ('Earth', '', 1)
-    PROXIMA_CENTAURI_b = ('Proxima Centauri b', '', 1)
-    KEPLER_440b = ('Kepler 440b', '', 1)
-    RANDOM = ('Randomly generated exoplanet', '', 1)
-    UNKNOWN = ('unknown case', '', 0)
+class TestCase2Type(TestCaseTypeEnum):
+    EARTH = ('Earth', 1)
+    PROXIMA_CENTAURI_B = ('Proxima Centauri b', 1)
+    KEPLER_440B = ('Kepler 440b', 1)
+    RANDOM = ('Randomly generated exoplanet', 1)
 
 
-class TestCaseI2(TestCase):
-    def input_str(self) -> str:
-        return str(self.input['L_star']) + ' ' + str(self.input['r'])
-
-    def output_str(self) -> str:
-        return self.output['habitability']
-
+class TestCase2(TestCase):
     def input_tuple(self) -> tuple:
-        return self.input['L_star'], self.input['r']
+        return (self.input['L_star'], self.input['r'])
 
     def output_tuple(self) -> tuple:
-        return self.output['habitability'],
+        return (self.output['habitability'],)
 
 
-TEST_CASE_TYPE_ENUM = TestCaseI2Type
-TEST_CASE_CLASS = TestCaseI2
+TEST_CASE_TYPE_ENUM = TestCase2Type
+TEST_CASE_CLASS = TestCase2
 
 RESOURCES = []
 
@@ -38,19 +31,19 @@ PHYSICAL_CONSTANTS = {}
 TESTING_CONSTANTS = {}
 
 
-def generate_input(test_type: TestCaseI2Type) -> TestCaseI2:
-    test_case = TestCaseI2(test_type)
+def generate_test_case(test_type: TestCase2Type) -> TestCase2:
+    test_case = TestCase2(test_type)
 
-    if test_type is TestCaseI2Type.EARTH:
+    if test_type is TestCase2Type.EARTH:
         L_star = 1.00
         r = 1.00
-    elif test_type is TestCaseI2Type.PROXIMA_CENTAURI_b:
+    elif test_type is TestCase2Type.PROXIMA_CENTAURI_B:
         L_star = 1.00
         r = 1.00
-    elif test_type is TestCaseI2Type.KEPLER_440b:
+    elif test_type is TestCase2Type.KEPLER_440B:
         L_star = 1.43
         r = 0.242
-    elif test_type is TestCaseI2Type.RANDOM:
+    elif test_type is TestCase2Type.RANDOM:
         L_star = float(np.random.uniform(0.1, 5.0, 1)[0])
         r = float(np.random.uniform(0.1, 5.0, 1)[0])
 
@@ -59,7 +52,7 @@ def generate_input(test_type: TestCaseI2Type) -> TestCaseI2:
     return test_case
 
 
-def solve_test_case(test_case: TestCaseI2) -> None:
+def solve_test_case(test_case: TestCase2) -> None:
     L_star = test_case.input['L_star']
     r = test_case.input['r']
 
@@ -77,7 +70,7 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.debug("User output: %s", user_output)
 
     # Build TestCase object out of user's input string.
-    tmp_test_case = TestCaseI2(TestCaseI2Type.RANDOM)
+    tmp_test_case = TestCase2()
 
     L_star, r = user_input
     tmp_test_case.input = {'L_star': L_star, 'r': r}
