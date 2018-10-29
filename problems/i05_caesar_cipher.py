@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 class TestCase5Type(TestCaseTypeEnum):
     MOBY_DICK = ('Moby dick', 1)
     THE_WIRE = ('Bunny Colvin (The Wire)', 1)
-    RANDOM_STRING = ('random string', 1)    
+    RANDOM_STRING = ('random string', 1)
 
 
 class TestCase5(TestCase):
@@ -23,8 +23,8 @@ class TestCase5(TestCase):
 
 TEST_CASE_TYPE_ENUM = TestCase5Type
 TEST_CASE_CLASS = TestCase5
-
-RESOURCES = []
+FUNCTION_NAME = "break_caesar_cipher"
+STATIC_RESOURCES = []
 
 PHYSICAL_CONSTANTS = {}
 TESTING_CONSTANTS = {}

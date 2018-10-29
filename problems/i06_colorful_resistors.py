@@ -26,8 +26,8 @@ class TestCase6(TestCase):
 
 TEST_CASE_TYPE_ENUM = TestCase6Type
 TEST_CASE_CLASS = TestCase6
-
-RESOURCES = []
+FUNCTION_NAME = "resistance"
+STATIC_RESOURCES = []
 
 PHYSICAL_CONSTANTS = {
     'digits': {
@@ -109,10 +109,10 @@ def solve_test_case(test_case: TestCase6) -> None:
     digits = PHYSICAL_CONSTANTS['digits']
     multiplier = PHYSICAL_CONSTANTS['multiplier']
     tolerance = PHYSICAL_CONSTANTS['tolerance']
-    
+
     colors = test_case.input['colors']
     n_bands = len(colors)
-    
+
     if n_bands == 1 and colors[0] == 'black':
         nominal_R = 0
         minimum_R = 0

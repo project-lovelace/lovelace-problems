@@ -25,7 +25,7 @@ class TestCase7(TestCase):
 
 TEST_CASE_TYPE_ENUM = TestCase7Type
 TEST_CASE_CLASS = TestCase7
-
+FUNCTION_NAME = "correlation_coefficient"
 STATIC_RESOURCES = ['spurious_xy.csv']
 
 PHYSICAL_CONSTANTS = {}

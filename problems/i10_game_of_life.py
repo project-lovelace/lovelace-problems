@@ -21,7 +21,7 @@ class TestCase10(TestCase):
 
 TEST_CASE_TYPE_ENUM = TestCase10Type
 TEST_CASE_CLASS = TestCase10
-
+FUNCTION_NAME = "game_of_life"
 STATIC_RESOURCES = ['still_life.txt', 'oscillators.txt', 'spaceships.txt']
 
 PHYSICAL_CONSTANTS = {}

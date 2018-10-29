@@ -25,7 +25,7 @@ class TestCase8(TestCase):
 
 TEST_CASE_TYPE_ENUM = TestCase8Type
 TEST_CASE_CLASS = TestCase8
-
+FUNCTION_NAME = "molecular_mass"
 STATIC_RESOURCES = ['periodic_table.csv']
 
 PHYSICAL_CONSTANTS = {}

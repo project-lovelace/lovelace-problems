@@ -28,7 +28,7 @@ class TestCase11(TestCase):
 
 TEST_CASE_TYPE_ENUM = TestCase11Type
 TEST_CASE_CLASS = TestCase11
-
+FUNCTION_NAME = "earthquake_epicenter"
 STATIC_RESOURCES = []
 
 # Problem-specific constants.

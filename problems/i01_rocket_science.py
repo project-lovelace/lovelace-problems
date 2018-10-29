@@ -26,8 +26,8 @@ class TestCase1(TestCase):
 
 TEST_CASE_TYPE_ENUM = TestCase1Type
 TEST_CASE_CLASS = TestCase1
-
-RESOURCES = []
+FUNCTION_NAME = "rocket_fuel"
+STATIC_RESOURCES = []
 
 PHYSICAL_CONSTANTS = {
     'v_e': 2550,  # [m/s]

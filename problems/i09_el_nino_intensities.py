@@ -19,7 +19,7 @@ class TestCase9(TestCase):
 
 TEST_CASE_TYPE_ENUM = TestCase9Type
 TEST_CASE_CLASS = TestCase9
-
+FUNCTION_NAME = "enso_classification"
 STATIC_RESOURCES = ['mei.ext_index.txt']
 
 PHYSICAL_CONSTANTS = {}

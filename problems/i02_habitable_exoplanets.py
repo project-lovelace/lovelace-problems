@@ -24,8 +24,8 @@ class TestCase2(TestCase):
 
 TEST_CASE_TYPE_ENUM = TestCase2Type
 TEST_CASE_CLASS = TestCase2
-
-RESOURCES = []
+FUNCTION_NAME = "habitable_exoplanet"
+STATIC_RESOURCES = []
 
 PHYSICAL_CONSTANTS = {}
 TESTING_CONSTANTS = {}
