@@ -26,7 +26,7 @@ class TestCase3(TestCase):
 
 TEST_CASE_TYPE_ENUM = TestCase3Type
 TEST_CASE_CLASS = TestCase3
-FUNCTION_NAME = "chaos"
+FUNCTION_NAME = "logistic_map"
 STATIC_RESOURCES = []
 
 PHYSICAL_CONSTANTS = {}
