@@ -39,23 +39,22 @@ tolerance = {
     'grey': 0.0005
 }
 
-input_str = str(input())
-colors = input_str.split()
-n_bands = len(colors)
+def resistance(colors):
+	n_bands = len(colors)
 
-if n_bands == 1 and colors[0] == 'black':
-    nominal_R = 0
-    minimum_R = 0
-    maximum_R = 0
-elif n_bands == 4:
-    nominal_R = 10 * digits[colors[0]] + digits[colors[1]]
-    nominal_R *= multiplier[colors[2]]
-    minimum_R = (1 - tolerance[colors[3]]) * nominal_R
-    maximum_R = (1 + tolerance[colors[3]]) * nominal_R
-elif n_bands == 5:
-    nominal_R = 100 * digits[colors[0]] + 10 * digits[colors[1]] + digits[colors[2]]
-    nominal_R *= multiplier[colors[3]]
-    minimum_R = (1 - tolerance[colors[4]]) * nominal_R
-    maximum_R = (1 + tolerance[colors[4]]) * nominal_R
+	if n_bands == 1 and colors[0] == 'black':
+		nominal_R = 0
+		minimum_R = 0
+		maximum_R = 0
+	elif n_bands == 4:
+		nominal_R = 10 * digits[colors[0]] + digits[colors[1]]
+		nominal_R *= multiplier[colors[2]]
+		minimum_R = (1 - tolerance[colors[3]]) * nominal_R
+		maximum_R = (1 + tolerance[colors[3]]) * nominal_R
+	elif n_bands == 5:
+		nominal_R = 100 * digits[colors[0]] + 10 * digits[colors[1]] + digits[colors[2]]
+		nominal_R *= multiplier[colors[3]]
+		minimum_R = (1 - tolerance[colors[4]]) * nominal_R
+		maximum_R = (1 + tolerance[colors[4]]) * nominal_R
 
-print('{} {} {}'.format(nominal_R, minimum_R, maximum_R))
+	return nominal_R, minimum_R, maximum_R

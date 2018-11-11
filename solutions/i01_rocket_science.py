@@ -1,8 +1,7 @@
 import math
 
-v_e = 2550  # [m/s]
-M = 250000  # [kg]
+v_e = 2550  # rocket exhaust velocity [m/s]
+M = 250000  # rocket dry mass [kg]
 
-
-def solution(v):
-    return M * (math.exp(v / v_e) - 1)
+def rocket_fuel(v):
+	return M * (math.exp(v / v_e) - 1)
