@@ -25,7 +25,7 @@ class TestCase4(TestCase):
 
 TEST_CASE_TYPE_ENUM = TestCase4Type
 TEST_CASE_CLASS = TestCase4
-FUNCTION_NAME = "dna"
+FUNCTION_NAME = "rna"
 STATIC_RESOURCES = []
 
 PHYSICAL_CONSTANTS = {}
@@ -73,7 +73,7 @@ def generate_test_case(test_type: TestCase4Type) -> TestCase4:
 
 def solve_test_case(test_case: TestCase4) -> None:
     dna_str = test_case.input['dna_str']
-    test_case.output['rna_str'] = dna_complement(dna_str)
+    test_case.output['rna_str'] = dna_str.replace("T", "U")
     return
 
 
