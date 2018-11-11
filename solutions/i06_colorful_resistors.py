@@ -39,7 +39,7 @@ tolerance = {
     'grey': 0.0005
 }
 
-def solution(colors):
+def resistance(colors):
 	n_bands = len(colors)
 
 	if n_bands == 1 and colors[0] == 'black':

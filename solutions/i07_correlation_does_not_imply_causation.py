@@ -2,7 +2,7 @@ import csv
 
 import numpy as np
 
-def solution(x, y):
+def correlation_coefficient(x, y):
 	N = len(x)
 	x = np.array(x)
 	y = np.array(y)
