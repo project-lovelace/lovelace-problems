@@ -38,7 +38,7 @@ for i in range(len(years) - 1):
             mei_dict[season] = ("La Nina", mei_to_intensity(min_mei), min_mei)
             break
         else:
-            mei_dict[season] = ("Neither", "none")
+            mei_dict[season] = ("Neither", "none", 0)
 			
 def enso_classification(season):
     return mei_dict[season]
