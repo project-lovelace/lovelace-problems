@@ -37,7 +37,7 @@ TESTING_CONSTANTS = {
 
 def write_random_dataset_csv(x, y):
     cwd = os.path.dirname(os.path.abspath(__file__))
-    csv_filename = os.path.join(cwd, '..', 'resources', 'i07_correlation_does_not_imply_causation', 'random_xy.csv')
+    csv_filename = os.path.join(cwd, '..', 'resources', 'correlation_does_not_imply_causation', 'random_xy.csv')
     with open(csv_filename, 'w') as outfile:
         xy_writer = csv.writer(outfile, delimiter=',')
         for i in range(len(x)):
@@ -48,7 +48,7 @@ def generate_test_case(test_type: TestCase7Type) -> TestCase7:
     test_case = TestCase7(test_type)
 
     if test_type is TestCase7Type.SPURIOUS_DATASET:
-        csv_filepath = '../resources/i07_correlation_does_not_imply_causation/spurious_xy.csv'
+        csv_filepath = '../resources/correlation_does_not_imply_causation/spurious_xy.csv'
         x = []
         y = []
         with open(csv_filepath) as csvfile:
