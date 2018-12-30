@@ -1,6 +1,6 @@
 v = 3.0  # [km/s]
 
-def solution(x1, y1, t1, x2, y2, t2, x3, y3, t3):
+def earthquake_epicenter(x1, y1, t1, x2, y2, t2, x3, y3, t3):
     r1, r2, r3 = v*t1, v*t2, v*t3
 
     # TODO: Find my derivation and write down the steps/logic here.
