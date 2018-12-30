@@ -23,4 +23,5 @@ def correlation_coefficient(x, y):
         sigma_Y = np.sqrt(sigma_Y)
 
         r = cov_XY / (sigma_X * sigma_Y)
-        return r
+
+    return r
