@@ -30,7 +30,7 @@ for i in range(len(years) - 1):
     for j in range(len(season_mei) - 5):
         if all(idx >= 0.5 for idx in season_mei[j:j + 5]):
             max_mei = max(season_mei)
-            
+
             mei_dict[season] = ("El Nino", mei_to_intensity(max_mei), max_mei)
             break
         elif all(idx <= -0.5 for idx in season_mei[j:j + 5]):
@@ -39,6 +39,6 @@ for i in range(len(years) - 1):
             break
         else:
             mei_dict[season] = ("Neither", "none", 0)
-			
+
 def enso_classification(season):
     return mei_dict[season]
