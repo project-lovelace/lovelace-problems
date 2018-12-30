@@ -6,7 +6,7 @@ def habitable_exoplanet(L, r):
 
     if r < inner_radius:
         return 'too hot'
-    elif r > :
+    elif r > outer_radius:
         return 'too cold'
     else:
         return 'just right'
