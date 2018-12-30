@@ -19,9 +19,9 @@ def correlation_coefficient(x, y):
         sigma_X = sigma_X + (x[i] - x_bar)**2
         sigma_Y = sigma_Y + (y[i] - y_bar)**2
 
-        sigma_X = np.sqrt(sigma_X)
-        sigma_Y = np.sqrt(sigma_Y)
+    sigma_X = np.sqrt(sigma_X)
+    sigma_Y = np.sqrt(sigma_Y)
 
-        r = cov_XY / (sigma_X * sigma_Y)
+    r = cov_XY / (sigma_X * sigma_Y)
 
     return r
