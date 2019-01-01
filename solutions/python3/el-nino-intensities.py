@@ -3,6 +3,7 @@ import csv
 years = []
 mei = []
 
+
 def mei_to_intensity(mei_val):
     mei_val = abs(mei_val)
     if mei_val < 0.5:
@@ -15,6 +16,7 @@ def mei_to_intensity(mei_val):
         return "strong"
     elif 2.0 <= mei_val:
         return "very strong"
+
 
 with open('mei.ext_index.txt') as csvfile:
     reader = csv.reader(csvfile, delimiter='\t')
@@ -39,6 +41,7 @@ for i in range(len(years) - 1):
             break
         else:
             mei_dict[season] = ("Neither", "none", 0)
+
 
 def enso_classification(season):
     return mei_dict[season]
