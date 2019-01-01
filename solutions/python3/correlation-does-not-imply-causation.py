@@ -1,6 +1,5 @@
-import csv
-
 import numpy as np
+
 
 def correlation_coefficient(x, y):
     N = len(x)
