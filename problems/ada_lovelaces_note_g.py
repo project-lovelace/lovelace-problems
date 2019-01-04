@@ -1,76 +1,117 @@
-# problem5.py
-# Lovelace's algorithm
-# Haven't decided what we're testing yet.
-
-import random
+import logging
 
 import numpy as np
-from problems.abstract_problem import AbstractProblem
+from fractions import Fraction
+from scipy.special import binom
+
+from problems.test_case import TestCase, TestCaseTypeEnum
+
+logger = logging.getLogger(__name__)
 
 
-class Problem5(AbstractProblem):
-    def generate(self):
-        return random.randint(3, 500)
+class TestCase12Type(TestCaseTypeEnum):
+    ZEROTH = ("Zeroth Bernoulli number", 1)
+    FIRST = ("First Bernoulli number", 1)
+    SECOND = ("Second Bernoulli number", 1)
+    THIRD = ("Third Bernoulli number", 1)
+    RANDOM_EVEN = ("Even n > 2", 2)
+    RANDOM_ODD = ("Odd n > 3", 2)
+    LARGE_EVEN = ("Even n > 250", 1)
+    LARGE_ODD = ("Odd n > 250", 1)
 
+
+class TestCase12(TestCase):
+    def input_tuple(self) -> tuple:
+        return (self.input['n'],)
+
+    def output_tuple(self) -> tuple:
+        numerator = self.output["numerator"]
+        denominator = self.output["denominator"]
+        return (numerator, denominator)
+
+
+TEST_CASE_TYPE_ENUM = TestCase12Type
+TEST_CASE_CLASS = TestCase12
+FUNCTION_NAME = "bernoulli"
+STATIC_RESOURCES = []
+
+PHYSICAL_CONSTANTS = {}
+TESTING_CONSTANTS = {}
+
+def generate_test_case(test_type: TestCase6Type) -> TestCase6:
+    test_case = TestCase12(test_type)
+
+    if test_type is TestCase12Type.ZEROTH:
+        n = 0
+    elif test_type is TestCase12Type.FIRST:
+        n = 1
+    elif test_type is TestCase12Type.SECOND:
+        n = 2
+    elif test_type is TestCase12Type.THIRD:
+        n = 3
+    elif test_type is TestCase12Type.RANDOM_EVEN:
+        n = 2 * np.random.randint(2, 50)
+    elif test_type is TestCase12Type.RANDOM_ODD:
+        n = 2 * np.random.randint(2, 50) + 1
+    elif test_type is TestCase12Type.LARGE_EVEN:
+        n = 2 * np.random.randint(125, 250)
+    elif test_type is TestCase12Type.LARGE_ODD:
+        n = 2 * np.random.randint(125, 250) + 1
+
+    test_case.input['n'] = n
+    return test_case
+
+def solve_test_case(test_case: TestCase12) -> None:
     @staticmethod
-    def bernoulli_lovelace(n, B=None):
-        from fractions import Fraction
-        if B is None:
-            B = {}
+    def B(n):
+        B = (n+1) * [Fraction(0, 1)]
+        B[0] = Fraction(1, 1)
+        B[1] = Fraction(-1, 2)
+        
+        for i in range(2, n+1):
+            B[i] = -sum([Fraction(int(binom(i, k)), (i+1-k)) * B[k]  for k in range(0, i)])
+        
+        return B[n].numerator, B[n].denominator
 
-        if n in B.keys():
-            return B[n]
-        elif (n < 1) or (np.mod(n, 2) == 0):
-            return 0
-        else:
-            # My calculations gave me a formula for B_{2n+1} so I am actually
-            # calculating B_{2m+1} = B_n where m = (n+1)/2.
-            m = int((n+1)/2)
-            Bn = Fraction(2*m-1, 4*m+2)
-            for i in range(1, 2*m-3 + 1):
-                numerator = 1
-                for j in range(2*m-(i-1), 2*m + 1):
-                    numerator *= j
+    n = test_case.input["n"]
+    B_n = B(n)
+    
+    test_case.output["B_n_numerator"] = B_n.numerator
+    test_case.output["B_n_denominator"] = B_n.denominator
+    return
 
-                denominator = 1
-                for j in range(2, i+1 + 1):
-                    denominator *= j
 
-                Bi = Problem5.bernoulli_lovelace(i, B)
-                Bn = Bn - Fraction(numerator, denominator)*Bi
+def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
+    logger.info("Verifying user solution...")
+    logger.debug("User input: %s", user_input)
+    logger.debug("User output: %s", user_output)
 
-            B[n] = Bn  # Store the nth Bernoulli number in the dictionary.
-            return Bn
+    # Build TestCase object out of user's input string.
+    tmp_test_case = TestCase12()
 
-    def solve(self, problem):
-        return self.bernoulli_lovelace(problem)
+    n = user_input[0]
+    tmp_test_case.input = {"n": n}
 
-    def verify(self, proposed, actual):
-        return proposed == actual
+    # Solve the problem with this TestCase so we have our own solution, and extract the solution.
+    solve_test_case(tmp_test_case)
+    B_n_numerator = tmp_test_case.output['B_n_numerator']
+    B_n_denominator = tmp_test_case.output['B_n_denominator']
 
-    def test(self):
-        problem = self.generate()
-        print(problem)
+    # Extract user solution.
+    user_B_n_numerator = user_output[0]
+    user_B_n_denominator = user_output[1]
 
-        solution = self.solve(problem)
-        print(solution)
+    logger.debug("User solution:")
+    logger.debug("B_n_numerator = %d, B_n_denominator = %d", user_B_n_numerator, user_B_n_denominator)
+    logger.debug("Engine solution:")
+    logger.debug("B_n_numerator = %d, B_n_denominator = %d", B_n_numerator, B_n_denominator)
 
-if __name__ == '__main__':
-    import time
+    passed = False
 
-    # Testing run time when creating a new dictionary B each call.
-    start = time.clock()
-    for i in range(1, 151):
-        Problem5().bernoulli_lovelace(i)
-        # print('{:03d}  '.format(i) + str(Problem5().bernoulli_lovelace(i)))
-    end = time.clock()
-    print(end - start)
+    if user_B_n_numerator == B_n_numerator and user_B_n_denominator == B_n_denominator:
+        logger.info("User solution correct.")
+        passed = True
+    else:
+        logger.info("User solution is wrong.")
 
-    # Testing run time with the dictionary being shared between calls.
-    start = time.clock()
-    B = {}
-    for i in range(1, 151):
-        Problem5().bernoulli_lovelace(i, B)
-        # print('{:03d}  '.format(i) + str(Problem5().bernoulli_lovelace(i, B)))
-    end = time.clock()
-    print(end - start)
+    return passed, "B_n_numerator = %d, B_n_denominator = %d".format(B_n_numerator, B_n_denominator)
