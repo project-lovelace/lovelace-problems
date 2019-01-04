@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 class TestCase6Type(TestCaseTypeEnum):
-    ZERO_RESISTOR = ('zero resistor', 0)
+    ZERO_RESISTOR = ('zero resistor', 1)
     FOUR_BAND = ('four band resistor', 3)
     FIVE_BAND = ('five band resistor', 3)
 
@@ -163,9 +163,12 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.debug("nominal_R = %f, minimum_R = %f, maximum_R = %f", nominal_R, minimum_R, maximum_R)
     logger.debug("Error tolerance = %e. Error x: %e.", error_tol, error_R)
 
+    passed = False
+
     if error_R < error_tol:
         logger.info("User solution correct within error tolerance of {:g}.".format(error_tol))
-        return True
+        passed = True
     else:
         logger.info("User solution incorrect.")
-        return False
+
+    return passed, "nominal_R = {}, minimum_R = {}, maximum_R = {}".format(nominal_R, minimum_R, maximum_R)

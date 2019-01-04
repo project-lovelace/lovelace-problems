@@ -87,9 +87,12 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.debug("Our solution:")
     logger.debug("habitability = %s", habitability)
 
+    passed = False
+
     if habitability == user_habitability:
         logger.info("User solution correct.")
-        return True
+        passed = True
     else:
         logger.info("User solution incorrect.")
-        return False
+
+    return passed, habitability

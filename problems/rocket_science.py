@@ -96,9 +96,12 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.debug("m_fuel = %f", m_fuel)
     logger.debug("Error tolerance = %e. Error m_fuel: %e.", error_tol, error_m_fuel)
 
+    passed = False
+
     if error_m_fuel < error_tol:
         logger.info("User solution correct within error margin of {:g}.".format(error_tol))
-        return True
+        passed = True
     else:
         logger.info("User solution incorrect.")
-        return False
+
+    return passed, str(m_fuel)

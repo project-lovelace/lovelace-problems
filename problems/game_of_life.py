@@ -116,14 +116,14 @@ def solve_test_case(test_case: TestCase10) -> None:
 
     grid = np.array(grid)
     N, M = grid.shape
-    
+
     for n in range(steps):
         newGrid = grid.copy()
         for i in range(N):
             for j in range(M):
-                total = (grid[i, (j-1)%M] + grid[i, (j+1)%M] + 
-                         grid[(i-1)%N, j] + grid[(i+1)%N, j] + 
-                         grid[(i-1)%N, (j-1)%M] + grid[(i-1)%N, (j+1)%M] + 
+                total = (grid[i, (j-1)%M] + grid[i, (j+1)%M] +
+                         grid[(i-1)%N, j] + grid[(i+1)%N, j] +
+                         grid[(i-1)%N, (j-1)%M] + grid[(i-1)%N, (j+1)%M] +
                          grid[(i+1)%N, (j-1)%M] + grid[(i+1)%N, (j+1)%M])
                 if grid[i, j]  == ALIVE:
                     if (total < 2) or (total > 3):
@@ -160,9 +160,12 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
 
     user_solution_correct = True if np.array_equal(user_end_board, end_board) else False
 
+    passed = False
+
     if user_solution_correct:
         logger.info("User solution correct.")
-        return True
+        passed = True
     else:
         logger.info("User solution incorrect.")
-        return False
+
+    return passed, str(end_board)

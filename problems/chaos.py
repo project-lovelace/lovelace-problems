@@ -85,7 +85,7 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     user_x = user_output[0]
 
     if len(x) != len(user_x):
-        return False
+        return False, x
 
     # Compare our solution with user's solution.
     error_total_tol = TESTING_CONSTANTS['error_total_tol']
@@ -99,9 +99,12 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.debug("x = {}".format(x))
     logger.debug("Error tolerance = %e. Error x: %e.", error_total_tol, error_x)
 
+    passed = False
+
     if error_x < error_total_tol:
         logger.info("User solution correct within error margin of {:g}.".format(error_total_tol))
-        return True
+        passed = True
     else:
         logger.info("User solution incorrect within error margin.")
-        return False
+
+    return passed, x

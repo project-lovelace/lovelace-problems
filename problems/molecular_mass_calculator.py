@@ -107,9 +107,12 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.debug("mass = {}".format(mass))
     logger.debug("Error tolerance = %e. Error mass: %e.", error_tol, error_mass)
 
+    passed = False
+
     if error_mass < error_tol:
         logger.info("User solution correct within error tolerance of {:g}.".format(error_tol))
-        return True
+        passed = True
     else:
         logger.info("User solution incorrect.")
-        return False
+
+    return passed, str(mass)

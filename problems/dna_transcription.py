@@ -100,9 +100,12 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.debug("Engine solution:")
     logger.debug("rna_str = %s", rna_str)
 
+    passed = False
+
     if rna_str == user_rna_str:
         logger.info("User solution correct.")
-        return True
+        passed = True
     else:
         logger.info("User solution incorrect.")
-        return False
+
+    return passed, rna_str

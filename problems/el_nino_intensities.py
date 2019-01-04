@@ -74,7 +74,7 @@ def solve_test_case(test_case: TestCase9) -> None:
         for j in range(len(season_mei) - 5):
             if all(idx >= 0.5 for idx in season_mei[j:j + 5]):
                 max_mei = max(season_mei)
-                
+
                 mei_dict[season] = ("El Nino", mei_to_intensity(max_mei), max_mei)
                 break
             elif all(idx <= -0.5 for idx in season_mei[j:j + 5]):
@@ -117,9 +117,12 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     else:
         user_solution_correct = False
 
+    passed = False
+
     if user_solution_correct:
         logger.info("User solution correct.")
-        return True
+        passed = True
     else:
         logger.info("User solution incorrect.")
-        return False
+
+    return passed, "classification = {}, intensity = {}, mei = {}".format(classification, intensity, mei)

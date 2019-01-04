@@ -186,10 +186,13 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.debug("(x, y) = (%f, %f)", x, y)
     logger.debug("Error tolerance = %e. Error distance: %e.", error_tol, error_distance)
 
+    passed = False
+
     if error_distance < error_tol:
         logger.info("User solution correct within error tolerance of {:g}.".format(error_tol))
-        return True
+        passed = True
     else:
         logger.info("User solution incorrect.")
         logger.info("Error tolerance = %e. Error distance: %e.", error_tol, error_distance)
-        return False
+
+    return passed, "x = {}, y = {}".format(x, y)

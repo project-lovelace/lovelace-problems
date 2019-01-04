@@ -107,9 +107,12 @@ def verify_user_solution(user_input: str, user_output: str) -> bool:
     logger.debug("Engine solution:")
     logger.debug("decrypted message = %s", decrypted_message)
 
+    passed = False
+
     if user_decrypted_message == decrypted_message:
         logger.info("User solution correct.")
-        return True
+        passed = True
     else:
         logger.info("User solution incorrect.")
-        return False
+
+    return passed, str(decrypted_message)
