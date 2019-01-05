@@ -2,7 +2,7 @@ import logging
 
 import numpy as np
 from fractions import Fraction
-from scipy.special import binom
+from math import factorial
 
 from problems.test_case import TestCase, TestCaseTypeEnum
 
@@ -38,7 +38,7 @@ STATIC_RESOURCES = []
 PHYSICAL_CONSTANTS = {}
 TESTING_CONSTANTS = {}
 
-def generate_test_case(test_type: TestCase6Type) -> TestCase6:
+def generate_test_case(test_type: TestCase12Type) -> TestCase12:
     test_case = TestCase12(test_type)
 
     if test_type is TestCase12Type.ZEROTH:
@@ -62,22 +62,21 @@ def generate_test_case(test_type: TestCase6Type) -> TestCase6:
     return test_case
 
 def solve_test_case(test_case: TestCase12) -> None:
-    @staticmethod
     def B(n):
-        B = (n+1) * [Fraction(0, 1)]
+        B = (n+2) * [Fraction(0, 1)]
         B[0] = Fraction(1, 1)
         B[1] = Fraction(-1, 2)
         
         for i in range(2, n+1):
-            B[i] = -sum([Fraction(int(binom(i, k)), (i+1-k)) * B[k]  for k in range(0, i)])
+            B[i] = -sum([Fraction(int(factorial(i)/(factorial(k)*factorial(i - k))), (i+1-k)) * B[k]  for k in range(0, i)])
         
         return B[n].numerator, B[n].denominator
 
     n = test_case.input["n"]
-    B_n = B(n)
+    B_n_numerator, B_n_denominator = B(n)
     
-    test_case.output["B_n_numerator"] = B_n.numerator
-    test_case.output["B_n_denominator"] = B_n.denominator
+    test_case.output["B_n_numerator"] = B_n_numerator
+    test_case.output["B_n_denominator"] = B_n_denominator
     return
 
 
@@ -114,4 +113,4 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     else:
         logger.info("User solution is wrong.")
 
-    return passed, "B_n_numerator = %d, B_n_denominator = %d".format(B_n_numerator, B_n_denominator)
+    return passed, "B_n_numerator = {:d}, B_n_denominator = {:d}".format(B_n_numerator, B_n_denominator)
