@@ -1,7 +1,7 @@
 from fractions import Fraction
 from scipy.special import binom
 
-def B(n):
+def bernoulli(n):
     B = (n+1) * [Fraction(0, 1)]
     B[0] = Fraction(1, 1)
     B[1] = Fraction(-1, 2)
