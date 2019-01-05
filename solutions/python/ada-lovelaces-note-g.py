@@ -1,5 +1,5 @@
 from fractions import Fraction
-from scipy.special import binom
+from math import factorial
 
 def bernoulli(n):
     B = (n+2) * [Fraction(0, 1)]
@@ -10,3 +10,6 @@ def bernoulli(n):
         B[i] = -sum([Fraction(int(factorial(i)/(factorial(k)*factorial(i - k))), (i+1-k)) * B[k]  for k in range(0, i)])
 
     return B[n].numerator, B[n].denominator
+    return B[n].numerator, B[n].denominator
+
+
