@@ -35,7 +35,7 @@ PHYSICAL_CONSTANTS = {
 }
 
 TESTING_CONSTANTS = {
-    'error_tol': 0.001  # [kg]
+    'error_rel_tol': 1e-6
 }
 
 
@@ -87,19 +87,19 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     user_m_fuel = user_output[0]
 
     # Compare our solution with user's solution.
-    error_tol = TESTING_CONSTANTS['error_tol']
-    error_m_fuel = np.abs(m_fuel - user_m_fuel)  # [kg]
+    error_rel_tol = TESTING_CONSTANTS['error_rel_tol']
+    error_rel_m_fuel = np.abs(m_fuel - user_m_fuel) / m_fuel
 
     logger.debug("User solution:")
     logger.debug("m_fuel = %f", user_m_fuel)
     logger.debug("Engine solution:")
     logger.debug("m_fuel = %f", m_fuel)
-    logger.debug("Error tolerance = %e. Error m_fuel: %e.", error_tol, error_m_fuel)
+    logger.debug("Error relative tolerance = %e. Error m_fuel: %e.", error_rel_tol, error_rel_m_fuel)
 
     passed = False
 
-    if error_m_fuel < error_tol:
-        logger.info("User solution correct within error margin of {:g}.".format(error_tol))
+    if error_rel_m_fuel < error_rel_tol:
+        logger.info("User solution correct within error margin of {:g}.".format(error_rel_tol))
         passed = True
     else:
         logger.info("User solution incorrect.")
