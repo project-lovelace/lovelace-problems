@@ -18,10 +18,10 @@ class TestCaseType(TestCaseTypeEnum):
 
 class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
-        return self.input["distance"]
+        return (self.input["distance"],)
 
     def output_tuple(self) -> tuple:
-        return self.output["time"]
+        return (self.output["time"],)
 
 
 TEST_CASE_TYPE_ENUM = TestCaseType
@@ -46,7 +46,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         distance = 1.4959802296e11  # https://www.wolframalpha.com/input/?i=mean+sun+to+earth+distance
     elif test_type is TestCaseType.MAX_EARTH_TO_MARS:
         distance = 401e9  # 401 million km
-    elif test_type is TestCaseType.EARTH_TO_JUPITER:
+    elif test_type is TestCaseType.MAX_EARTH_TO_JUPITER:
         distance = 968e9  # 968 million km
     elif test_type is TestCaseType.RANDOM:
         distance = np.random.uniform(299792458, 60*299792458)
