@@ -15,7 +15,7 @@ class TestCaseType(TestCaseTypeEnum):
 
 class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
-        return self.input["n"]
+        return (self.input["n"],)
 
     def output_tuple(self) -> tuple:
         return (self.output["sqrt_n"],)
@@ -45,6 +45,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     else:
         raise ValueError("Invalid test case type.")
 
+    test_case.input["n"] = n
     return test_case
 
 
@@ -84,18 +85,26 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     user_sqrt_n = user_output[0]
 
     logger.debug("User solution:")
-    logger.debug("sqrt_n = {:g}".format(user_sqrt_n))
+    logger.debug("sqrt_n = {:}".format(user_sqrt_n))
     logger.debug("Engine solution:")
-    logger.debug("sqrt_n = {:g}".format(sqrt_n))
+    logger.debug("sqrt_n = {:}".format(sqrt_n))
     logger.debug("Relative tolerance = {:g}.".format(TESTING_CONSTANTS["rel_tol"]))
 
     passed = False
 
-    if math.isclose(sqrt_n, user_sqrt_n, rel_tol=TESTING_CONSTANTS["rel_tol"]):
-        logger.info("User solution correct.")
-        passed = True
+    if isinstance(sqrt_n, str):
+        if sqrt_n == user_sqrt_n:
+            logger.info("User solution correct.")
+            passed = True
+        else:
+            logger.info("User solution is wrong.")
+            passed = False
     else:
-        logger.info("User solution is wrong.")
-        passed = False
+        if math.isclose(sqrt_n, user_sqrt_n, rel_tol=TESTING_CONSTANTS["rel_tol"]):
+            logger.info("User solution correct.")
+            passed = True
+        else:
+            logger.info("User solution is wrong.")
+            passed = False
 
     return passed, str(sqrt_n)
