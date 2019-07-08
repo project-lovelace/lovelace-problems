@@ -35,7 +35,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)
 
     if test_type is TestCaseType.SMALL_N:
-        N = np.random.uniform(2, 10)
+        N = np.random.randint(2, 10)
     else:
         raise ValueError("Invalid test case type.")
 
@@ -46,7 +46,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
 def solve_test_case(test_case: ProblemTestCase) -> None:
     N = test_case.input["N"]
-
+    logger.info("N={:}".format(N))
     test_case.output["pi"] = 4 * sum([(-1) ** k / (2*k + 1) for k in range(N)])
     return
 
@@ -60,15 +60,19 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
 
     N = user_input[0]
 
+    tmp_test_case.input = {
+        "N": N
+    }
+
     solve_test_case(tmp_test_case)
     pi = tmp_test_case.output["pi"]
 
     user_pi = user_output[0]
 
     logger.debug("User solution:")
-    logger.debug("distance = {:d}".format(user_pi))
+    logger.debug("User pi = {:f}".format(user_pi))
     logger.debug("Engine solution:")
-    logger.debug("distance = {:d}".format(pi))
+    logger.debug("Engine pi = {:f}".format(pi))
     logger.debug("Relative tolerance = {:g}.".format(TESTING_CONSTANTS["rel_tol"]))
 
     passed = False

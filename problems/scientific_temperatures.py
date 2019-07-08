@@ -20,10 +20,10 @@ class TestCaseType(TestCaseTypeEnum):
 
 class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
-        return self.input["F"]
+        return (self.input["F"],)
 
     def output_tuple(self) -> tuple:
-        return self.output["C"]
+        return (self.output["C"],)
 
 
 TEST_CASE_TYPE_ENUM = TestCaseType

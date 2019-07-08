@@ -96,9 +96,9 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     user_distance = user_output[0]
 
     logger.debug("User solution:")
-    logger.debug("distance = {:d}".format(user_distance))
+    logger.debug("distance = {:f}".format(user_distance))
     logger.debug("Engine solution:")
-    logger.debug("distance = {:d}".format(distance))
+    logger.debug("distance = {:f}".format(distance))
     logger.debug("Relative tolerance = {:g}.".format(TESTING_CONSTANTS["rel_tol"]))
 
     passed = False

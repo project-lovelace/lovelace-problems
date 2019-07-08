@@ -55,7 +55,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     else:
         raise ValueError("Invalid test case type.")
 
-    test_case = {
+    test_case.input = {
         "patient_blood_type": patient_blood_type,
         "donated_blood": donated_blood
     }
@@ -117,6 +117,11 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     tmp_test_case = ProblemTestCase()
 
     patient_blood_type, donated_blood = user_input
+
+    tmp_test_case.input = {
+        "patient_blood_type": patient_blood_type,
+        "donated_blood": donated_blood
+    }
 
     solve_test_case(tmp_test_case)
     survive = tmp_test_case.output["survive"]
