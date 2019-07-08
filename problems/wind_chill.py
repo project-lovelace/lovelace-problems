@@ -81,9 +81,9 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     user_T_wc = user_output[0]
 
     logger.debug("User solution:")
-    logger.debug("T_wc = {:d}".format(user_T_wc))
+    logger.debug("T_wc = {:f}".format(user_T_wc))
     logger.debug("Engine solution:")
-    logger.debug("T_wc = {:d}".format(T_wc))
+    logger.debug("T_wc = {:f}".format(T_wc))
     logger.debug("Relative tolerance = {:g}.".format(TESTING_CONSTANTS["rel_tol"]))
 
     passed = False
