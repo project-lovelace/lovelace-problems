@@ -22,7 +22,7 @@ class ProblemTestCase(TestCase):
 
 TEST_CASE_TYPE_ENUM = TestCaseType
 TEST_CASE_CLASS = ProblemTestCase
-FUNCTION_NAME = "nand"
+FUNCTION_NAME = "NAND"
 STATIC_RESOURCES = []
 
 PHYSICAL_CONSTANTS = {}
