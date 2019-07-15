@@ -55,7 +55,7 @@ def solve_test_case(test_case: ProblemTestCase) -> None:
             return 0
 
         if S < 0:
-            return "invalid"
+            return "undefined"
 
         x_n = 10
         while abs(x_n ** 2 - S) / S > 1e-10:

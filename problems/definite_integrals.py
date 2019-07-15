@@ -55,7 +55,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     else:
         raise ValueError("Invalid test case type.")
 
-    test_case.input = {"f": f, "dx": dx}
+    test_case.input = {
+        "rectangle_heights": f,
+        "rectangle_width": dx}
 
     return test_case
 
