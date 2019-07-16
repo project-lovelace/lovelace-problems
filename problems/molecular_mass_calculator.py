@@ -1,8 +1,9 @@
 import logging
+from typing import Tuple
 
-import numpy as np
+from numpy.random import choice
 
-from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
 
 logger = logging.getLogger(__name__)
 
@@ -17,19 +18,26 @@ class TestCaseType(TestCaseTypeEnum):
 
 class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
-        return (self.input['chemical_formula'],)
+        return self.input['chemical_formula'],
 
     def output_tuple(self) -> tuple:
-        return (self.output['mass'],)
+        return self.output['mass'],
+
+    def output_str(self) -> str:
+        return str(self.output['mass'])
 
 
 FUNCTION_NAME = "molecular_mass"
-STATIC_RESOURCES = ['periodic_table.csv']
+STATIC_RESOURCES = ["periodic_table.csv"]
+
+INPUT_VARS = ['chemical_formula']
+OUTPUT_VARS = ['mass']
 
 PHYSICAL_CONSTANTS = {}
 
-TESTING_CONSTANTS = {
-    'error_tol': 0.1  # tolerance on each resistance output [Ohm]
+ATOL = {}
+RTOL = {
+    'mass': 0.1
 }
 
 
@@ -45,7 +53,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     elif test_type is TestCaseType.LSD:
         chemical_formula = 'C20H25N3O'
     elif test_type is TestCaseType.RANDOM_CHEMICAL:
-        chemical_formula = np.random.choice(['CO2', 'CH4', 'C6H12O6', 'PuCoGa5', 'CH3NH2', 'W', 'C2H5OH'], 1)[0]
+        chemical_formula = choice(['CO2', 'CH4', 'C6H12O6', 'PuCoGa5', 'CH3NH2', 'W', 'C2H5OH'], 1)[0]
     else:
         raise ValueError
 
@@ -57,42 +65,9 @@ def solve_test_case(test_case: ProblemTestCase) -> None:
     from problems.solutions.molecular_mass_calculator import molecular_mass
     chemical_formula = test_case.input['chemical_formula']
     test_case.output['mass'] = molecular_mass(chemical_formula)
-    return
 
 
-def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
-    logger.info("Verifying user solution...")
-    logger.debug("User input: %s", user_input)
-    logger.debug("User output: %s", user_output)
-
-    # Build TestCase object out of user's input string.
-    tmp_test_case = ProblemTestCase()
-
-    chemical_formula = user_input[0]
-    tmp_test_case.input = {'chemical_formula': chemical_formula}
-
-    # Solve the problem with this TestCase so we have our own solution, and extract the solution.
-    solve_test_case(tmp_test_case)
-    mass = tmp_test_case.output['mass']
-
-    # Extract user solution.
-    user_mass = user_output[0]
-
-    error_tol = TESTING_CONSTANTS['error_tol']
-    error_mass = abs(mass - user_mass)
-
-    logger.debug("User solution:")
-    logger.debug("mass = {}".format(user_mass))
-    logger.debug("Engine solution:")
-    logger.debug("mass = {}".format(mass))
-    logger.debug("Error tolerance = %e. Error mass: %e.", error_tol, error_mass)
-
-    passed = False
-
-    if error_mass < error_tol:
-        logger.info("User solution correct within error tolerance of {:g}.".format(error_tol))
-        passed = True
-    else:
-        logger.info("User solution incorrect.")
-
-    return passed, str(mass)
+def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+    user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
+    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    return passed, correct_test_case.output_str()

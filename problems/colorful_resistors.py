@@ -1,8 +1,9 @@
 import logging
+from typing import Tuple
 
 import numpy as np
 
-from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
 from problems.solutions.colorful_resistors import resistance
 
 logger = logging.getLogger(__name__)
@@ -15,18 +16,27 @@ class TestCaseType(TestCaseTypeEnum):
 
 
 class ProblemTestCase(TestCase):
-    def input_tuple(self) -> str:
-        return (self.input['colors'],)
+    def input_tuple(self) -> tuple:
+        return self.input['colors'],
 
-    def output_tuple(self) -> str:
+    def output_tuple(self) -> tuple:
         nominal_R = self.output['nominal_resistance']
         minimum_R = self.output['minimum_resistance']
         maximum_R = self.output['maximum_resistance']
         return nominal_R, minimum_R, maximum_R
 
+    def output_str(self) -> str:
+        nominal_R = self.output['nominal_resistance']
+        minimum_R = self.output['minimum_resistance']
+        maximum_R = self.output['maximum_resistance']
+        return "nominal_R = {:f}, minimum_R = {:f}, maximum_R = {:f}".format(nominal_R, minimum_R, maximum_R)
+
 
 FUNCTION_NAME = "resistance"
 STATIC_RESOURCES = []
+
+INPUT_VARS = ['colors']
+OUTPUT_VARS = ['nominal_resistance', 'minimum_resistance', 'maximum_resistance']
 
 PHYSICAL_CONSTANTS = {
     'digits': {
@@ -69,9 +79,12 @@ PHYSICAL_CONSTANTS = {
     }
 }
 
-TESTING_CONSTANTS = {
-    'error_tol': 0.1  # tolerance on each resistance output [Ohm]
+ATOL = {
+    'nominal_resistance': 0.1,  # [Ohm]
+    'minimum_resistance': 0.1,  # [Ohm]
+    'maximum_resistance': 0.1   # [Ohm]
 }
+RTOL = {}
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
@@ -110,44 +123,9 @@ def solve_test_case(test_case: ProblemTestCase) -> None:
     test_case.output['nominal_resistance'] = nominal_R
     test_case.output['minimum_resistance'] = minimum_R
     test_case.output['maximum_resistance'] = maximum_R
-    return
 
 
-def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
-    logger.info("Verifying user solution...")
-    logger.debug("User input: %s", user_input)
-    logger.debug("User output: %s", user_output)
-
-    # Build TestCase object out of user's input string.
-    tmp_test_case = ProblemTestCase()
-
-    colors = user_input[0]
-    tmp_test_case.input = {'colors': colors}
-
-    # Solve the problem with this TestCase so we have our own solution, and extract the solution.
-    solve_test_case(tmp_test_case)
-    nominal_R = tmp_test_case.output['nominal_resistance']
-    minimum_R = tmp_test_case.output['minimum_resistance']
-    maximum_R = tmp_test_case.output['maximum_resistance']
-
-    # Extract user solution.
-    user_nominal_R, user_minimum_R, user_maximum_R = user_output
-
-    error_tol = TESTING_CONSTANTS['error_tol']
-    error_R = abs(nominal_R - user_nominal_R) + abs(minimum_R - user_minimum_R) + abs(maximum_R - user_maximum_R)
-
-    logger.debug("User solution:")
-    logger.debug("nominal_R = %f, minimum_R = %f, maximum_R = %f", user_nominal_R, user_minimum_R, user_maximum_R)
-    logger.debug("Engine solution:")
-    logger.debug("nominal_R = %f, minimum_R = %f, maximum_R = %f", nominal_R, minimum_R, maximum_R)
-    logger.debug("Error tolerance = %e. Error x: %e.", error_tol, error_R)
-
-    passed = False
-
-    if error_R < error_tol:
-        logger.info("User solution correct within error tolerance of {:g}.".format(error_tol))
-        passed = True
-    else:
-        logger.info("User solution incorrect.")
-
-    return passed, "nominal_R = {}, minimum_R = {}, maximum_R = {}".format(nominal_R, minimum_R, maximum_R)
+def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+    user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
+    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    return passed, correct_test_case.output_str()
