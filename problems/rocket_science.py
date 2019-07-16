@@ -28,6 +28,9 @@ class ProblemTestCase(TestCase):
 FUNCTION_NAME = "rocket_fuel"
 STATIC_RESOURCES = []
 
+INPUT_VARS = ['v']
+OUTPUT_VARS = ['m_fuel']
+
 PHYSICAL_CONSTANTS = {
     'v_e': 2550,  # [m/s]
     'M': 250000   # [kg]
@@ -66,15 +69,7 @@ def solve_test_case(test_case: ProblemTestCase) -> None:
 
 
 def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
-    # Build TestCase object out of user's input string.
-    user_test_case = ProblemTestCase()
-
-    v = user_input[0]
-    user_test_case.input = {'v': v}
-
-    m_fuel = user_output[0]
-    user_test_case.output = {'m_fuel': m_fuel}
-
+    user_test_case = ProblemTestCase(test_type=None, input_vars=INPUT_VARS, input_tuple=user_input,
+                                     output_vars=OUTPUT_VARS, output_tuple=user_output)
     passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
-
     return passed, str(correct_test_case.output['m_fuel'])
