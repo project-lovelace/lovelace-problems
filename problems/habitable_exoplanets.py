@@ -8,14 +8,14 @@ from problems.solutions.habitable_exoplanets import habitable_exoplanet
 logger = logging.getLogger(__name__)
 
 
-class TestCase2Type(TestCaseTypeEnum):
+class TestCaseType(TestCaseTypeEnum):
     EARTH = ('Earth', 1)
     PROXIMA_CENTAURI_B = ('Proxima Centauri b', 1)
     KEPLER_440B = ('Kepler 440b', 1)
     RANDOM = ('Randomly generated exoplanet', 1)
 
 
-class TestCase2(TestCase):
+class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
         return (self.input['L_star'], self.input['r'])
 
@@ -23,8 +23,8 @@ class TestCase2(TestCase):
         return (self.output['habitability'],)
 
 
-TEST_CASE_TYPE_ENUM = TestCase2Type
-TEST_CASE_CLASS = TestCase2
+TEST_CASE_TYPE_ENUM = TestCaseType
+TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "habitable_exoplanet"
 STATIC_RESOURCES = []
 
@@ -32,19 +32,19 @@ PHYSICAL_CONSTANTS = {}
 TESTING_CONSTANTS = {}
 
 
-def generate_test_case(test_type: TestCase2Type) -> TestCase2:
-    test_case = TestCase2(test_type)
+def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
+    test_case = ProblemTestCase(test_type)
 
-    if test_type is TestCase2Type.EARTH:
+    if test_type is TestCaseType.EARTH:
         L_star = 1.00
         r = 1.00
-    elif test_type is TestCase2Type.PROXIMA_CENTAURI_B:
+    elif test_type is TestCaseType.PROXIMA_CENTAURI_B:
         L_star = 1.00
         r = 1.00
-    elif test_type is TestCase2Type.KEPLER_440B:
+    elif test_type is TestCaseType.KEPLER_440B:
         L_star = 1.43
         r = 0.242
-    elif test_type is TestCase2Type.RANDOM:
+    elif test_type is TestCaseType.RANDOM:
         L_star = float(np.random.uniform(0.1, 5.0, 1)[0])
         r = float(np.random.uniform(0.1, 5.0, 1)[0])
 
@@ -53,7 +53,7 @@ def generate_test_case(test_type: TestCase2Type) -> TestCase2:
     return test_case
 
 
-def solve_test_case(test_case: TestCase2) -> None:
+def solve_test_case(test_case: ProblemTestCase) -> None:
     L_star = test_case.input['L_star']
     r = test_case.input['r']
     test_case.output['habitability'] = habitable_exoplanet(L_star, r)
@@ -66,7 +66,7 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.debug("User output: %s", user_output)
 
     # Build TestCase object out of user's input string.
-    tmp_test_case = TestCase2()
+    tmp_test_case = ProblemTestCase()
 
     L_star, r = user_input
     tmp_test_case.input = {'L_star': L_star, 'r': r}

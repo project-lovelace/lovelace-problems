@@ -9,7 +9,7 @@ from problems.solutions.rocket_science import rocket_fuel
 logger = logging.getLogger(__name__)
 
 
-class TestCase1Type(TestCaseTypeEnum):
+class TestCaseType(TestCaseTypeEnum):
     EARTH = ('Earth', 1)
     MOON = ('Moon', 1)
     JUPITER = ('Jupiter', 1)
@@ -18,7 +18,7 @@ class TestCase1Type(TestCaseTypeEnum):
     RANDOM = ('Random', 1)
 
 
-class TestCase1(TestCase):
+class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
         return (self.input['v'],)
 
@@ -26,8 +26,8 @@ class TestCase1(TestCase):
         return (self.output['m_fuel'],)
 
 
-TEST_CASE_TYPE_ENUM = TestCase1Type
-TEST_CASE_CLASS = TestCase1
+TEST_CASE_TYPE_ENUM = TestCaseType
+TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "rocket_fuel"
 STATIC_RESOURCES = []
 
@@ -41,27 +41,27 @@ TESTING_CONSTANTS = {
 }
 
 
-def generate_test_case(test_type: TestCase1Type) -> TestCase1:
-    test_case = TestCase1(test_type)
+def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
+    test_case = ProblemTestCase(test_type)
 
-    if test_type is TestCase1Type.EARTH:
+    if test_type is TestCaseType.EARTH:
         v = 11186
-    elif test_type is TestCase1Type.MOON:
+    elif test_type is TestCaseType.MOON:
         v = 2380
-    elif test_type is TestCase1Type.JUPITER:
+    elif test_type is TestCaseType.JUPITER:
         v = 60200
-    elif test_type is TestCase1Type.PLUTO:
+    elif test_type is TestCaseType.PLUTO:
         v = 1230
-    elif test_type is TestCase1Type.PHOBOS:
+    elif test_type is TestCaseType.PHOBOS:
         v = 1.139
-    elif test_type is TestCase1Type.RANDOM:
+    elif test_type is TestCaseType.RANDOM:
         v = float(np.random.uniform(1.0, 100.0, 1)[0])
 
     test_case.input['v'] = v
     return test_case
 
 
-def solve_test_case(test_case: TestCase1) -> None:
+def solve_test_case(test_case: ProblemTestCase) -> None:
     v = test_case.input['v']
     test_case.output['m_fuel'] = rocket_fuel(v)
     return
@@ -73,7 +73,7 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.debug("User output tuple: %s", user_output)
 
     # Build TestCase object out of user's input string.
-    tmp_test_case = TestCase1()
+    tmp_test_case = ProblemTestCase()
 
     v = user_input[0]
     tmp_test_case.input = {'v': v}

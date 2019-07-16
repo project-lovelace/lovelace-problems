@@ -3,27 +3,26 @@ import random
 import string
 
 from problems.test_case import TestCase, TestCaseTypeEnum
-from problems.solutions.caesar_cipher import break_caesar_cipher
 
 logger = logging.getLogger(__name__)
 
 
-class TestCase5Type(TestCaseTypeEnum):
+class TestCaseType(TestCaseTypeEnum):
     MOBY_DICK = ('Moby dick', 1)
     THE_WIRE = ('Bunny Colvin (The Wire)', 1)
     RANDOM_STRING = ('random string', 1)
 
 
-class TestCase5(TestCase):
+class ProblemTestCase(TestCase):
     def input_tuple(self) -> str:
-        return (self.input['ciphertext'], self.input['known_word'])
+        return self.input['ciphertext'], self.input['known_word']
 
     def output_tuple(self) -> str:
         return (self.output['decrypted_message'],)
 
 
-TEST_CASE_TYPE_ENUM = TestCase5Type
-TEST_CASE_CLASS = TestCase5
+TEST_CASE_TYPE_ENUM = TestCaseType
+TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "break_caesar_cipher"
 STATIC_RESOURCES = []
 
@@ -51,15 +50,15 @@ def caesar_cipher(plaintext, shift):
     return plaintext.translate(table)
 
 
-def generate_test_case(test_type: TestCase5Type) -> TestCase5:
-    test_case = TestCase5(test_type)
+def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
+    test_case = ProblemTestCase(test_type)
 
-    if test_type is TestCase5Type.RANDOM_STRING:
+    if test_type is TestCaseType.RANDOM_STRING:
         length = random.randint(50, 400)
         plaintext = randomly_insert_spaces(generate_random_string(length))
-    elif test_type is TestCase5Type.MOBY_DICK:
+    elif test_type is TestCaseType.MOBY_DICK:
         plaintext = 'Call me Ishmael Some years ago never mind how long precisely having little or no money in my purse and nothing particular to interest me on shore I thought I would sail about a little and see the watery part of the world'.upper()
-    elif test_type is TestCase5Type.THE_WIRE:
+    elif test_type is TestCaseType.THE_WIRE:
         plaintext = 'This drug thing this aint police work I mean I can send any fool with a badge and a gun to a corner to jack a crew and grab vials But policing I mean you call something a war and pretty soon everyone is going to be running around acting like warriors They gonna be running around on a damn crusade storming corners racking up body counts And when you at war you need a fucking enemy And pretty soon damn near everybody on every corner is your fucking enemy And soon, the neighborhood youre supposed to be policing thats just occupied territory'.upper()
 
     known_word = random.choice(plaintext.split())
@@ -72,10 +71,16 @@ def generate_test_case(test_type: TestCase5Type) -> TestCase5:
     return test_case
 
 
-def solve_test_case(test_case: TestCase5) -> None:
+def solve_test_case(test_case: ProblemTestCase) -> None:
     ciphertext = test_case.input['ciphertext']
     known_word = test_case.input['known_word']
-    test_case.output['decrypted_message'] = break_caesar_cipher(ciphertext, known_word)
+
+    for shift in range(len(string.ascii_uppercase)):
+        if known_word in caesar_cipher(ciphertext, shift).split():
+            decrypted_message = caesar_cipher(ciphertext, shift)
+            break
+
+    test_case.output['decrypted_message'] = decrypted_message
     return
 
 
@@ -85,7 +90,7 @@ def verify_user_solution(user_input: str, user_output: str) -> bool:
     logger.debug("User output: %s", user_output)
 
     # Build TestCase object out of user's input string.
-    tmp_test_case = TestCase5()
+    tmp_test_case = ProblemTestCase()
 
     ciphertext, known_word = user_input
     tmp_test_case.input = {'ciphertext': ciphertext, 'known_word': known_word}

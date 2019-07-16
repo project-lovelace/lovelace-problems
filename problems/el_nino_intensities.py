@@ -7,11 +7,11 @@ from problems.test_case import TestCase, TestCaseTypeEnum
 logger = logging.getLogger(__name__)
 
 
-class TestCase9Type(TestCaseTypeEnum):
+class TestCaseType(TestCaseTypeEnum):
     RANDOM_SEASON = ('Random season', 5)
 
 
-class TestCase9(TestCase):
+class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
         return (self.input["season"],)
 
@@ -19,8 +19,8 @@ class TestCase9(TestCase):
         return (self.output['enso_classification'],)
 
 
-TEST_CASE_TYPE_ENUM = TestCase9Type
-TEST_CASE_CLASS = TestCase9
+TEST_CASE_TYPE_ENUM = TestCaseType
+TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "enso_classification"
 STATIC_RESOURCES = ['mei.ext_index.txt']
 
@@ -30,9 +30,9 @@ TESTING_CONSTANTS = {
 }
 
 
-def generate_test_case(test_type: TestCase9Type) -> TestCase9:
-    test_case = TestCase9(test_type)
-    if test_type is TestCase9Type.RANDOM_SEASON:
+def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
+    test_case = ProblemTestCase(test_type)
+    if test_type is TestCaseType.RANDOM_SEASON:
         year = np.random.randint(1871, 2015)
         next_year_short = str(year+1)[-2:]
         season = str(year) + '-' + next_year_short
@@ -41,7 +41,7 @@ def generate_test_case(test_type: TestCase9Type) -> TestCase9:
     return test_case
 
 
-def solve_test_case(test_case: TestCase9) -> None:
+def solve_test_case(test_case: ProblemTestCase) -> None:
     from problems.solutions.el_nino_intensities import enso_classification
     season = test_case.input['season']
     test_case.output['enso_classification'] = enso_classification(season)
@@ -54,7 +54,7 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.debug("User output string: %s", user_output)
 
     # Build TestCase object out of user's input string.
-    tmp_test_case = TestCase9()
+    tmp_test_case = ProblemTestCase()
 
     season = user_input[0]
     tmp_test_case.input = {"season": season}
