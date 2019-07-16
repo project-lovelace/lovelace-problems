@@ -15,11 +15,19 @@ class TestCaseTypeEnum(Enum):
         self.multiplicity = multiplicity
 
 
-class TestCase(object):    
-    def __init__(self, test_type=None):
+class TestCase(object):
+    def __init__(self, test_type=None, input_vars=None, input_tuple=None, output_vars=None, output_tuple=None):
         self.test_type = test_type
+
         self.input = {}
+        if input_vars is not None and input_tuple is not None:
+            for var, val in zip(input_vars, input_tuple):
+                self.input[var] = val
+
         self.output = {}
+        if output_vars is not None and output_tuple is not None:
+            for var, val in zip(output_vars, output_tuple):
+                self.output[var] = val
 
     def input_tuple(self) -> tuple:
         pass
