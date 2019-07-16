@@ -1,4 +1,5 @@
 import logging
+from typing import Tuple
 
 import numpy as np
 
@@ -70,7 +71,7 @@ def solve_test_case(test_case: ProblemTestCase) -> None:
     test_case.output['m_fuel'] = rocket_fuel(v)
 
 
-def verify_user_solution(user_input: tuple, user_output: tuple) -> tuple[bool, str]:
+def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
     user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
     passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
     return passed, correct_test_case.output_str()
