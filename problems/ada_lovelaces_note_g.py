@@ -1,10 +1,9 @@
 import logging
+from typing import Tuple
 
-import numpy as np
-from fractions import Fraction
-from math import factorial
+from numpy.random import randint
 
-from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
 from problems.solutions.ada_lovelaces_note_g import bernoulli
 
 logger = logging.getLogger(__name__)
@@ -23,19 +22,28 @@ class TestCaseType(TestCaseTypeEnum):
 
 class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
-        return (self.input['n'],)
+        return self.input['n'],
 
     def output_tuple(self) -> tuple:
-        numerator = self.output["numerator"]
-        denominator = self.output["denominator"]
+        numerator = self.output['numerator']
+        denominator = self.output['denominator']
         return numerator, denominator
+
+    def output_str(self) -> str:
+        numerator = self.output['numerator']
+        denominator = self.output['denominator']
+        return "numerator = {:d}, denominator = {:d}".format(numerator, denominator)
 
 
 FUNCTION_NAME = "bernoulli"
 STATIC_RESOURCES = []
 
+INPUT_VARS = ['n']
+OUTPUT_VARS = ['numerator', 'denominator']
+
 PHYSICAL_CONSTANTS = {}
-TESTING_CONSTANTS = {}
+ATOL = {}
+RTOL = {}
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
@@ -50,55 +58,24 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     elif test_type is TestCaseType.THIRD:
         n = 3
     elif test_type is TestCaseType.RANDOM_EVEN:
-        n = 2 * np.random.randint(2, 50)
+        n = 2 * randint(2, 50)
     elif test_type is TestCaseType.RANDOM_ODD:
-        n = 2 * np.random.randint(2, 50) + 1
+        n = 2 * randint(2, 50) + 1
     elif test_type is TestCaseType.LARGE_EVEN:
-        n = 2 * np.random.randint(125, 250)
+        n = 2 * randint(125, 250)
     elif test_type is TestCaseType.LARGE_ODD:
-        n = 2 * np.random.randint(125, 250) + 1
+        n = 2 * randint(125, 250) + 1
 
     test_case.input['n'] = n
     return test_case
 
 
 def solve_test_case(test_case: ProblemTestCase) -> None:
-    n = test_case.input["n"]
-    test_case.output["B_n_numerator"], test_case.output["B_n_denominator"] = bernoulli(n)
-    return
+    n = test_case.input['n']
+    test_case.output['numerator'], test_case.output['denominator'] = bernoulli(n)
 
 
-def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
-    logger.info("Verifying user solution...")
-    logger.debug("User input: %s", user_input)
-    logger.debug("User output: %s", user_output)
-
-    # Build TestCase object out of user's input string.
-    tmp_test_case = ProblemTestCase()
-
-    n = user_input[0]
-    tmp_test_case.input = {"n": n}
-
-    # Solve the problem with this TestCase so we have our own solution, and extract the solution.
-    solve_test_case(tmp_test_case)
-    B_n_numerator = tmp_test_case.output['B_n_numerator']
-    B_n_denominator = tmp_test_case.output['B_n_denominator']
-
-    # Extract user solution.
-    user_B_n_numerator = user_output[0]
-    user_B_n_denominator = user_output[1]
-
-    logger.debug("User solution:")
-    logger.debug("B_n_numerator = %d, B_n_denominator = %d", user_B_n_numerator, user_B_n_denominator)
-    logger.debug("Engine solution:")
-    logger.debug("B_n_numerator = %d, B_n_denominator = %d", B_n_numerator, B_n_denominator)
-
-    passed = False
-
-    if user_B_n_numerator == B_n_numerator and user_B_n_denominator == B_n_denominator:
-        logger.info("User solution correct.")
-        passed = True
-    else:
-        logger.info("User solution is wrong.")
-
-    return passed, "B_n_numerator = {:d}, B_n_denominator = {:d}".format(B_n_numerator, B_n_denominator)
+def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+    user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
+    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    return passed, correct_test_case.output_str()
