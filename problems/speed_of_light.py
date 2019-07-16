@@ -1,9 +1,8 @@
-import math
 import logging
+from typing import Tuple
+from numpy.random import uniform
 
-import numpy as np
-
-from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
 from problems.solutions.speed_of_light import light_time
 
 logger = logging.getLogger(__name__)
@@ -19,20 +18,28 @@ class TestCaseType(TestCaseTypeEnum):
 
 class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
-        return (self.input["distance"],)
+        return self.input['distance'],
 
     def output_tuple(self) -> tuple:
-        return (self.output["time"],)
+        return self.output['time'],
+
+    def output_str(self) -> str:
+        return str(self.output['time'])
 
 
 FUNCTION_NAME = "light_time"
 STATIC_RESOURCES = []
 
+INPUT_VARS = ['distance']
+OUTPUT_VARS = ['time']
+
 PHYSICAL_CONSTANTS = {
-    "c": 299792458  # [m/s]
+    'c': 299792458  # speed of light [m/s]
 }
-TESTING_CONSTANTS = {
-    "rel_tol": 1e-5
+
+ATOL = {}
+RTOL = {
+    'time': 1e-5
 }
 
 
@@ -48,49 +55,18 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     elif test_type is TestCaseType.MAX_EARTH_TO_JUPITER:
         distance = 968e9  # 968 million km
     elif test_type is TestCaseType.RANDOM:
-        distance = np.random.uniform(299792458, 60*299792458)
-    else:
-        raise ValueError("Invalid test case type.")
+        distance = uniform(299792458, 60*299792458)
 
-    test_case.input["distance"] = distance
-
+    test_case.input['distance'] = distance
     return test_case
 
 
 def solve_test_case(test_case: ProblemTestCase) -> None:
-    distance = test_case.input["distance"]
-    test_case.output["time"] = light_time(distance)
-    return
+    distance = test_case.input['distance']
+    test_case.output['time'] = light_time(distance)
 
 
-def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
-    logger.info("Verifying user solution...")
-    logger.debug("User input tuple: %s", user_input)
-    logger.debug("User output tuple: %s", user_output)
-
-    tmp_test_case = ProblemTestCase()
-
-    distance = user_input[0]
-    tmp_test_case.input = {"distance": distance}
-
-    solve_test_case(tmp_test_case)
-    time = tmp_test_case.output["time"]
-
-    user_time = user_output[0]
-
-    logger.debug("User solution:")
-    logger.debug("time = {:f}".format(user_time))
-    logger.debug("Engine solution:")
-    logger.debug("time = {:f}".format(time))
-    logger.debug("Relative tolerance = {:g}.".format(TESTING_CONSTANTS["rel_tol"]))
-
-    passed = False
-
-    if math.isclose(time, user_time, rel_tol=TESTING_CONSTANTS["rel_tol"]):
-        logger.info("User solution correct.")
-        passed = True
-    else:
-        logger.info("User solution is wrong.")
-        passed = False
-
-    return passed, str(user_time)
+def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+    user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
+    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    return passed, correct_test_case.output_str()

@@ -1,9 +1,10 @@
 import logging
+from typing import Tuple
 
-from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
+from problems.solutions.nand_gate import NAND
 
 logger = logging.getLogger(__name__)
-from problems.solutions.nand_gate import NAND
 
 
 class TestCaseType(TestCaseTypeEnum):
@@ -15,17 +16,24 @@ class TestCaseType(TestCaseTypeEnum):
 
 class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
-        return self.input["p"], self.input["q"]
+        return self.input['p'], self.input['q']
 
     def output_tuple(self) -> tuple:
-        return (self.output["nand"],)
+        return self.output['nand'],
+
+    def output_str(self) -> str:
+        return self.output['nand']
 
 
 FUNCTION_NAME = "NAND"
 STATIC_RESOURCES = []
 
+INPUT_VARS = ['p', 'q']
+OUTPUT_VARS = ['nand']
+
 PHYSICAL_CONSTANTS = {}
-TESTING_CONSTANTS = {}
+ATOL = {}
+RTOL = {}
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
@@ -39,11 +47,8 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         p, q = 1, 0
     elif test_type is TestCaseType.ONE_ONE:
         p, q = 1, 1
-    else:
-        raise ValueError("Invalid test case type.")
 
     test_case.input["p"], test_case.input["q"] = p, q
-
     return test_case
 
 
@@ -51,35 +56,9 @@ def solve_test_case(test_case: ProblemTestCase) -> None:
     p = test_case.input["p"]
     q = test_case.input["q"]
     test_case.output["nand"] = NAND(p, q)
-    return
 
 
-def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
-    logger.info("Verifying user solution...")
-    logger.debug("User input tuple: %s", user_input)
-    logger.debug("User output tuple: %s", user_output)
-
-    tmp_test_case = ProblemTestCase()
-
-    p, q = user_input
-    tmp_test_case.input = {"p": p, "q": q}
-
-    solve_test_case(tmp_test_case)
-    nand = tmp_test_case.output["nand"]
-
-    user_nand = user_output[0]
-
-    logger.debug("User solution:")
-    logger.debug("nand = {:d}".format(user_nand))
-    logger.debug("Engine solution:")
-    logger.debug("nand = {:d}".format(nand))
-
-    passed = False
-
-    if user_nand == nand:
-        logger.info("User solution correct.")
-        passed = True
-    else:
-        logger.info("User solution is wrong.")
-
-    return passed, str(nand)
+def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+    user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
+    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    return passed, correct_test_case.output_str()

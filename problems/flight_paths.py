@@ -1,9 +1,9 @@
-import math
 import logging
+from typing import Tuple
 
-import numpy as np
+from numpy.random import uniform
 
-from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
 from problems.solutions.flight_paths import haversine
 
 logger = logging.getLogger(__name__)
@@ -15,20 +15,28 @@ class TestCaseType(TestCaseTypeEnum):
 
 class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
-        return self.input["lat1"], self.input["lon1"], self.input["lat2"], self.input["lon2"]
+        return self.input['lat1'], self.input['lon1'], self.input['lat2'], self.input['lon2']
 
     def output_tuple(self) -> tuple:
-        return (self.output["distance"],)
+        return self.output['distance'],
+
+    def output_str(self) -> str:
+        return str(self.output['distance'])
 
 
 FUNCTION_NAME = "haversine"
 STATIC_RESOURCES = []
 
+INPUT_VARS = ['lat1', 'lon1', 'lat2', 'lon2']
+OUTPUT_VARS = ['distance']
+
 PHYSICAL_CONSTANTS = {
-    "R": 6372.1  # Radius of the Earth [km]
+    'R': 6372.1  # Radius of the Earth [km]
 }
-TESTING_CONSTANTS = {
-    "rel_tol": 1e-5
+
+ATOL = {}
+RTOL = {
+    'distance': 1e-5
 }
 
 
@@ -36,12 +44,10 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)
 
     if test_type is TestCaseType.RANDOM_POINTS:
-        lat1 = np.random.uniform(-90, 90)
-        lon1 = np.random.uniform(-180, 180)
-        lat2 = np.random.uniform(-90, 90)
-        lon2 = np.random.uniform(-180, 180)
-    else:
-        raise ValueError("Invalid test case type.")
+        lat1 = uniform(-90, 90)
+        lon1 = uniform(-180, 180)
+        lat2 = uniform(-90, 90)
+        lon2 = uniform(-180, 180)
 
     test_case.input = {
         "lat1": lat1,
@@ -54,46 +60,12 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
 
 def solve_test_case(test_case: ProblemTestCase) -> None:
-    lat1, lon1 = test_case.input["lat1"], test_case.input["lon1"]
-    lat2, lon2 = test_case.input["lat2"], test_case.input["lon2"]
-    test_case.output["distance"] = haversine(lat1, lon1, lat2, lon2)
-    return
+    lat1, lon1 = test_case.input['lat1'], test_case.input['lon1']
+    lat2, lon2 = test_case.input['lat2'], test_case.input['lon2']
+    test_case.output['distance'] = haversine(lat1, lon1, lat2, lon2)
 
 
-def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
-    logger.info("Verifying user solution...")
-    logger.debug("User input tuple: %s", user_input)
-    logger.debug("User output tuple: %s", user_output)
-
-    tmp_test_case = ProblemTestCase()
-
-    lat1, lon1, lat2, lon2 = user_input
-
-    tmp_test_case.input = {
-        "lat1": lat1,
-        "lon1": lon1,
-        "lat2": lat2,
-        "lon2": lon2
-    }
-
-    solve_test_case(tmp_test_case)
-    distance = tmp_test_case.output["distance"]
-
-    user_distance = user_output[0]
-
-    logger.debug("User solution:")
-    logger.debug("distance = {:f}".format(user_distance))
-    logger.debug("Engine solution:")
-    logger.debug("distance = {:f}".format(distance))
-    logger.debug("Relative tolerance = {:g}.".format(TESTING_CONSTANTS["rel_tol"]))
-
-    passed = False
-
-    if math.isclose(distance, user_distance, rel_tol=TESTING_CONSTANTS["rel_tol"]):
-        logger.info("User solution correct.")
-        passed = True
-    else:
-        logger.info("User solution is wrong.")
-        passed = False
-
-    return passed, str(distance)
+def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+    user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
+    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    return passed, correct_test_case.output_str()

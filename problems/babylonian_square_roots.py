@@ -1,8 +1,9 @@
-import math
-import random
 import logging
+from typing import Tuple
 
-from problems.test_case import TestCase, TestCaseTypeEnum
+from numpy.random import uniform
+
+from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
 from problems.solutions.babylonian_square_roots import babylonian_sqrt
 
 logger = logging.getLogger(__name__)
@@ -16,19 +17,26 @@ class TestCaseType(TestCaseTypeEnum):
 
 class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
-        return (self.input["n"],)
+        return self.input['n'],
 
     def output_tuple(self) -> tuple:
-        return (self.output["sqrt_n"],)
+        return self.output['sqrt_n'],
+
+    def output_str(self) -> str:
+        return str(self.output['sqrt_n'])
 
 
 FUNCTION_NAME = "babylonian_sqrt"
 STATIC_RESOURCES = []
 
+INPUT_VARS = ['n']
+OUTPUT_VARS = ['sqrt_n']
+
 PHYSICAL_CONSTANTS = {}
 
-TESTING_CONSTANTS = {
-    "rel_tol": 1e-10
+ATOL = {}
+RTOL = {
+    'sqrt_n': 1e-10
 }
 
 
@@ -38,59 +46,20 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     if test_type is TestCaseType.ZERO:
         n = 0
     elif test_type is TestCaseType.NEGATIVE:
-        n = random.uniform(-10, -0.01)
+        n = uniform(-10, -0.01)
     elif test_type is TestCaseType.SMALL_POSITIVE:
-        n = random.uniform(1, 10)
-    else:
-        raise ValueError("Invalid test case type.")
+        n = uniform(1, 10)
 
-    test_case.input["n"] = n
+    test_case.input['n'] = n
     return test_case
 
 
 def solve_test_case(test_case: ProblemTestCase) -> None:
-    n = test_case.input["n"]
-    test_case.output["sqrt_n"] = babylonian_sqrt(n)
-    return
+    n = test_case.input['n']
+    test_case.output['sqrt_n'] = babylonian_sqrt(n)
 
 
-def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
-    logger.info("Verifying user solution...")
-    logger.debug("User input tuple: %s", user_input)
-    logger.debug("User output tuple: %s", user_output)
-
-    tmp_test_case = ProblemTestCase()
-
-    n = user_input[0]
-
-    tmp_test_case.input["n"] = n
-
-    solve_test_case(tmp_test_case)
-    sqrt_n = tmp_test_case.output["sqrt_n"]
-
-    user_sqrt_n = user_output[0]
-
-    logger.debug("User solution:")
-    logger.debug("sqrt_n = {:}".format(user_sqrt_n))
-    logger.debug("Engine solution:")
-    logger.debug("sqrt_n = {:}".format(sqrt_n))
-    logger.debug("Relative tolerance = {:g}.".format(TESTING_CONSTANTS["rel_tol"]))
-
-    passed = False
-
-    if isinstance(sqrt_n, str):
-        if sqrt_n == user_sqrt_n:
-            logger.info("User solution correct.")
-            passed = True
-        else:
-            logger.info("User solution is wrong.")
-            passed = False
-    else:
-        if math.isclose(sqrt_n, user_sqrt_n, rel_tol=TESTING_CONSTANTS["rel_tol"]):
-            logger.info("User solution correct.")
-            passed = True
-        else:
-            logger.info("User solution is wrong.")
-            passed = False
-
-    return passed, str(sqrt_n)
+def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+    user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
+    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    return passed, correct_test_case.output_str()

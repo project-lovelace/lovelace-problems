@@ -1,9 +1,8 @@
-import math
 import logging
+from typing import Tuple
+from numpy.random import uniform
 
-import numpy as np
-
-from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
 from problems.solutions.wind_chill import wind_chill
 
 logger = logging.getLogger(__name__)
@@ -18,18 +17,25 @@ class TestCaseType(TestCaseTypeEnum):
 
 class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
-        return self.input["T_a"], self.input["v"]
+        return self.input['T_a'], self.input['v']
 
     def output_tuple(self) -> tuple:
-        return (self.output["T_wc"],)
+        return self.output['T_wc'],
+
+    def output_str(self) -> str:
+        return str(self.output['T_wc'])
 
 
 FUNCTION_NAME = "wind_chill"
 STATIC_RESOURCES = []
 
+INPUT_VARS = ['T_a', 'v']
+OUTPUT_VARS = ['T_wc']
+
 PHYSICAL_CONSTANTS = {}
-TESTING_CONSTANTS = {
-    "rel_tol": 1e-5
+ATOL = {}
+RTOL = {
+    'T_wc': 1e-8
 }
 
 
@@ -37,60 +43,32 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)
 
     if test_type is TestCaseType.COLD_CALM:
-        T_a = np.random.uniform(-15, 2)
-        v = np.random.uniform(2, 8)
+        T_a = uniform(-15, 2)
+        v = uniform(2, 8)
+
     elif test_type is TestCaseType.COLD_WINDY:
-        T_a = np.random.uniform(-15, 2)
-        v = np.random.uniform(25, 60)
+        T_a = uniform(-15, 2)
+        v = uniform(25, 60)
+
     elif test_type is TestCaseType.VERY_COLD_CALM:
-        T_a = np.random.uniform(-50, -20)
-        v = np.random.uniform(2, 8)
+        T_a = uniform(-50, -20)
+        v = uniform(2, 8)
+
     elif test_type is TestCaseType.VERY_COLD_WINDY:
-        T_a = np.random.uniform(-50, -20)
-        v = np.random.uniform(25, 60)
-    else:
-        raise ValueError("Invalid test case type.")
+        T_a = uniform(-50, -20)
+        v = uniform(25, 60)
 
-    test_case.input["T_a"], test_case.input["v"] = T_a, v
-
+    test_case.input['T_a'], test_case.input['v'] = T_a, v
     return test_case
 
 
 def solve_test_case(test_case: ProblemTestCase) -> None:
-    T_a = test_case.input["T_a"]
-    v = test_case.input["v"]
-    test_case.output["T_wc"] = wind_chill(T_a, v)
-    return
+    T_a = test_case.input['T_a']
+    v = test_case.input['v']
+    test_case.output['T_wc'] = wind_chill(T_a, v)
 
 
-def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
-    logger.info("Verifying user solution...")
-    logger.debug("User input tuple: %s", user_input)
-    logger.debug("User output tuple: %s", user_output)
-
-    tmp_test_case = ProblemTestCase()
-
-    T_a, v = user_input
-    tmp_test_case.input = {"T_a": T_a, "v": v}
-
-    solve_test_case(tmp_test_case)
-    T_wc = tmp_test_case.output["T_wc"]
-
-    user_T_wc = user_output[0]
-
-    logger.debug("User solution:")
-    logger.debug("T_wc = {:f}".format(user_T_wc))
-    logger.debug("Engine solution:")
-    logger.debug("T_wc = {:f}".format(T_wc))
-    logger.debug("Relative tolerance = {:g}.".format(TESTING_CONSTANTS["rel_tol"]))
-
-    passed = False
-
-    if math.isclose(T_wc, user_T_wc, rel_tol=TESTING_CONSTANTS["rel_tol"]):
-        logger.info("User solution correct.")
-        passed = True
-    else:
-        logger.info("User solution is wrong.")
-        passed = False
-
-    return passed, str(T_wc)
+def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+    user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
+    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    return passed, correct_test_case.output_str()

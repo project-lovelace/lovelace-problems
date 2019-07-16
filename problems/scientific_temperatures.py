@@ -1,9 +1,8 @@
-import math
 import logging
+from typing import Tuple
+from numpy.random import uniform
 
-import numpy as np
-
-from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
 
 logger = logging.getLogger(__name__)
 
@@ -20,18 +19,25 @@ class TestCaseType(TestCaseTypeEnum):
 
 class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
-        return (self.input["F"],)
+        return self.input['F'],
 
     def output_tuple(self) -> tuple:
-        return (self.output["C"],)
+        return self.output['C'],
+
+    def output_str(self) -> str:
+        return str(self.output['C'])
 
 
 FUNCTION_NAME = "celsius"
 STATIC_RESOURCES = []
 
+INPUT_VARS = ['F']
+OUTPUT_VARS = ['C']
+
 PHYSICAL_CONSTANTS = {}
-TESTING_CONSTANTS = {
-    "rel_tol": 1e-5
+ATOL = {}
+RTOL = {
+    'C': 1e-5
 }
 
 
@@ -39,9 +45,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)
 
     if test_type is TestCaseType.WARM_DAY:
-        F = np.random.uniform(80, 110)
+        F = uniform(80, 110)
     elif test_type is TestCaseType.COLD_DAY:
-        F = np.random.uniform(-20, 30)
+        F = uniform(-20, 30)
     elif test_type is TestCaseType.WATER_FREEZING_POINT:
         F = 32
     elif test_type is TestCaseType.WATER_BOILING_POINT:
@@ -52,48 +58,17 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         F = -459.67
     elif test_type is TestCaseType.SUN_SURFACE:
         F = 9940.73
-    else:
-        raise ValueError("Invalid test case type.")
 
-    test_case.input["F"] = F
-
+    test_case.input['F'] = F
     return test_case
 
 
 def solve_test_case(test_case: ProblemTestCase) -> None:
-    F = test_case.input["F"]
-    test_case.output["C"] = (5/9) * (F - 32)
-    return
+    F = test_case.input['F']
+    test_case.output['C'] = (5/9) * (F - 32)
 
 
-def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
-    logger.info("Verifying user solution...")
-    logger.debug("User input tuple: %s", user_input)
-    logger.debug("User output tuple: %s", user_output)
-
-    tmp_test_case = ProblemTestCase()
-
-    F = user_input[0]
-    tmp_test_case.input = {"F": F}
-
-    solve_test_case(tmp_test_case)
-    C = tmp_test_case.output["C"]
-
-    user_C = user_output[0]
-
-    logger.debug("User solution:")
-    logger.debug("C = {:f}".format(user_C))
-    logger.debug("Engine solution:")
-    logger.debug("C = {:f}".format(C))
-    logger.debug("Relative tolerance = {:g}.".format(TESTING_CONSTANTS["rel_tol"]))
-
-    passed = False
-
-    if math.isclose(C, user_C, rel_tol=TESTING_CONSTANTS["rel_tol"]):
-        logger.info("User solution correct.")
-        passed = True
-    else:
-        logger.info("User solution is wrong.")
-        passed = False
-
-    return passed, str(C)
+def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+    user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
+    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    return passed, correct_test_case.output_str()
