@@ -1,9 +1,8 @@
 import logging
-import importlib
 
 import numpy as np
 
-from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
 from problems.solutions.rocket_science import rocket_fuel
 
 logger = logging.getLogger(__name__)
@@ -34,8 +33,9 @@ PHYSICAL_CONSTANTS = {
     'M': 250000   # [kg]
 }
 
-TESTING_CONSTANTS = {
-    'error_rel_tol': 1e-6
+ATOL = {}
+RTOL = {
+    'm_fuel': 1e-6
 }
 
 
@@ -66,39 +66,15 @@ def solve_test_case(test_case: ProblemTestCase) -> None:
 
 
 def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
-    logger.info("Verifying user solution...")
-    logger.debug("User input tuple: %s", user_input)
-    logger.debug("User output tuple: %s", user_output)
-
     # Build TestCase object out of user's input string.
-    tmp_test_case = ProblemTestCase()
+    user_test_case = ProblemTestCase()
 
     v = user_input[0]
-    tmp_test_case.input = {'v': v}
+    user_test_case.input = {'v': v}
 
-    # Solve the problem with this TestCase so we have our own solution, and extract the solution.
-    solve_test_case(tmp_test_case)
-    m_fuel = tmp_test_case.output['m_fuel']
+    m_fuel = user_output[0]
+    user_test_case.output = {'m_fuel': m_fuel}
 
-    # Extract user solution.
-    user_m_fuel = user_output[0]
+    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
 
-    # Compare our solution with user's solution.
-    error_rel_tol = TESTING_CONSTANTS['error_rel_tol']
-    error_rel_m_fuel = np.abs(m_fuel - user_m_fuel) / m_fuel
-
-    logger.debug("User solution:")
-    logger.debug("m_fuel = %f", user_m_fuel)
-    logger.debug("Engine solution:")
-    logger.debug("m_fuel = %f", m_fuel)
-    logger.debug("Error relative tolerance = %e. Error m_fuel: %e.", error_rel_tol, error_rel_m_fuel)
-
-    passed = False
-
-    if error_rel_m_fuel < error_rel_tol:
-        logger.info("User solution correct within error margin of {:g}.".format(error_rel_tol))
-        passed = True
-    else:
-        logger.info("User solution incorrect.")
-
-    return passed, str(m_fuel)
+    return passed, str(correct_test_case.output['m_fuel'])
