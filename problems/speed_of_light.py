@@ -4,6 +4,7 @@ import logging
 import numpy as np
 
 from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.solutions.speed_of_light import light_time
 
 logger = logging.getLogger(__name__)
 
@@ -59,9 +60,8 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
 
 def solve_test_case(test_case: ProblemTestCase) -> None:
-    c = PHYSICAL_CONSTANTS["c"]
     distance = test_case.input["distance"]
-    test_case.output["time"] = distance / c
+    test_case.output["time"] = light_time(distance)
     return
 
 

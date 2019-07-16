@@ -3,6 +3,7 @@ import logging
 import numpy as np
 
 from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.solutions.earthquake_epicenters import earthquake_epicenter
 
 logger = logging.getLogger(__name__)
 
@@ -15,15 +16,12 @@ class TestCase11Type(TestCaseTypeEnum):
 
 class TestCase11(TestCase):
     def input_tuple(self) -> tuple:
-        input_str = str(self.input['x1']) + ' ' + str(self.input['y1']) + ' ' + str(self.input['t1']) + ' '
-        input_str += str(self.input['x2']) + ' ' + str(self.input['y2']) + ' ' + str(self.input['t2']) + ' '
-        input_str += str(self.input['x3']) + ' ' + str(self.input['y3']) + ' ' + str(self.input['t3'])
         return (self.input['x1'], self.input['y1'], self.input['t1'],
-        	self.input['x2'], self.input['y2'], self.input['t2'],
-        	self.input['x3'], self.input['y3'], self.input['t3'])
+        	    self.input['x2'], self.input['y2'], self.input['t2'],
+        	    self.input['x3'], self.input['y3'], self.input['t3'])
 
     def output_tuple(self) -> tuple:
-        return (self.output['x'], self.output['y'])
+        return self.output['x'], self.output['y']
 
 
 TEST_CASE_TYPE_ENUM = TestCase11Type
@@ -90,15 +88,15 @@ def generate_test_case(test_type: TestCase11Type) -> TestCase11:
 
     # Convert to float so the user gets Python floats and not numpy floats.
     test_case.input = {
-    	'x1': float(r1[0]),
-    	'y1': float(r1[1]),
-    	't1': float(t1),
-    	'x2': float(r2[0]),
-    	'y2': float(r2[1]),
-    	't2': float(t2),
-    	'x3': float(r3[0]),
-    	'y3': float(r3[1]),
-    	't3': float(t3)
+        'x1': float(r1[0]),
+        'y1': float(r1[1]),
+        't1': float(t1),
+        'x2': float(r2[0]),
+        'y2': float(r2[1]),
+        't2': float(t2),
+        'x3': float(r3[0]),
+        'y3': float(r3[1]),
+        't3': float(t3)
     }
 
     logger.debug("Test case input:")
@@ -122,35 +120,7 @@ def solve_test_case(test_case: TestCase11) -> None:
     x2, y2, t2 = test_case.input['x2'], test_case.input['y2'], test_case.input['t2']
     x3, y3, t3 = test_case.input['x3'], test_case.input['y3'], test_case.input['t3']
 
-    r1 = v*t1
-    r2 = v*t2
-    r3 = v*t3
-
-    # Setting up the equations, we get two simultaneous linear equations for
-    # x0 and y0, namely ax + by = e and cx + dy = f where
-
-    a = 2*(x2-x1)
-    b = 2*(y2-y1)
-    c = 2*(x3-x1)
-    d = 2*(y3-y1)
-    e = r1**2 - x1**2 - y1**2 - r2**2 + x2**2 + y2**2
-    f = r1**2 - x1**2 - y1**2 - r3**2 + x3**2 + y3**2
-
-    # Solving ax + by = e and cx + dy = f for x,y gives
-    x = (b*f - d*e) / (b*c - a*d)
-    y = (c*e - a*f) / (b*c - a*d)
-
-    if test_case.output:  # Testing if output dict is non-empty.
-        logger.warning("Test case already has solution:")
-        logger.warning("(x, y) = (%f, %f)", test_case.output['x'], test_case.output['y'])
-        logger.warning("Overwriting with new solution.")
-
-    test_case.output['x'] = x
-    test_case.output['y'] = y
-
-    logger.debug("Test case solution:")
-    logger.debug("(x, y) = (%f, %f)", x, y)
-
+    test_case.output['x'], test_case.output['y'] =  earthquake_epicenter(x1, y1, t1, x2, y2, t2, x3, y3, t3)
     return
 
 

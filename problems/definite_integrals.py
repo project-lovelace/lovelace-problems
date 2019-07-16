@@ -5,6 +5,7 @@ import logging
 import numpy as np
 
 from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.solutions.definite_integrals import area_of_rectangles
 
 logger = logging.getLogger(__name__)
 
@@ -63,9 +64,6 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
 
 def solve_test_case(test_case: ProblemTestCase) -> None:
-    def area_of_rectangles(f, dx):
-        return sum(f) * dx
-
     f, dx = test_case.input["f"], test_case.input["dx"]
     test_case.output["area"] = area_of_rectangles(f, dx)
     return

@@ -4,6 +4,7 @@ import logging
 import numpy as np
 
 from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.solutions.almost_pi import almost_pi
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +23,7 @@ class ProblemTestCase(TestCase):
 
 TEST_CASE_TYPE_ENUM = TestCaseType
 TEST_CASE_CLASS = ProblemTestCase
-FUNCTION_NAME = "pi"
+FUNCTION_NAME = "almost_pi"
 STATIC_RESOURCES = []
 
 PHYSICAL_CONSTANTS = {}
@@ -46,8 +47,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
 def solve_test_case(test_case: ProblemTestCase) -> None:
     N = test_case.input["N"]
-    logger.info("N={:}".format(N))
-    test_case.output["pi"] = 4 * sum([(-1) ** k / (2*k + 1) for k in range(N)])
+    test_case.output["pi"] = almost_pi(N)
     return
 
 

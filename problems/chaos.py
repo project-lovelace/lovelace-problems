@@ -3,6 +3,7 @@ import logging
 import numpy as np
 
 from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.solutions.chaos import logistic_map
 
 logger = logging.getLogger(__name__)
 
@@ -57,12 +58,7 @@ def generate_test_case(test_type: TestCase3Type) -> TestCase3:
 
 def solve_test_case(test_case: TestCase3) -> None:
     r = test_case.input['r']
-
-    x = [0.5]
-    for _ in range(50):
-        x.append(r*x[-1]*(1-x[-1]))
-
-    test_case.output['x'] = x
+    test_case.output['x'] = logistic_map(r)
     return
 
 

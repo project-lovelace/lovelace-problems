@@ -4,6 +4,7 @@ import logging
 import numpy as np
 
 from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.solutions.flight_paths import haversine
 
 logger = logging.getLogger(__name__)
 
@@ -55,22 +56,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
 
 def solve_test_case(test_case: ProblemTestCase) -> None:
-    from math import radians, sin, cos, sqrt, asin
-
-    R = PHYSICAL_CONSTANTS["R"]
-
     lat1, lon1 = test_case.input["lat1"], test_case.input["lon1"]
     lat2, lon2 = test_case.input["lat2"], test_case.input["lon2"]
-
-    dLat = radians(lat2 - lat1)
-    dLon = radians(lon2 - lon1)
-    lat1 = radians(lat1)
-    lat2 = radians(lat2)
-
-    a = sin(dLat/2)**2 + cos(lat1) * cos(lat2) * sin(dLon/2)**2
-    c = 2 * asin(sqrt(a))
-
-    test_case.output["distance"] = R*c
+    test_case.output["distance"] = haversine(lat1, lon1, lat2, lon2)
     return
 
 

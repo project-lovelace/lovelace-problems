@@ -3,6 +3,7 @@ import random
 import logging
 
 from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.solutions.babylonian_square_roots import babylonian_sqrt
 
 logger = logging.getLogger(__name__)
 
@@ -50,19 +51,6 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
 
 def solve_test_case(test_case: ProblemTestCase) -> None:
-    def babylonian_sqrt(S):
-        if S == 0:
-            return 0
-
-        if S < 0:
-            return "undefined"
-
-        x_n = 10
-        while abs(x_n ** 2 - S) / S > 1e-10:
-            x_n = 0.5 * (x_n + S / x_n)
-
-        return x_n
-
     n = test_case.input["n"]
     test_case.output["sqrt_n"] = babylonian_sqrt(n)
     return

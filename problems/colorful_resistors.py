@@ -3,6 +3,7 @@ import logging
 import numpy as np
 
 from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.solutions.colorful_resistors import resistance
 
 logger = logging.getLogger(__name__)
 
@@ -82,9 +83,9 @@ def generate_test_case(test_type: TestCase6Type) -> TestCase6:
 
     test_case = TestCase6(test_type)
 
-    # We have the str() of each random choice as np.random.choice()
+    # We use the str() of each random choice as np.random.choice()
     # returns an np.str_ object and the test cases will fail if the user
-    # hasn't imported numpy.
+    # hasn't imported numpy: we want a string, not an np.str_!
     if test_type is TestCase6Type.ZERO_RESISTOR:
         colors = ['black']
     elif test_type is TestCase6Type.FOUR_BAND:
@@ -106,28 +107,8 @@ def generate_test_case(test_type: TestCase6Type) -> TestCase6:
 
 
 def solve_test_case(test_case: TestCase6) -> None:
-    digits = PHYSICAL_CONSTANTS['digits']
-    multiplier = PHYSICAL_CONSTANTS['multiplier']
-    tolerance = PHYSICAL_CONSTANTS['tolerance']
-
     colors = test_case.input['colors']
-    n_bands = len(colors)
-
-    if n_bands == 1 and colors[0] == 'black':
-        nominal_R = 0
-        minimum_R = 0
-        maximum_R = 0
-    elif n_bands == 4:
-        nominal_R = 10*digits[colors[0]] + digits[colors[1]]
-        nominal_R *= multiplier[colors[2]]
-        minimum_R = (1 - tolerance[colors[3]]) * nominal_R
-        maximum_R = (1 + tolerance[colors[3]]) * nominal_R
-    elif n_bands == 5:
-        nominal_R = 100*digits[colors[0]] + 10 * digits[colors[1]] + digits[colors[2]]
-        nominal_R *= multiplier[colors[3]]
-        minimum_R = (1 - tolerance[colors[4]]) * nominal_R
-        maximum_R = (1 + tolerance[colors[4]]) * nominal_R
-
+    nominal_R, minimum_R, maximum_R = resistance(colors)
     test_case.output['nominal_resistance'] = nominal_R
     test_case.output['minimum_resistance'] = minimum_R
     test_case.output['maximum_resistance'] = maximum_R

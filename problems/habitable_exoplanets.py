@@ -3,6 +3,7 @@ import logging
 import numpy as np
 
 from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.solutions.habitable_exoplanets import habitable_exoplanet
 
 logger = logging.getLogger(__name__)
 
@@ -55,13 +56,8 @@ def generate_test_case(test_type: TestCase2Type) -> TestCase2:
 def solve_test_case(test_case: TestCase2) -> None:
     L_star = test_case.input['L_star']
     r = test_case.input['r']
-
-    if r < np.sqrt(L_star/1.1):
-        test_case.output['habitability'] = 'too hot'
-    elif r > np.sqrt(L_star/0.53):
-        test_case.output['habitability'] = 'too cold'
-    else:
-        test_case.output['habitability'] = 'just right'
+    test_case.output['habitability'] = habitable_exoplanet(L_star, r)
+    return
 
 
 def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:

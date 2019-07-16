@@ -1,8 +1,10 @@
 import logging
+import importlib
 
 import numpy as np
 
 from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.solutions.rocket_science import rocket_fuel
 
 logger = logging.getLogger(__name__)
 
@@ -61,10 +63,7 @@ def generate_test_case(test_type: TestCase1Type) -> TestCase1:
 
 def solve_test_case(test_case: TestCase1) -> None:
     v = test_case.input['v']
-    M = PHYSICAL_CONSTANTS['M']
-    v_e = PHYSICAL_CONSTANTS['v_e']
-
-    test_case.output['m_fuel'] = M*(np.exp(v/v_e) - 1)
+    test_case.output['m_fuel'] = rocket_fuel(v)
     return
 
 

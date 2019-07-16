@@ -3,6 +3,7 @@ import logging
 from problems.test_case import TestCase, TestCaseTypeEnum
 
 logger = logging.getLogger(__name__)
+from problems.solutions.nand_gate import NAND
 
 
 class TestCaseType(TestCaseTypeEnum):
@@ -51,8 +52,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 def solve_test_case(test_case: ProblemTestCase) -> None:
     p = test_case.input["p"]
     q = test_case.input["q"]
-
-    test_case.output["nand"] = 1 - p*q
+    test_case.output["nand"] = NAND(p, q)
     return
 
 

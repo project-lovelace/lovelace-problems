@@ -3,6 +3,7 @@ import random
 import string
 
 from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.solutions.caesar_cipher import break_caesar_cipher
 
 logger = logging.getLogger(__name__)
 
@@ -74,13 +75,7 @@ def generate_test_case(test_type: TestCase5Type) -> TestCase5:
 def solve_test_case(test_case: TestCase5) -> None:
     ciphertext = test_case.input['ciphertext']
     known_word = test_case.input['known_word']
-
-    for shift in range(len(string.ascii_uppercase)):
-        if known_word in caesar_cipher(ciphertext, shift).split():
-            decrypted_message = caesar_cipher(ciphertext, shift)
-            break
-
-    test_case.output['decrypted_message'] = decrypted_message
+    test_case.output['decrypted_message'] = break_caesar_cipher(ciphertext, known_word)
     return
 
 
