@@ -4,6 +4,7 @@ import logging
 import numpy as np
 
 from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.solutions.wind_chill import wind_chill
 
 logger = logging.getLogger(__name__)
 
@@ -60,8 +61,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 def solve_test_case(test_case: ProblemTestCase) -> None:
     T_a = test_case.input["T_a"]
     v = test_case.input["v"]
-
-    test_case.output["T_wc"] = 13.12 + 0.6215*T_a - 11.37*v**0.16 + 0.3965*T_a*v**0.16
+    test_case.output["T_wc"] = wind_chill(T_a, v)
     return
 
 
