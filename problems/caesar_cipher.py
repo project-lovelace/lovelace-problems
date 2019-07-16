@@ -1,8 +1,10 @@
-import logging
-import random
 import string
+import random
+import logging
+from typing import Tuple
 
-from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
+from problems.solutions.caesar_cipher import break_caesar_cipher
 
 logger = logging.getLogger(__name__)
 
@@ -14,22 +16,29 @@ class TestCaseType(TestCaseTypeEnum):
 
 
 class ProblemTestCase(TestCase):
-    def input_tuple(self) -> str:
+    def input_tuple(self) -> tuple:
         return self.input['ciphertext'], self.input['known_word']
 
-    def output_tuple(self) -> str:
-        return (self.output['decrypted_message'],)
+    def output_tuple(self) -> tuple:
+        return self.output['decrypted_message'],
 
+    def output_str(self) -> str:
+        return self.output['decrypted_message']
 
 FUNCTION_NAME = "break_caesar_cipher"
 STATIC_RESOURCES = []
 
+INPUT_VARS = ['ciphertext', 'known_word']
+OUTPUT_VARS = ['decrypted_message']
+
 PHYSICAL_CONSTANTS = {}
-TESTING_CONSTANTS = {}
+
+ATOL = {}
+RTOL = {}
 
 
 def generate_random_string(length):
-    return ''.join(random.choice(string.ascii_uppercase) for _ in range(length))
+    return "".join(random.choice(string.ascii_uppercase) for _ in range(length))
 
 
 def randomly_insert_spaces(s):
@@ -37,7 +46,7 @@ def randomly_insert_spaces(s):
     n = random.randint(int(length/10), int(length/4))
     for _ in range(n):
         pos = random.randint(0, length-1)
-        s = s[:pos] + ' ' + s[pos:]
+        s = s[:pos] + " " + s[pos:]
     return s
 
 
@@ -55,9 +64,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         length = random.randint(50, 400)
         plaintext = randomly_insert_spaces(generate_random_string(length))
     elif test_type is TestCaseType.MOBY_DICK:
-        plaintext = 'Call me Ishmael Some years ago never mind how long precisely having little or no money in my purse and nothing particular to interest me on shore I thought I would sail about a little and see the watery part of the world'.upper()
+        plaintext = "Call me Ishmael Some years ago never mind how long precisely having little or no money in my purse and nothing particular to interest me on shore I thought I would sail about a little and see the watery part of the world".upper()
     elif test_type is TestCaseType.THE_WIRE:
-        plaintext = 'This drug thing this aint police work I mean I can send any fool with a badge and a gun to a corner to jack a crew and grab vials But policing I mean you call something a war and pretty soon everyone is going to be running around acting like warriors They gonna be running around on a damn crusade storming corners racking up body counts And when you at war you need a fucking enemy And pretty soon damn near everybody on every corner is your fucking enemy And soon, the neighborhood youre supposed to be policing thats just occupied territory'.upper()
+        plaintext = "This drug thing this aint police work I mean I can send any fool with a badge and a gun to a corner to jack a crew and grab vials But policing I mean you call something a war and pretty soon everyone is going to be running around acting like warriors They gonna be running around on a damn crusade storming corners racking up body counts And when you at war you need a fucking enemy And pretty soon damn near everybody on every corner is your fucking enemy And soon, the neighborhood youre supposed to be policing thats just occupied territory".upper()
 
     known_word = random.choice(plaintext.split())
 
@@ -72,45 +81,10 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 def solve_test_case(test_case: ProblemTestCase) -> None:
     ciphertext = test_case.input['ciphertext']
     known_word = test_case.input['known_word']
-
-    for shift in range(len(string.ascii_uppercase)):
-        if known_word in caesar_cipher(ciphertext, shift).split():
-            decrypted_message = caesar_cipher(ciphertext, shift)
-            break
-
-    test_case.output['decrypted_message'] = decrypted_message
-    return
+    test_case.output['decrypted_message'] = break_caesar_cipher(ciphertext, known_word)
 
 
-def verify_user_solution(user_input: str, user_output: str) -> bool:
-    logger.info("Verifying user solution...")
-    logger.debug("User input: %s", user_input)
-    logger.debug("User output: %s", user_output)
-
-    # Build TestCase object out of user's input string.
-    tmp_test_case = ProblemTestCase()
-
-    ciphertext, known_word = user_input
-    tmp_test_case.input = {'ciphertext': ciphertext, 'known_word': known_word}
-
-    # Solve the problem with this TestCase so we have our own solution, and extract the solution.
-    solve_test_case(tmp_test_case)
-    decrypted_message = tmp_test_case.output['decrypted_message']
-
-    # Extract user solution.
-    user_decrypted_message = user_output[0]
-
-    logger.debug("User solution:")
-    logger.debug("decrypted_message = %s", user_decrypted_message)
-    logger.debug("Engine solution:")
-    logger.debug("decrypted message = %s", decrypted_message)
-
-    passed = False
-
-    if user_decrypted_message == decrypted_message:
-        logger.info("User solution correct.")
-        passed = True
-    else:
-        logger.info("User solution incorrect.")
-
-    return passed, str(decrypted_message)
+def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+    user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
+    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    return passed, correct_test_case.output_str()
