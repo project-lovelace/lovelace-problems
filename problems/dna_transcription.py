@@ -21,8 +21,6 @@ class ProblemTestCase(TestCase):
         return (self.output['rna_str'],)
 
 
-TEST_CASE_TYPE_ENUM = TestCaseType
-TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "rna"
 STATIC_RESOURCES = []
 

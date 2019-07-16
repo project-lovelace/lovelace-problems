@@ -22,8 +22,6 @@ class ProblemTestCase(TestCase):
         return (self.output["sqrt_n"],)
 
 
-TEST_CASE_TYPE_ENUM = TestCaseType
-TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "babylonian_sqrt"
 STATIC_RESOURCES = []
 

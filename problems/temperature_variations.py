@@ -22,8 +22,6 @@ class ProblemTestCase(TestCase):
         return (self.output["T_avg"], self.output["T_var"])
 
 
-TEST_CASE_TYPE_ENUM = TestCaseType
-TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "temperature_statistics"
 STATIC_RESOURCES = []
 

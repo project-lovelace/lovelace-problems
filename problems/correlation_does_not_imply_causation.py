@@ -24,8 +24,6 @@ class ProblemTestCase(TestCase):
         return str(self.output['r'])
 
 
-TEST_CASE_TYPE_ENUM = TestCaseType
-TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "correlation_coefficient"
 STATIC_RESOURCES = ['spurious_xy.csv']
 

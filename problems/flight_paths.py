@@ -21,8 +21,6 @@ class ProblemTestCase(TestCase):
         return (self.output["distance"],)
 
 
-TEST_CASE_TYPE_ENUM = TestCaseType
-TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "haversine"
 STATIC_RESOURCES = []
 

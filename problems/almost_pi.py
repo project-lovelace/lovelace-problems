@@ -21,8 +21,6 @@ class ProblemTestCase(TestCase):
         return (self.output["pi"],)
 
 
-TEST_CASE_TYPE_ENUM = TestCaseType
-TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "almost_pi"
 STATIC_RESOURCES = []
 

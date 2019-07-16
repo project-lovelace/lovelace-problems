@@ -24,8 +24,6 @@ class ProblemTestCase(TestCase):
         return (self.output["T_wc"],)
 
 
-TEST_CASE_TYPE_ENUM = TestCaseType
-TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "wind_chill"
 STATIC_RESOURCES = []
 

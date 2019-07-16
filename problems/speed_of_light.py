@@ -25,8 +25,6 @@ class ProblemTestCase(TestCase):
         return (self.output["time"],)
 
 
-TEST_CASE_TYPE_ENUM = TestCaseType
-TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "light_time"
 STATIC_RESOURCES = []
 

@@ -19,14 +19,12 @@ class ProblemTestCase(TestCase):
         return (self.input['colors'],)
 
     def output_tuple(self) -> str:
-        nominal_R = tmp_test_case.output['nominal_resistance']
-        minimum_R = tmp_test_case.output['minimum_resistance']
-        maximum_R = tmp_test_case.output['maximum_resistance']
-        return (nominal_R, minimum_R, maximum_R)
+        nominal_R = self.output['nominal_resistance']
+        minimum_R = self.output['minimum_resistance']
+        maximum_R = self.output['maximum_resistance']
+        return nominal_R, minimum_R, maximum_R
 
 
-TEST_CASE_TYPE_ENUM = TestCaseType
-TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "resistance"
 STATIC_RESOURCES = []
 

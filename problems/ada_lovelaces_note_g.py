@@ -10,7 +10,7 @@ from problems.solutions.ada_lovelaces_note_g import bernoulli
 logger = logging.getLogger(__name__)
 
 
-class TestCase12Type(TestCaseTypeEnum):
+class TestCaseType(TestCaseTypeEnum):
     ZEROTH = ("Zeroth Bernoulli number", 1)
     FIRST = ("First Bernoulli number", 1)
     SECOND = ("Second Bernoulli number", 1)
@@ -21,7 +21,7 @@ class TestCase12Type(TestCaseTypeEnum):
     LARGE_ODD = ("Odd n > 250", 1)
 
 
-class TestCase12(TestCase):
+class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
         return (self.input['n'],)
 
@@ -31,8 +31,6 @@ class TestCase12(TestCase):
         return numerator, denominator
 
 
-TEST_CASE_TYPE_ENUM = TestCase12Type
-TEST_CASE_CLASS = TestCase12
 FUNCTION_NAME = "bernoulli"
 STATIC_RESOURCES = []
 
@@ -40,31 +38,31 @@ PHYSICAL_CONSTANTS = {}
 TESTING_CONSTANTS = {}
 
 
-def generate_test_case(test_type: TestCase12Type) -> TestCase12:
-    test_case = TestCase12(test_type)
+def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
+    test_case = ProblemTestCase(test_type)
 
-    if test_type is TestCase12Type.ZEROTH:
+    if test_type is TestCaseType.ZEROTH:
         n = 0
-    elif test_type is TestCase12Type.FIRST:
+    elif test_type is TestCaseType.FIRST:
         n = 1
-    elif test_type is TestCase12Type.SECOND:
+    elif test_type is TestCaseType.SECOND:
         n = 2
-    elif test_type is TestCase12Type.THIRD:
+    elif test_type is TestCaseType.THIRD:
         n = 3
-    elif test_type is TestCase12Type.RANDOM_EVEN:
+    elif test_type is TestCaseType.RANDOM_EVEN:
         n = 2 * np.random.randint(2, 50)
-    elif test_type is TestCase12Type.RANDOM_ODD:
+    elif test_type is TestCaseType.RANDOM_ODD:
         n = 2 * np.random.randint(2, 50) + 1
-    elif test_type is TestCase12Type.LARGE_EVEN:
+    elif test_type is TestCaseType.LARGE_EVEN:
         n = 2 * np.random.randint(125, 250)
-    elif test_type is TestCase12Type.LARGE_ODD:
+    elif test_type is TestCaseType.LARGE_ODD:
         n = 2 * np.random.randint(125, 250) + 1
 
     test_case.input['n'] = n
     return test_case
 
 
-def solve_test_case(test_case: TestCase12) -> None:
+def solve_test_case(test_case: ProblemTestCase) -> None:
     n = test_case.input["n"]
     test_case.output["B_n_numerator"], test_case.output["B_n_denominator"] = bernoulli(n)
     return
@@ -76,7 +74,7 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.debug("User output: %s", user_output)
 
     # Build TestCase object out of user's input string.
-    tmp_test_case = TestCase12()
+    tmp_test_case = ProblemTestCase()
 
     n = user_input[0]
     tmp_test_case.input = {"n": n}

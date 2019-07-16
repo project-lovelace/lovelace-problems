@@ -19,8 +19,6 @@ class ProblemTestCase(TestCase):
         return (self.output['enso_classification'],)
 
 
-TEST_CASE_TYPE_ENUM = TestCaseType
-TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "enso_classification"
 STATIC_RESOURCES = ['mei.ext_index.txt']
 

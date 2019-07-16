@@ -26,8 +26,6 @@ class ProblemTestCase(TestCase):
         return (self.output["board"],)
 
 
-TEST_CASE_TYPE_ENUM = TestCaseType
-TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "game_of_life"
 STATIC_RESOURCES = ['still_life.txt', 'oscillators.txt', 'spaceships.txt']
 

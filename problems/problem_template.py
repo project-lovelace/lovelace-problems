@@ -3,16 +3,14 @@ import logging
 from problems.test_case import TestCase, TestCaseTypeEnum
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-formatter = logging.Formatter('[%(asctime)s] %(name)s:%(levelname)s: %(message)s')
 
 
-class TestCaseXType(TestCaseTypeEnum):
-    EXAMPLE1 = ('Example1', 'Some description', 2)
-    EXAMPLE2 = ('Example2', '', 1)
+class TestCaseType(TestCaseTypeEnum):
+    EXAMPLE1 = ('Example1', 2)
+    EXAMPLE2 = ('Example2', 1)
 
 
-class TestCaseX(TestCase):
+class ProblemTestCase(TestCase):
     def input_str(self) -> str:
         pass
 
@@ -20,20 +18,17 @@ class TestCaseX(TestCase):
         pass
 
 
-TEST_CASE_TYPE_ENUM = TestCaseXType
-TEST_CASE_CLASS = TestCaseX
-
 PHYSICAL_CONSTANTS = {}
 TESTING_CONSTANTS = {}
 
 
-def generate_input(test_type: TestCaseXType) -> TestCaseX:
+def generate_input(test_type: TestCaseType) -> ProblemTestCase:
     pass
 
 
-def solve_test_case(test_case: TestCaseX) -> None:
+def solve_test_case(test_case: ProblemTestCase) -> None:
     pass
 
 
-def verify_user_solution(user_input_str: str, user_output_str: str) -> bool:
+def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     pass

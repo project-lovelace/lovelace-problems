@@ -23,8 +23,6 @@ class ProblemTestCase(TestCase):
         return (self.output['mass'],)
 
 
-TEST_CASE_TYPE_ENUM = TestCaseType
-TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "molecular_mass"
 STATIC_RESOURCES = ['periodic_table.csv']
 
