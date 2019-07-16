@@ -26,8 +26,6 @@ class ProblemTestCase(TestCase):
         return (self.output["C"],)
 
 
-TEST_CASE_TYPE_ENUM = TestCaseType
-TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "celsius"
 STATIC_RESOURCES = []
 

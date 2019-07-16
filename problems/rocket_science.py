@@ -26,8 +26,6 @@ class ProblemTestCase(TestCase):
         return (self.output['m_fuel'],)
 
 
-TEST_CASE_TYPE_ENUM = TestCaseType
-TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "rocket_fuel"
 STATIC_RESOURCES = []
 

@@ -24,8 +24,6 @@ class ProblemTestCase(TestCase):
         return (self.output["area"],)
 
 
-TEST_CASE_TYPE_ENUM = TestCaseType
-TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "area_of_rectangles"
 STATIC_RESOURCES = []
 

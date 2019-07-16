@@ -24,8 +24,6 @@ class ProblemTestCase(TestCase):
         return self.output['x'], self.output['y']
 
 
-TEST_CASE_TYPE_ENUM = TestCaseType
-TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "earthquake_epicenter"
 STATIC_RESOURCES = []
 

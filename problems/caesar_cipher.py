@@ -21,8 +21,6 @@ class ProblemTestCase(TestCase):
         return (self.output['decrypted_message'],)
 
 
-TEST_CASE_TYPE_ENUM = TestCaseType
-TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "break_caesar_cipher"
 STATIC_RESOURCES = []
 

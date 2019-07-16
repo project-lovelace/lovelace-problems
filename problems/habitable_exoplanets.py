@@ -23,8 +23,6 @@ class ProblemTestCase(TestCase):
         return (self.output['habitability'],)
 
 
-TEST_CASE_TYPE_ENUM = TestCaseType
-TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "habitable_exoplanet"
 STATIC_RESOURCES = []
 
