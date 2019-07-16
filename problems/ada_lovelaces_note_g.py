@@ -5,6 +5,7 @@ from fractions import Fraction
 from math import factorial
 
 from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.solutions.ada_lovelaces_note_g import bernoulli
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +28,7 @@ class TestCase12(TestCase):
     def output_tuple(self) -> tuple:
         numerator = self.output["numerator"]
         denominator = self.output["denominator"]
-        return (numerator, denominator)
+        return numerator, denominator
 
 
 TEST_CASE_TYPE_ENUM = TestCase12Type
@@ -37,6 +38,7 @@ STATIC_RESOURCES = []
 
 PHYSICAL_CONSTANTS = {}
 TESTING_CONSTANTS = {}
+
 
 def generate_test_case(test_type: TestCase12Type) -> TestCase12:
     test_case = TestCase12(test_type)
@@ -61,22 +63,10 @@ def generate_test_case(test_type: TestCase12Type) -> TestCase12:
     test_case.input['n'] = n
     return test_case
 
-def solve_test_case(test_case: TestCase12) -> None:
-    def B(n):
-        B = (n+2) * [Fraction(0, 1)]
-        B[0] = Fraction(1, 1)
-        B[1] = Fraction(-1, 2)
-        
-        for i in range(2, n+1):
-            B[i] = -sum([Fraction(int(factorial(i)/(factorial(k)*factorial(i - k))), (i+1-k)) * B[k]  for k in range(0, i)])
-        
-        return B[n].numerator, B[n].denominator
 
+def solve_test_case(test_case: TestCase12) -> None:
     n = test_case.input["n"]
-    B_n_numerator, B_n_denominator = B(n)
-    
-    test_case.output["B_n_numerator"] = B_n_numerator
-    test_case.output["B_n_denominator"] = B_n_denominator
+    test_case.output["B_n_numerator"], test_case.output["B_n_denominator"] = bernoulli(n)
     return
 
 

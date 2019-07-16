@@ -5,6 +5,7 @@ import os
 import numpy as np
 
 from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.solutions.correlation_does_not_imply_causation import correlation_coefficient
 
 logger = logging.getLogger(__name__)
 
@@ -76,26 +77,7 @@ def generate_test_case(test_type: TestCase7Type) -> TestCase7:
 def solve_test_case(test_case: TestCase7) -> None:
     x = np.array(test_case.input['x'])
     y = np.array(test_case.input['y'])
-    N = len(x)
-
-    x_bar = x.mean()
-    y_bar = y.mean()
-
-    cov_XY = 0
-    sigma_X = 0
-    sigma_Y = 0
-
-    for i in range(N):
-        cov_XY = cov_XY + (x[i] - x_bar) * (y[i] - y_bar)
-        sigma_X = sigma_X + (x[i] - x_bar) ** 2
-        sigma_Y = sigma_Y + (y[i] - y_bar) ** 2
-
-    sigma_X = np.sqrt(sigma_X)
-    sigma_Y = np.sqrt(sigma_Y)
-
-    r = cov_XY / (sigma_X * sigma_Y)
-
-    test_case.output['r'] = r
+    test_case.output['r'] = correlation_coefficient(x, y)
     return
 
 

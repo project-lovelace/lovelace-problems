@@ -3,6 +3,7 @@ import logging
 import numpy as np
 
 from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.solutions.game_of_life import game_of_life
 
 logger = logging.getLogger(__name__)
 
@@ -110,30 +111,11 @@ def generate_test_case(test_type: TestCase10Type) -> TestCase10:
     test_case.input["steps"] = steps
     return test_case
 
+
 def solve_test_case(test_case: TestCase10) -> None:
     grid = test_case.input["board"]
     steps = test_case.input["steps"]
-
-    grid = np.array(grid)
-    N, M = grid.shape
-
-    for n in range(steps):
-        newGrid = grid.copy()
-        for i in range(N):
-            for j in range(M):
-                total = (grid[i, (j-1)%M] + grid[i, (j+1)%M] +
-                         grid[(i-1)%N, j] + grid[(i+1)%N, j] +
-                         grid[(i-1)%N, (j-1)%M] + grid[(i-1)%N, (j+1)%M] +
-                         grid[(i+1)%N, (j-1)%M] + grid[(i+1)%N, (j+1)%M])
-                if grid[i, j]  == ALIVE:
-                    if (total < 2) or (total > 3):
-                        newGrid[i, j] = DEAD
-                else:
-                    if total == 3:
-                        newGrid[i, j] = ALIVE
-                grid = newGrid
-
-    test_case.output["board"] = grid
+    test_case.output["board"] = game_of_life(grid, steps)
     return
 
 
