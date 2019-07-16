@@ -90,3 +90,6 @@ ENV/
 
 # IDE files
 .idea
+
+# Symbolic links to secret stuff
+problems/solutions
