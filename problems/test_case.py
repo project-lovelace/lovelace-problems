@@ -1,6 +1,7 @@
 import logging
 from enum import Enum
 from math import isclose
+from typing import Tuple
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +38,16 @@ class TestCase(object):
 
 
 def values_match(v1, v2, tt, tol) -> bool:
+    """
+    Check if v1 and v2 are equal. For ints and floats, an absolute or relative tolerance can be specified.
+    Lists and tuples are checked recursively.
+
+    :param v1: One value.
+    :param v2: Another value.
+    :param tt: Tolerance type: None, "absolute", or "relative".
+    :param tol: Tolerance value if using "absolute" or "relative".
+    :return: True or False
+    """
     if type(v1) != type(v2):
         logger.debug("v1 and v2 types do not match: v1_type={:}, v2_type={:}".format(type(v1), type(v2)))
         return False
@@ -65,7 +76,18 @@ def values_match(v1, v2, tt, tol) -> bool:
         return v1 == v2  # Takes care of strings (and hopefully other data types).
 
 
-def test_case_solution_correct(user_test_case: TestCase, atol: dict, rtol: dict, problem_test_case, solve_test_case) -> tuple:
+def test_case_solution_correct(user_test_case: TestCase, atol: dict, rtol: dict, problem_test_case, solve_test_case) -> Tuple[bool, TestCase]:
+    """
+    Check whether user_test_case contains the correct output. Absolute and relative tolerances can be specified via
+    the atol and rtol dictionaries.
+
+    :param user_test_case: A TestCase object containing input given to the user and the output they produced.
+    :param atol: A dictionary of absolute tolerances.
+    :param rtol: A dictionary of relative tolerances.
+    :param problem_test_case: A function that can be used to construct TestCase objects.
+    :param solve_test_case: A function that can be used to fill the test case output with the correct output.
+    :return: True or False, and a TestCase containing the correct output.
+    """
     logger.info("Verifying user solution...")
 
     input_vars = list(user_test_case.input.keys())
