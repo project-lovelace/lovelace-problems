@@ -1,10 +1,8 @@
-# ProblemI4.py
-# RNA Transcription
-
-import logging
 import random
+import logging
 
 from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.solutions.dna_transcription import rna
 
 logger = logging.getLogger(__name__)
 
@@ -36,24 +34,6 @@ def generate_dna_sequence(length):
     return ''.join(random.choice('ATGC') for _ in range(length))
 
 
-def randomly_insert_extra_sites(sequence, n):
-    # Insert the string "CCWGG" (W = A or T) at n random locations of the
-    # string sequence.
-    # TODO: Does this run in O(n)?
-    length = len(sequence)
-    for _ in range(length):
-        site = 'CC' + random.choice('AT') + 'GG'
-        pos = random.randint(0, length-1)
-        sequence = sequence[:pos] + site + sequence[pos:]
-    return sequence
-
-
-def dna_complement(seq):
-    base_pairs = {'A': 'T', 'C': 'G', 'G': 'C', 'T': 'A'}
-    complement = [base_pairs[base] for base in list(seq)]
-    return ''.join(complement)
-
-
 def generate_test_case(test_type: TestCase4Type) -> TestCase4:
     test_case = TestCase4(test_type)
 
@@ -73,7 +53,7 @@ def generate_test_case(test_type: TestCase4Type) -> TestCase4:
 
 def solve_test_case(test_case: TestCase4) -> None:
     dna_str = test_case.input['dna_str']
-    test_case.output['rna_str'] = dna_str.replace("T", "U")
+    test_case.output['rna_str'] = rna(dna_str)
     return
 
 
