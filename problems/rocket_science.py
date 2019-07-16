@@ -19,10 +19,13 @@ class TestCaseType(TestCaseTypeEnum):
 
 class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
-        return (self.input['v'],)
+        return self.input['v'],
 
     def output_tuple(self) -> tuple:
-        return (self.output['m_fuel'],)
+        return self.output['m_fuel'],
+
+    def output_str(self) -> str:
+        return str(self.output['m_fuel'])
 
 
 FUNCTION_NAME = "rocket_fuel"
@@ -65,11 +68,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 def solve_test_case(test_case: ProblemTestCase) -> None:
     v = test_case.input['v']
     test_case.output['m_fuel'] = rocket_fuel(v)
-    return
 
 
-def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
-    user_test_case = ProblemTestCase(test_type=None, input_vars=INPUT_VARS, input_tuple=user_input,
-                                     output_vars=OUTPUT_VARS, output_tuple=user_output)
+def verify_user_solution(user_input: tuple, user_output: tuple) -> tuple[bool, str]:
+    user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
     passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
-    return passed, str(correct_test_case.output['m_fuel'])
+    return passed, correct_test_case.output_str()
