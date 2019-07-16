@@ -8,13 +8,13 @@ from problems.solutions.colorful_resistors import resistance
 logger = logging.getLogger(__name__)
 
 
-class TestCase6Type(TestCaseTypeEnum):
+class TestCaseType(TestCaseTypeEnum):
     ZERO_RESISTOR = ('zero resistor', 1)
     FOUR_BAND = ('four band resistor', 3)
     FIVE_BAND = ('five band resistor', 3)
 
 
-class TestCase6(TestCase):
+class ProblemTestCase(TestCase):
     def input_tuple(self) -> str:
         return (self.input['colors'],)
 
@@ -25,8 +25,8 @@ class TestCase6(TestCase):
         return (nominal_R, minimum_R, maximum_R)
 
 
-TEST_CASE_TYPE_ENUM = TestCase6Type
-TEST_CASE_CLASS = TestCase6
+TEST_CASE_TYPE_ENUM = TestCaseType
+TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "resistance"
 STATIC_RESOURCES = []
 
@@ -76,25 +76,25 @@ TESTING_CONSTANTS = {
 }
 
 
-def generate_test_case(test_type: TestCase6Type) -> TestCase6:
+def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     digits = PHYSICAL_CONSTANTS['digits']
     multiplier = PHYSICAL_CONSTANTS['multiplier']
     tolerance = PHYSICAL_CONSTANTS['tolerance']
 
-    test_case = TestCase6(test_type)
+    test_case = ProblemTestCase(test_type)
 
     # We use the str() of each random choice as np.random.choice()
     # returns an np.str_ object and the test cases will fail if the user
     # hasn't imported numpy: we want a string, not an np.str_!
-    if test_type is TestCase6Type.ZERO_RESISTOR:
+    if test_type is TestCaseType.ZERO_RESISTOR:
         colors = ['black']
-    elif test_type is TestCase6Type.FOUR_BAND:
+    elif test_type is TestCaseType.FOUR_BAND:
         band_color1 = str(np.random.choice(list(digits.keys())))
         band_color2 = str(np.random.choice(list(digits.keys())))
         multiplier_color = str(np.random.choice(list(multiplier.keys())))
         tolerance_color = str(np.random.choice(list(tolerance.keys())))
         colors = [band_color1, band_color2, multiplier_color, tolerance_color]
-    elif test_type is TestCase6Type.FIVE_BAND:
+    elif test_type is TestCaseType.FIVE_BAND:
         band_color1 = str(np.random.choice(list(digits.keys())))
         band_color2 = str(np.random.choice(list(digits.keys())))
         band_color3 = str(np.random.choice(list(digits.keys())))
@@ -106,7 +106,7 @@ def generate_test_case(test_type: TestCase6Type) -> TestCase6:
     return test_case
 
 
-def solve_test_case(test_case: TestCase6) -> None:
+def solve_test_case(test_case: ProblemTestCase) -> None:
     colors = test_case.input['colors']
     nominal_R, minimum_R, maximum_R = resistance(colors)
     test_case.output['nominal_resistance'] = nominal_R
@@ -121,7 +121,7 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.debug("User output: %s", user_output)
 
     # Build TestCase object out of user's input string.
-    tmp_test_case = TestCase6()
+    tmp_test_case = ProblemTestCase()
 
     colors = user_input[0]
     tmp_test_case.input = {'colors': colors}

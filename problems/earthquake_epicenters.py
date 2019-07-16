@@ -8,13 +8,13 @@ from problems.solutions.earthquake_epicenters import earthquake_epicenter
 logger = logging.getLogger(__name__)
 
 
-class TestCase11Type(TestCaseTypeEnum):
+class TestCaseType(TestCaseTypeEnum):
     GENERAL = ('General case', 3)
     ZERO_CASE = ('Zero case', 1)
     EQUIDISTANT = ('Equidistant case', 1)
 
 
-class TestCase11(TestCase):
+class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
         return (self.input['x1'], self.input['y1'], self.input['t1'],
         	    self.input['x2'], self.input['y2'], self.input['t2'],
@@ -24,8 +24,8 @@ class TestCase11(TestCase):
         return self.output['x'], self.output['y']
 
 
-TEST_CASE_TYPE_ENUM = TestCase11Type
-TEST_CASE_CLASS = TestCase11
+TEST_CASE_TYPE_ENUM = TestCaseType
+TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "earthquake_epicenter"
 STATIC_RESOURCES = []
 
@@ -39,20 +39,20 @@ TESTING_CONSTANTS = {
 }
 
 
-def generate_test_case(test_type: TestCase11Type) -> TestCase11:
-    if not isinstance(test_type, TestCase11Type):
-        logger.critical('test_type is not of type TestCase11Type!')
-        raise TypeError('test_type is not of type TestCase11Type!')
+def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
+    if not isinstance(test_type, TestCaseType):
+        logger.critical('test_type is not of type TestCaseType!')
+        raise TypeError('test_type is not of type TestCaseType!')
 
-    test_case = TestCase11(test_type)
+    test_case = ProblemTestCase(test_type)
     logger.debug("Generating %s...", test_type.test_name)
 
-    if test_type is TestCase11Type.GENERAL:
+    if test_type is TestCaseType.GENERAL:
         r0 = np.random.uniform(-100, 100, 2)
         r1 = np.random.uniform(-100, 100, 2)
         r2 = np.random.uniform(-100, 100, 2)
         r3 = np.random.uniform(-100, 100, 2)
-    elif test_type is TestCase11Type.ZERO_CASE:
+    elif test_type is TestCaseType.ZERO_CASE:
         r0 = np.random.uniform(-100, 100, 2)
 
         zero_station = np.random.choice([1, 2, 3])
@@ -68,7 +68,7 @@ def generate_test_case(test_type: TestCase11Type) -> TestCase11:
             r1 = np.random.uniform(-100, 100, 2)
             r2 = np.random.uniform(-100, 100, 2)
             r3 = r0
-    elif test_type is TestCase11Type.EQUIDISTANT:
+    elif test_type is TestCaseType.EQUIDISTANT:
         r0 = np.random.uniform(-10, 10, 2)  # Place the earthquake near the origin.
         d = np.random.uniform(10, 90)  # Distance to all the stations. Max=90 ensures we stay inside the box.
         theta = np.random.uniform(0, 2*np.pi, 3)  # Choose three angles to place the stations at a distance d away.
@@ -113,7 +113,7 @@ def generate_test_case(test_type: TestCase11Type) -> TestCase11:
     return test_case
 
 
-def solve_test_case(test_case: TestCase11) -> None:
+def solve_test_case(test_case: ProblemTestCase) -> None:
     v = PHYSICAL_CONSTANTS['v']
 
     x1, y1, t1 = test_case.input['x1'], test_case.input['y1'], test_case.input['t1']
@@ -130,7 +130,7 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.debug("User output: %s", user_output)
 
     # Build TestCase object out of user's input string.
-    tmp_test_case = TestCase11()
+    tmp_test_case = ProblemTestCase()
 
     x1, y1, t1, x2, y2, t2, x3, y3, t3 = user_input
 

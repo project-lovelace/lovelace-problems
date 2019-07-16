@@ -8,7 +8,7 @@ from problems.solutions.chaos import logistic_map
 logger = logging.getLogger(__name__)
 
 
-class TestCase3Type(TestCaseTypeEnum):
+class TestCaseType(TestCaseTypeEnum):
     DEATH = ('death', 1)
     QUICK_STABLE = ('quick stable', 1)
     FLUCTUATE_STABLE = ('fluctuate stable', 1)
@@ -17,7 +17,7 @@ class TestCase3Type(TestCaseTypeEnum):
     DIVERGENCE = ('divergence', 1)
 
 
-class TestCase3(TestCase):
+class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
         return (self.input['r'],)
 
@@ -25,8 +25,8 @@ class TestCase3(TestCase):
         return (self.output['x'],)
 
 
-TEST_CASE_TYPE_ENUM = TestCase3Type
-TEST_CASE_CLASS = TestCase3
+TEST_CASE_TYPE_ENUM = TestCaseType
+TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "logistic_map"
 STATIC_RESOURCES = []
 
@@ -36,27 +36,27 @@ TESTING_CONSTANTS = {
 }
 
 
-def generate_test_case(test_type: TestCase3Type) -> TestCase3:
-    test_case = TestCase3(test_type)
+def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
+    test_case = ProblemTestCase(test_type)
 
-    if test_type is TestCase3Type.DEATH:
+    if test_type is TestCaseType.DEATH:
         r = 1
-    elif test_type is TestCase3Type.QUICK_STABLE:
+    elif test_type is TestCaseType.QUICK_STABLE:
         r = 2
-    elif test_type is TestCase3Type.FLUCTUATE_STABLE:
+    elif test_type is TestCaseType.FLUCTUATE_STABLE:
         r = 3
-    elif test_type is TestCase3Type.OSCILLATION:
+    elif test_type is TestCaseType.OSCILLATION:
         r = 4
-    elif test_type is TestCase3Type.CHAOS:
+    elif test_type is TestCaseType.CHAOS:
         r = 3.5
-    elif test_type is TestCase3Type.DIVERGENCE:
+    elif test_type is TestCaseType.DIVERGENCE:
         r = 3.6
 
     test_case.input['r'] = r
     return test_case
 
 
-def solve_test_case(test_case: TestCase3) -> None:
+def solve_test_case(test_case: ProblemTestCase) -> None:
     r = test_case.input['r']
     test_case.output['x'] = logistic_map(r)
     return
@@ -68,7 +68,7 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.debug("User output: %s", user_output)
 
     # Build TestCase object out of user's input string.
-    tmp_test_case = TestCase3()
+    tmp_test_case = ProblemTestCase()
 
     r = user_input[0]
     tmp_test_case.input = {'r': r}

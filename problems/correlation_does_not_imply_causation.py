@@ -10,13 +10,13 @@ from problems.solutions.correlation_does_not_imply_causation import correlation_
 logger = logging.getLogger(__name__)
 
 
-class TestCase7Type(TestCaseTypeEnum):
+class TestCaseType(TestCaseTypeEnum):
     SPURIOUS_DATASET = ('spurious dataset', 1)
     RANDOM_DATASET = ('random dataset', 1)
     UNKNOWN = ('unknown case', 0)
 
 
-class TestCase7(TestCase):
+class ProblemTestCase(TestCase):
     def input_tuple(self) -> str:
         return (self.input['x'], self.input['y'])
 
@@ -24,8 +24,8 @@ class TestCase7(TestCase):
         return str(self.output['r'])
 
 
-TEST_CASE_TYPE_ENUM = TestCase7Type
-TEST_CASE_CLASS = TestCase7
+TEST_CASE_TYPE_ENUM = TestCaseType
+TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "correlation_coefficient"
 STATIC_RESOURCES = ['spurious_xy.csv']
 
@@ -45,10 +45,10 @@ def write_random_dataset_csv(x, y):
             xy_writer.writerow((x[i], y[i]))
 
 
-def generate_test_case(test_type: TestCase7Type) -> TestCase7:
-    test_case = TestCase7(test_type)
+def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
+    test_case = ProblemTestCase(test_type)
 
-    if test_type is TestCase7Type.SPURIOUS_DATASET:
+    if test_type is TestCaseType.SPURIOUS_DATASET:
         csv_filepath = '../resources/correlation_does_not_imply_causation/spurious_xy.csv'
         x = []
         y = []
@@ -58,7 +58,7 @@ def generate_test_case(test_type: TestCase7Type) -> TestCase7:
                 x.append(float(row[0]))
                 y.append(float(row[1]))
         dataset_filename = "spurious_xy.csv"
-    elif test_type is TestCase7Type.RANDOM_DATASET:
+    elif test_type is TestCaseType.RANDOM_DATASET:
         N = np.random.randint(10, 100)
         x = np.random.rand(N).tolist()
         y = np.random.rand(N).tolist()
@@ -74,7 +74,7 @@ def generate_test_case(test_type: TestCase7Type) -> TestCase7:
     return test_case
 
 
-def solve_test_case(test_case: TestCase7) -> None:
+def solve_test_case(test_case: ProblemTestCase) -> None:
     x = np.array(test_case.input['x'])
     y = np.array(test_case.input['y'])
     test_case.output['r'] = correlation_coefficient(x, y)
@@ -89,7 +89,7 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     user_x, user_y = user_input
 
     # Build TestCase object out of user's input string.
-    tmp_test_case = TestCase7()
+    tmp_test_case = ProblemTestCase()
     tmp_test_case.input['x'] = user_x
     tmp_test_case.input['y'] = user_y
 

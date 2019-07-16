@@ -8,7 +8,7 @@ from problems.solutions.game_of_life import game_of_life
 logger = logging.getLogger(__name__)
 
 
-class TestCase10Type(TestCaseTypeEnum):
+class TestCaseType(TestCaseTypeEnum):
     STILL_LIFE = ("still life", 1)
     OSCILLATORS = ("oscillators", 1)
     GLIDERS = ("gliders", 0)
@@ -18,7 +18,7 @@ class TestCase10Type(TestCaseTypeEnum):
     RANDOM_LONG = ("long random", 0)
 
 
-class TestCase10(TestCase):
+class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
         return (self.input["board"],self.input["steps"])
 
@@ -26,8 +26,8 @@ class TestCase10(TestCase):
         return (self.output["board"],)
 
 
-TEST_CASE_TYPE_ENUM = TestCase10Type
-TEST_CASE_CLASS = TestCase10
+TEST_CASE_TYPE_ENUM = TestCaseType
+TEST_CASE_CLASS = ProblemTestCase
 FUNCTION_NAME = "game_of_life"
 STATIC_RESOURCES = ['still_life.txt', 'oscillators.txt', 'spaceships.txt']
 
@@ -65,42 +65,42 @@ GLIDER_GUN_STR = 24*"0" + "1" + 11*"0" + \
 GLIDER_GUN = np.reshape(np.array(list(GLIDER_GUN_STR), dtype=int), (9, 36))
 
 
-def generate_test_case(test_type: TestCase10Type) -> TestCase10:
-    test_case = TestCase10(test_type)
+def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
+    test_case = ProblemTestCase(test_type)
 
-    if test_type is TestCase10Type.STILL_LIFE:
+    if test_type is TestCaseType.STILL_LIFE:
         grid = np.zeros((15, 15), dtype=int)
         steps = 5
         grid[1:3, 1:3] = BLOCK
         grid[5:8, 2:6] = BEEHIVE
         grid[1:5, 7:11] = LOAF
         grid[6:9, 10:13] = TUB
-    elif test_type is TestCase10Type.OSCILLATORS:
+    elif test_type is TestCaseType.OSCILLATORS:
         grid = np.zeros((17, 36), dtype=int)
         steps = 30
         grid[3, 16:19] = BLINKER
         grid[8:10, 15:19] = TOAD
         grid[10:14, 1:5] = BEACON
         grid[2:15, 21:34] = PULSAR
-    elif test_type is TestCase10Type.GLIDERS:
+    elif test_type is TestCaseType.GLIDERS:
         raise NotImplementedError
-    elif test_type is TestCase10Type.GLIDER_GUN:
+    elif test_type is TestCaseType.GLIDER_GUN:
         N = np.random.randint(15, 50)
         M = np.random.randint(50, 100)
         steps = 200
         grid = np.zeros((N, M), dtype=int)
         grid[2:11, 2:38] = GLIDER_GUN
-    elif test_type is TestCase10Type.RANDOM_SMALL:
+    elif test_type is TestCaseType.RANDOM_SMALL:
         N = np.random.randint(5, 50)
         M = np.random.randint(5, 50)
         steps = np.random.randint(1, 100)
         grid = np.random.choice([ALIVE, DEAD], N*M, p=[0.5, 0.5]).reshape(N, M)
-    elif test_type is TestCase10Type.RANDOM_LARGE:
+    elif test_type is TestCaseType.RANDOM_LARGE:
         N = np.random.randint(200, 250)
         M = np.random.randint(200, 250)
         steps = np.random.randint(50, 100)
         grid = np.random.choice([ALIVE, DEAD], N*M, p=[0.5, 0.5]).reshape(N, M)
-    elif test_type is TestCase10Type.RANDOM_LONG:
+    elif test_type is TestCaseType.RANDOM_LONG:
         N, M = 50, 50
         steps = 1000
         grid = np.random.choice([ALIVE, DEAD], N*M, p=[0.5, 0.5]).reshape(N, M)
@@ -112,7 +112,7 @@ def generate_test_case(test_type: TestCase10Type) -> TestCase10:
     return test_case
 
 
-def solve_test_case(test_case: TestCase10) -> None:
+def solve_test_case(test_case: ProblemTestCase) -> None:
     grid = test_case.input["board"]
     steps = test_case.input["steps"]
     test_case.output["board"] = game_of_life(grid, steps)
@@ -125,7 +125,7 @@ def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
     logger.debug("User output: %s", user_output)
 
     # Build TestCase object out of user's input string.
-    tmp_test_case = TestCase10()
+    tmp_test_case = ProblemTestCase()
     tmp_test_case.input["board"] = user_input[0]
     tmp_test_case.input["steps"] = user_input[1]
 
