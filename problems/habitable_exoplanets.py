@@ -1,7 +1,7 @@
 import logging
 from typing import Tuple
 
-import numpy as np
+from numpy.random import uniform
 
 from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
 from problems.solutions.habitable_exoplanets import habitable_exoplanet
@@ -52,8 +52,8 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         L_star = 1.43
         r = 0.242
     elif test_type is TestCaseType.RANDOM:
-        L_star = float(np.random.uniform(0.1, 5.0, 1)[0])
-        r = float(np.random.uniform(0.1, 5.0, 1)[0])
+        L_star = float(uniform(0.1, 5.0, 1)[0])
+        r = float(uniform(0.1, 5.0, 1)[0])
 
     test_case.input['L_star'] = L_star
     test_case.input['r'] = r
