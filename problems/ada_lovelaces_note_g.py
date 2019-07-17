@@ -67,10 +67,10 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         n = 2 * randint(2, 50) + 1
 
     elif test_type is TestCaseType.LARGE_EVEN:
-        n = 2 * randint(125, 250)
+        n = 2 * randint(50, 125)
 
     elif test_type is TestCaseType.LARGE_ODD:
-        n = 2 * randint(125, 250) + 1
+        n = 2 * randint(50, 125) + 1
 
     test_case.input['n'] = n
     return test_case
