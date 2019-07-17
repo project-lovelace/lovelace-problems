@@ -69,7 +69,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
 
 def solve_test_case(test_case: ProblemTestCase) -> None:
-    f, dx = test_case.input['f'], test_case.input['dx']
+    f, dx = test_case.input['rectangle_heights'], test_case.input['rectangle_width']
     test_case.output['area'] = area_of_rectangles(f, dx)
 
 

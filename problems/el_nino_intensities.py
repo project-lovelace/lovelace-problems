@@ -32,9 +32,7 @@ OUTPUT_VARS = ['enso_classification']
 PHYSICAL_CONSTANTS = {}
 
 ATOL = {}
-RTOL = {
-    'enso_classification': 0.001
-}
+RTOL = {}
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
