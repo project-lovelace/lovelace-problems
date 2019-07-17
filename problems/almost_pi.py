@@ -1,9 +1,9 @@
-import math
 import logging
+from typing import Tuple
 
-import numpy as np
+from numpy.random import randint
 
-from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
 from problems.solutions.almost_pi import almost_pi
 
 logger = logging.getLogger(__name__)
@@ -15,18 +15,25 @@ class TestCaseType(TestCaseTypeEnum):
 
 class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
-        return (self.input["N"],)
+        return self.input['N'],
 
     def output_tuple(self) -> tuple:
-        return (self.output["pi"],)
+        return self.output['pi'],
+
+    def output_str(self) -> str:
+        return str(self.output['pi'])
 
 
 FUNCTION_NAME = "almost_pi"
 STATIC_RESOURCES = []
 
+INPUT_VARS = ['N']
+OUTPUT_VARS = ['pi']
+
 PHYSICAL_CONSTANTS = {}
-TESTING_CONSTANTS = {
-    "rel_tol": 1e-5
+ATOL = {}
+RTOL = {
+    'pi': 1e-5
 }
 
 
@@ -34,52 +41,18 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)
 
     if test_type is TestCaseType.SMALL_N:
-        N = np.random.randint(2, 10)
-    else:
-        raise ValueError("Invalid test case type.")
+        N = randint(2, 10)
 
-    test_case.input["N"] = N
-
+    test_case.input['N'] = N
     return test_case
 
 
 def solve_test_case(test_case: ProblemTestCase) -> None:
-    N = test_case.input["N"]
-    test_case.output["pi"] = almost_pi(N)
-    return
+    N = test_case.input['N']
+    test_case.output['pi'] = almost_pi(N)
 
 
-def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
-    logger.info("Verifying user solution...")
-    logger.debug("User input tuple: %s", user_input)
-    logger.debug("User output tuple: %s", user_output)
-
-    tmp_test_case = ProblemTestCase()
-
-    N = user_input[0]
-
-    tmp_test_case.input = {
-        "N": N
-    }
-
-    solve_test_case(tmp_test_case)
-    pi = tmp_test_case.output["pi"]
-
-    user_pi = user_output[0]
-
-    logger.debug("User solution:")
-    logger.debug("User pi = {:f}".format(user_pi))
-    logger.debug("Engine solution:")
-    logger.debug("Engine pi = {:f}".format(pi))
-    logger.debug("Relative tolerance = {:g}.".format(TESTING_CONSTANTS["rel_tol"]))
-
-    passed = False
-
-    if math.isclose(pi, user_pi, rel_tol=TESTING_CONSTANTS["rel_tol"]):
-        logger.info("User solution correct.")
-        passed = True
-    else:
-        logger.info("User solution is wrong.")
-        passed = False
-
-    return passed, str(pi)
+def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+    user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
+    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    return passed, correct_test_case.output_str()

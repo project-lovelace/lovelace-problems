@@ -1,8 +1,9 @@
 import logging
+from typing import Tuple
 
-import numpy as np
+from numpy.random import uniform
 
-from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
 from problems.solutions.habitable_exoplanets import habitable_exoplanet
 
 logger = logging.getLogger(__name__)
@@ -17,17 +18,25 @@ class TestCaseType(TestCaseTypeEnum):
 
 class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
-        return (self.input['L_star'], self.input['r'])
+        return self.input['L_star'], self.input['r']
 
     def output_tuple(self) -> tuple:
-        return (self.output['habitability'],)
+        return self.output['habitability'],
+
+    def output_str(self) -> str:
+        return str(self.output['habitability'])
 
 
 FUNCTION_NAME = "habitable_exoplanet"
 STATIC_RESOURCES = []
 
+INPUT_VARS = ['L_star', 'r']
+OUTPUT_VARS = ['habitability']
+
 PHYSICAL_CONSTANTS = {}
-TESTING_CONSTANTS = {}
+
+ATOL = {}
+RTOL = {}
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
@@ -43,8 +52,8 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         L_star = 1.43
         r = 0.242
     elif test_type is TestCaseType.RANDOM:
-        L_star = float(np.random.uniform(0.1, 5.0, 1)[0])
-        r = float(np.random.uniform(0.1, 5.0, 1)[0])
+        L_star = float(uniform(0.1, 5.0, 1)[0])
+        r = float(uniform(0.1, 5.0, 1)[0])
 
     test_case.input['L_star'] = L_star
     test_case.input['r'] = r
@@ -55,38 +64,9 @@ def solve_test_case(test_case: ProblemTestCase) -> None:
     L_star = test_case.input['L_star']
     r = test_case.input['r']
     test_case.output['habitability'] = habitable_exoplanet(L_star, r)
-    return
 
 
-def verify_user_solution(user_input: tuple, user_output: tuple) -> bool:
-    logger.info("Verifying user solution...")
-    logger.debug("User input: %s", user_input)
-    logger.debug("User output: %s", user_output)
-
-    # Build TestCase object out of user's input string.
-    tmp_test_case = ProblemTestCase()
-
-    L_star, r = user_input
-    tmp_test_case.input = {'L_star': L_star, 'r': r}
-
-    # Solve the problem with this TestCase so we have our own solution, and extract the solution.
-    solve_test_case(tmp_test_case)
-    habitability = tmp_test_case.output['habitability']
-
-    # Extract user solution.
-    user_habitability = user_output[0]
-
-    logger.debug("User solution:")
-    logger.debug("habitability = %s", user_habitability)
-    logger.debug("Our solution:")
-    logger.debug("habitability = %s", habitability)
-
-    passed = False
-
-    if habitability == user_habitability:
-        logger.info("User solution correct.")
-        passed = True
-    else:
-        logger.info("User solution incorrect.")
-
-    return passed, habitability
+def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+    user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
+    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    return passed, correct_test_case.output_str()
