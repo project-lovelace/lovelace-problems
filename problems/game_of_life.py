@@ -103,18 +103,18 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     elif test_type is TestCaseType.RANDOM_SMALL:
         N = randint(5, 50)
         M = randint(5, 50)
-        steps = randint(1, 100)
+        steps = randint(1, 10)
         grid = choice([ALIVE, DEAD], N*M, p=[0.5, 0.5]).reshape(N, M)
 
     elif test_type is TestCaseType.RANDOM_LARGE:
         N = randint(200, 250)
         M = randint(200, 250)
-        steps = randint(50, 100)
+        steps = randint(5, 20)
         grid = choice([ALIVE, DEAD], N*M, p=[0.5, 0.5]).reshape(N, M)
 
     elif test_type is TestCaseType.RANDOM_LONG:
         N, M = 50, 50
-        steps = 1000
+        steps = 100
         grid = choice([ALIVE, DEAD], N*M, p=[0.5, 0.5]).reshape(N, M)
 
     test_case.input["board"] = grid.tolist()
