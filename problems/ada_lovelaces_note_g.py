@@ -50,18 +50,25 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
     if test_type is TestCaseType.ZEROTH:
         n = 0
+
     elif test_type is TestCaseType.FIRST:
         n = 1
+
     elif test_type is TestCaseType.SECOND:
         n = 2
+
     elif test_type is TestCaseType.THIRD:
         n = 3
+
     elif test_type is TestCaseType.RANDOM_EVEN:
         n = 2 * randint(2, 50)
+
     elif test_type is TestCaseType.RANDOM_ODD:
         n = 2 * randint(2, 50) + 1
+
     elif test_type is TestCaseType.LARGE_EVEN:
         n = 2 * randint(125, 250)
+
     elif test_type is TestCaseType.LARGE_ODD:
         n = 2 * randint(125, 250) + 1
 

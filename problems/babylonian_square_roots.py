@@ -43,8 +43,10 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
     if test_type is TestCaseType.ZERO:
         n = 0
+
     elif test_type is TestCaseType.NEGATIVE:
         n = uniform(-10, -0.01)
+
     elif test_type is TestCaseType.SMALL_POSITIVE:
         n = uniform(1, 10)
 

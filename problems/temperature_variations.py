@@ -20,6 +20,7 @@ RTOL = {
     'T_var': 1e-8
 }
 
+
 class TestCaseType(TestCaseTypeEnum):
     RANDOM_SMALL = ("Random (small)", 1)
     RANDOM_LARGE = ("Random (large)", 1)

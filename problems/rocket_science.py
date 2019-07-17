@@ -50,14 +50,19 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
     if test_type is TestCaseType.EARTH:
         v = 11186
+
     elif test_type is TestCaseType.MOON:
         v = 2380
+
     elif test_type is TestCaseType.JUPITER:
         v = 60200
+
     elif test_type is TestCaseType.PLUTO:
         v = 1230
+
     elif test_type is TestCaseType.PHOBOS:
         v = 1.139
+
     elif test_type is TestCaseType.RANDOM:
         v = float(np.random.uniform(1.0, 100.0, 1)[0])
 

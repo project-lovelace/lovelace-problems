@@ -35,6 +35,7 @@ class ProblemTestCase(TestCase):
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)
+
     if test_type is TestCaseType.RANDOM_SEASON:
         year = randint(1871, 2015)
         next_year_short = str(year+1)[-2:]

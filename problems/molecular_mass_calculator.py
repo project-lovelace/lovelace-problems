@@ -44,16 +44,18 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
     if test_type is TestCaseType.RUST:
         chemical_formula = 'Fe2O3'
+
     elif test_type is TestCaseType.PLUTONIUM:
         chemical_formula = 'Pu'
+
     elif test_type is TestCaseType.HIGH_T_SUPERCONDUCTOR:
         chemical_formula = 'Bi2Sr2Ca2Cu3O10'
+
     elif test_type is TestCaseType.LSD:
         chemical_formula = 'C20H25N3O'
+
     elif test_type is TestCaseType.RANDOM_CHEMICAL:
         chemical_formula = choice(['CO2', 'CH4', 'C6H12O6', 'PuCoGa5', 'CH3NH2', 'W', 'C2H5OH'], 1)[0]
-    else:
-        raise ValueError
 
     test_case.input['chemical_formula'] = chemical_formula
     return test_case

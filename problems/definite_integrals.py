@@ -21,6 +21,7 @@ RTOL = {
     'area': 1e-6
 }
 
+
 class TestCaseType(TestCaseTypeEnum):
     ZERO = ("Zero function (rectangles with no height)", 1)
     CONSTANT = ("Constant function (all rectangles have the same height)", 1)

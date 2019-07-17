@@ -40,10 +40,13 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
     if test_type is TestCaseType.ZERO_ZERO:
         p, q = 0, 0
+
     elif test_type is TestCaseType.ZERO_ONE:
         p, q = 0, 1
+
     elif test_type is TestCaseType.ONE_ZERO:
         p, q = 1, 0
+
     elif test_type is TestCaseType.ONE_ONE:
         p, q = 1, 1
 

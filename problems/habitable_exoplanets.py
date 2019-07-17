@@ -43,12 +43,15 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     if test_type is TestCaseType.EARTH:
         L_star = 1.00
         r = 1.00
+
     elif test_type is TestCaseType.PROXIMA_CENTAURI_B:
         L_star = 1.00
         r = 1.00
+
     elif test_type is TestCaseType.KEPLER_440B:
         L_star = 1.43
         r = 0.242
+
     elif test_type is TestCaseType.RANDOM:
         L_star = float(uniform(0.1, 5.0, 1)[0])
         r = float(uniform(0.1, 5.0, 1)[0])

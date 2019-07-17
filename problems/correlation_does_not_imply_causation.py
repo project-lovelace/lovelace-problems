@@ -65,6 +65,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
                 y.append(float(row[1]))
 
         dataset_filename = "spurious_xy.csv"
+
     elif test_type is TestCaseType.RANDOM_DATASET:
         N = randint(10, 100)
         x = rand(N).tolist()

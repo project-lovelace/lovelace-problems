@@ -46,16 +46,22 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
     if test_type is TestCaseType.WARM_DAY:
         F = uniform(80, 110)
+
     elif test_type is TestCaseType.COLD_DAY:
         F = uniform(-20, 30)
+
     elif test_type is TestCaseType.WATER_FREEZING_POINT:
         F = 32
+
     elif test_type is TestCaseType.WATER_BOILING_POINT:
         F = 212
+
     elif test_type is TestCaseType.MINUS_40:
         F = -40
+
     elif test_type is TestCaseType.ABSOLUTE_ZERO:
         F = -459.67
+
     elif test_type is TestCaseType.SUN_SURFACE:
         F = 9940.73
 

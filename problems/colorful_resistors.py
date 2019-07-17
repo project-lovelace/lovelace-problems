@@ -98,12 +98,14 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     # hasn't imported numpy: we want a string, not an np.str_!
     if test_type is TestCaseType.ZERO_RESISTOR:
         colors = ['black']
+
     elif test_type is TestCaseType.FOUR_BAND:
         band_color1 = str(np.random.choice(list(digits.keys())))
         band_color2 = str(np.random.choice(list(digits.keys())))
         multiplier_color = str(np.random.choice(list(multiplier.keys())))
         tolerance_color = str(np.random.choice(list(tolerance.keys())))
         colors = [band_color1, band_color2, multiplier_color, tolerance_color]
+
     elif test_type is TestCaseType.FIVE_BAND:
         band_color1 = str(np.random.choice(list(digits.keys())))
         band_color2 = str(np.random.choice(list(digits.keys())))

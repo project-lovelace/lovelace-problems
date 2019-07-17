@@ -22,7 +22,6 @@ RTOL = {
 }
 
 
-
 class TestCaseType(TestCaseTypeEnum):
     EARTH_TO_MOON = ("Earth to moon", 1)
     SUN_TO_EARTH = ("Sun to Earth", 1)
@@ -47,12 +46,16 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
     if test_type is TestCaseType.EARTH_TO_MOON:
         distance = 385000e3  # 385,000 km
+
     elif test_type is TestCaseType.SUN_TO_EARTH:
         distance = 1.4959802296e11  # https://www.wolframalpha.com/input/?i=mean+sun+to+earth+distance
+
     elif test_type is TestCaseType.MAX_EARTH_TO_MARS:
         distance = 401e9  # 401 million km
+
     elif test_type is TestCaseType.MAX_EARTH_TO_JUPITER:
         distance = 968e9  # 968 million km
+
     elif test_type is TestCaseType.RANDOM:
         distance = uniform(299792458, 60*299792458)
 

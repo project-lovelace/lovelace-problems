@@ -44,14 +44,19 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
     if test_type is TestCaseType.DEATH:
         r = 1
+
     elif test_type is TestCaseType.QUICK_STABLE:
         r = 2
+
     elif test_type is TestCaseType.FLUCTUATE_STABLE:
         r = 3
+
     elif test_type is TestCaseType.OSCILLATION:
         r = 4
+
     elif test_type is TestCaseType.CHAOS:
         r = 3.5
+
     elif test_type is TestCaseType.DIVERGENCE:
         r = 3.6
 
