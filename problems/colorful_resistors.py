@@ -55,12 +55,12 @@ PHYSICAL_CONSTANTS = {
     }
 }
 
-ATOL = {
-    'nominal_resistance': 0.1,  # [Ohm]
-    'minimum_resistance': 0.1,  # [Ohm]
-    'maximum_resistance': 0.1   # [Ohm]
+ATOL = {}
+RTOL = {
+    'nominal_resistance': 1e-6,
+    'minimum_resistance': 1e-6,
+    'maximum_resistance': 1e-6
 }
-RTOL = {}
 
 
 class TestCaseType(TestCaseTypeEnum):

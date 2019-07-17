@@ -58,7 +58,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)
 
     if test_type is TestCaseType.EARTH:
-        L_star = PHYSICAL_CONSTANTS['L_star_Earth']
+        L_star = PHYSICAL_CONSTANTS['L_sun']
         r = PHYSICAL_CONSTANTS['r_Earth']
 
     elif test_type is TestCaseType.PROXIMA_CENTAURI_B:
