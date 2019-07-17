@@ -1,7 +1,7 @@
 import logging
 from typing import Tuple
 
-import numpy as np
+from numpy.random import uniform
 
 from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
 from problems.solutions.rocket_science import rocket_fuel
@@ -16,7 +16,15 @@ STATIC_RESOURCES = []
 
 PHYSICAL_CONSTANTS = {
     'v_e': 2550,  # [m/s]
-    'M': 250000   # [kg]
+    'M': 250000,  # [kg]
+
+    # All escape velocities in [m/s].
+    # Source: https://en.wikipedia.org/wiki/Escape_velocity#List_of_escape_velocities
+    'v_Earth': 11186,
+    'v_Moon': 2380,
+    'v_Jupiter': 60200,
+    'v_Pluto': 1230,
+    'v_Phobos': 1.139
 }
 
 ATOL = {}
@@ -49,22 +57,22 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)
 
     if test_type is TestCaseType.EARTH:
-        v = 11186
+        v = PHYSICAL_CONSTANTS['v_Earth']
 
     elif test_type is TestCaseType.MOON:
-        v = 2380
+        v = PHYSICAL_CONSTANTS['v_Moon']
 
     elif test_type is TestCaseType.JUPITER:
-        v = 60200
+        v = PHYSICAL_CONSTANTS['v_Jupiter']
 
     elif test_type is TestCaseType.PLUTO:
-        v = 1230
+        v = PHYSICAL_CONSTANTS['v_Pluto']
 
     elif test_type is TestCaseType.PHOBOS:
-        v = 1.139
+        v = PHYSICAL_CONSTANTS['v_Phobos']
 
     elif test_type is TestCaseType.RANDOM:
-        v = float(np.random.uniform(1.0, 100.0, 1)[0])
+        v = float(uniform(1.0, 100.0, 1)[0])
 
     test_case.input['v'] = v
     return test_case
