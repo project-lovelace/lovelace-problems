@@ -8,6 +8,22 @@ from problems.solutions.rocket_science import rocket_fuel
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "rocket_fuel"
+INPUT_VARS = ['v']
+OUTPUT_VARS = ['m_fuel']
+
+STATIC_RESOURCES = []
+
+PHYSICAL_CONSTANTS = {
+    'v_e': 2550,  # [m/s]
+    'M': 250000   # [kg]
+}
+
+ATOL = {}
+RTOL = {
+    'm_fuel': 1e-6
+}
+
 
 class TestCaseType(TestCaseTypeEnum):
     EARTH = ('Earth', 1)
@@ -27,23 +43,6 @@ class ProblemTestCase(TestCase):
 
     def output_str(self) -> str:
         return str(self.output['m_fuel'])
-
-
-FUNCTION_NAME = "rocket_fuel"
-STATIC_RESOURCES = []
-
-INPUT_VARS = ['v']
-OUTPUT_VARS = ['m_fuel']
-
-PHYSICAL_CONSTANTS = {
-    'v_e': 2550,  # [m/s]
-    'M': 250000   # [kg]
-}
-
-ATOL = {}
-RTOL = {
-    'm_fuel': 1e-6
-}
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:

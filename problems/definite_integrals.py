@@ -9,6 +9,17 @@ from problems.solutions.definite_integrals import area_of_rectangles
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "area_of_rectangles"
+INPUT_VARS = ['rectangle_heights', 'rectangle_width']
+OUTPUT_VARS = ['area']
+
+STATIC_RESOURCES = []
+
+PHYSICAL_CONSTANTS = {}
+ATOL = {}
+RTOL = {
+    'area': 1e-6
+}
 
 class TestCaseType(TestCaseTypeEnum):
     ZERO = ("Zero function (rectangles with no height)", 1)
@@ -25,19 +36,6 @@ class ProblemTestCase(TestCase):
 
     def output_str(self) -> str:
         return str(self.output['area'])
-
-
-FUNCTION_NAME = "area_of_rectangles"
-STATIC_RESOURCES = []
-
-INPUT_VARS = ['rectangle_heights', 'rectangle_width']
-OUTPUT_VARS = ['area']
-
-PHYSICAL_CONSTANTS = {}
-ATOL = {}
-RTOL = {
-    'area': 1e-6
-}
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:

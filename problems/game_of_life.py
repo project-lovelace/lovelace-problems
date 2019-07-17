@@ -9,37 +9,13 @@ from problems.solutions.game_of_life import game_of_life
 
 logger = logging.getLogger(__name__)
 
-
-class TestCaseType(TestCaseTypeEnum):
-    STILL_LIFE = ("still life", 1)
-    OSCILLATORS = ("oscillators", 1)
-    GLIDERS = ("gliders", 0)
-    GLIDER_GUN = ("glider gun", 1)
-    RANDOM_SMALL = ("small random", 1)
-    RANDOM_LARGE = ("large random", 0)
-    RANDOM_LONG = ("long random", 0)
-
-
-class ProblemTestCase(TestCase):
-    def input_tuple(self) -> tuple:
-        return self.input['board'], self.input['steps']
-
-    def output_tuple(self) -> tuple:
-        return self.output['board'],
-
-    def output_str(self) -> str:
-        return str(self.output['board'])
-
-
 FUNCTION_NAME = "game_of_life"
-STATIC_RESOURCES = ["still_life.txt", "oscillators.txt", "spaceships.txt"]
-
 INPUT_VARS = ['board', 'steps']
 OUTPUT_VARS = ['board']
 
-PHYSICAL_CONSTANTS = {}
-TESTING_CONSTANTS = {}
+STATIC_RESOURCES = ["still_life.txt", "oscillators.txt", "spaceships.txt"]
 
+PHYSICAL_CONSTANTS = {}
 ATOL = {}
 RTOL = {}
 
@@ -72,6 +48,27 @@ GLIDER_GUN_STR = 24*"0" + "1" + 11*"0" + \
                  11*"0" + "10001" + 20*"0" + \
                  12*"0" + "11" + 22*"0"
 GLIDER_GUN = reshape(array(list(GLIDER_GUN_STR), dtype=int), (9, 36))
+
+
+class TestCaseType(TestCaseTypeEnum):
+    STILL_LIFE = ("still life", 1)
+    OSCILLATORS = ("oscillators", 1)
+    GLIDERS = ("gliders", 0)
+    GLIDER_GUN = ("glider gun", 1)
+    RANDOM_SMALL = ("small random", 1)
+    RANDOM_LARGE = ("large random", 0)
+    RANDOM_LONG = ("long random", 0)
+
+
+class ProblemTestCase(TestCase):
+    def input_tuple(self) -> tuple:
+        return self.input['board'], self.input['steps']
+
+    def output_tuple(self) -> tuple:
+        return self.output['board'],
+
+    def output_str(self) -> str:
+        return str(self.output['board'])
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:

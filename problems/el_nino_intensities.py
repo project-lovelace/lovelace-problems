@@ -7,6 +7,16 @@ from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_co
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "enso_classification"
+INPUT_VARS = ['season']
+OUTPUT_VARS = ['enso_classification']
+
+STATIC_RESOURCES = ["mei.ext_index.txt"]
+
+PHYSICAL_CONSTANTS = {}
+ATOL = {}
+RTOL = {}
+
 
 class TestCaseType(TestCaseTypeEnum):
     RANDOM_SEASON = ('Random season', 5)
@@ -21,18 +31,6 @@ class ProblemTestCase(TestCase):
 
     def output_str(self) -> str:
         return self.output['enso_classification']
-
-
-FUNCTION_NAME = "enso_classification"
-STATIC_RESOURCES = ["mei.ext_index.txt"]
-
-INPUT_VARS = ['season']
-OUTPUT_VARS = ['enso_classification']
-
-PHYSICAL_CONSTANTS = {}
-
-ATOL = {}
-RTOL = {}
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:

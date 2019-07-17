@@ -8,6 +8,15 @@ from problems.solutions.caesar_cipher import break_caesar_cipher
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "break_caesar_cipher"
+INPUT_VARS = ['ciphertext', 'known_word']
+OUTPUT_VARS = ['decrypted_message']
+
+STATIC_RESOURCES = []
+
+PHYSICAL_CONSTANTS = {}
+ATOL = {}
+RTOL = {}
 
 class TestCaseType(TestCaseTypeEnum):
     MOBY_DICK = ('Moby dick', 1)
@@ -24,17 +33,6 @@ class ProblemTestCase(TestCase):
 
     def output_str(self) -> str:
         return self.output['decrypted_message']
-
-FUNCTION_NAME = "break_caesar_cipher"
-STATIC_RESOURCES = []
-
-INPUT_VARS = ['ciphertext', 'known_word']
-OUTPUT_VARS = ['decrypted_message']
-
-PHYSICAL_CONSTANTS = {}
-
-ATOL = {}
-RTOL = {}
 
 
 def generate_random_string(length):

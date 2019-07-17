@@ -7,6 +7,18 @@ from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_co
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "molecular_mass"
+INPUT_VARS = ['chemical_formula']
+OUTPUT_VARS = ['mass']
+
+STATIC_RESOURCES = ["periodic_table.csv"]
+
+PHYSICAL_CONSTANTS = {}
+ATOL = {}
+RTOL = {
+    'mass': 0.1
+}
+
 
 class TestCaseType(TestCaseTypeEnum):
     RUST = ('Rust (ferric oxide)', 1)
@@ -25,20 +37,6 @@ class ProblemTestCase(TestCase):
 
     def output_str(self) -> str:
         return str(self.output['mass'])
-
-
-FUNCTION_NAME = "molecular_mass"
-STATIC_RESOURCES = ["periodic_table.csv"]
-
-INPUT_VARS = ['chemical_formula']
-OUTPUT_VARS = ['mass']
-
-PHYSICAL_CONSTANTS = {}
-
-ATOL = {}
-RTOL = {
-    'mass': 0.1
-}
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:

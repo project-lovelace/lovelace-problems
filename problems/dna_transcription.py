@@ -7,6 +7,16 @@ from problems.solutions.dna_transcription import rna
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "rna"
+INPUT_VARS = ['dna_str']
+OUTPUT_VARS = ['rna_str']
+
+STATIC_RESOURCES = []
+
+PHYSICAL_CONSTANTS = {}
+ATOL = {}
+RTOL = {}
+
 
 class TestCaseType(TestCaseTypeEnum):
     SHORT_TRNA = ('tRNA-SeC-TCA-2-1', 1)
@@ -23,18 +33,6 @@ class ProblemTestCase(TestCase):
 
     def output_str(self) -> str:
         return self.output['rna_str']
-
-
-FUNCTION_NAME = "rna"
-STATIC_RESOURCES = []
-
-INPUT_VARS = ['dna_str']
-OUTPUT_VARS = ['rna_str']
-
-PHYSICAL_CONSTANTS = {}
-
-ATOL = {}
-RTOL = {}
 
 
 def generate_dna_sequence(length):

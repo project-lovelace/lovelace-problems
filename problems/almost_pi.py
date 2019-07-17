@@ -8,6 +8,18 @@ from problems.solutions.almost_pi import almost_pi
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "almost_pi"
+INPUT_VARS = ['N']
+OUTPUT_VARS = ['pi']
+
+STATIC_RESOURCES = []
+
+PHYSICAL_CONSTANTS = {}
+ATOL = {}
+RTOL = {
+    'pi': 1e-5
+}
+
 
 class TestCaseType(TestCaseTypeEnum):
     SMALL_N = ("1 < n < 10", 2)
@@ -22,19 +34,6 @@ class ProblemTestCase(TestCase):
 
     def output_str(self) -> str:
         return str(self.output['pi'])
-
-
-FUNCTION_NAME = "almost_pi"
-STATIC_RESOURCES = []
-
-INPUT_VARS = ['N']
-OUTPUT_VARS = ['pi']
-
-PHYSICAL_CONSTANTS = {}
-ATOL = {}
-RTOL = {
-    'pi': 1e-5
-}
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:

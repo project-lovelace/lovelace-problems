@@ -7,6 +7,21 @@ from problems.solutions.speed_of_light import light_time
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "light_time"
+INPUT_VARS = ['distance']
+OUTPUT_VARS = ['time']
+
+STATIC_RESOURCES = []
+
+PHYSICAL_CONSTANTS = {
+    'c': 299792458  # speed of light [m/s]
+}
+ATOL = {}
+RTOL = {
+    'time': 1e-5
+}
+
+
 
 class TestCaseType(TestCaseTypeEnum):
     EARTH_TO_MOON = ("Earth to moon", 1)
@@ -25,22 +40,6 @@ class ProblemTestCase(TestCase):
 
     def output_str(self) -> str:
         return str(self.output['time'])
-
-
-FUNCTION_NAME = "light_time"
-STATIC_RESOURCES = []
-
-INPUT_VARS = ['distance']
-OUTPUT_VARS = ['time']
-
-PHYSICAL_CONSTANTS = {
-    'c': 299792458  # speed of light [m/s]
-}
-
-ATOL = {}
-RTOL = {
-    'time': 1e-5
-}
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:

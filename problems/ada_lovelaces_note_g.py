@@ -8,6 +8,16 @@ from problems.solutions.ada_lovelaces_note_g import bernoulli
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "bernoulli"
+INPUT_VARS = ['n']
+OUTPUT_VARS = ['numerator', 'denominator']
+
+STATIC_RESOURCES = []
+
+PHYSICAL_CONSTANTS = {}
+ATOL = {}
+RTOL = {}
+
 
 class TestCaseType(TestCaseTypeEnum):
     ZEROTH = ("Zeroth Bernoulli number", 1)
@@ -33,17 +43,6 @@ class ProblemTestCase(TestCase):
         numerator = self.output['numerator']
         denominator = self.output['denominator']
         return "numerator = {:d}, denominator = {:d}".format(numerator, denominator)
-
-
-FUNCTION_NAME = "bernoulli"
-STATIC_RESOURCES = []
-
-INPUT_VARS = ['n']
-OUTPUT_VARS = ['numerator', 'denominator']
-
-PHYSICAL_CONSTANTS = {}
-ATOL = {}
-RTOL = {}
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:

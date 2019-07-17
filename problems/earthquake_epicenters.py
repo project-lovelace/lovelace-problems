@@ -10,6 +10,22 @@ from problems.solutions.earthquake_epicenters import earthquake_epicenter
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "earthquake_epicenter"
+INPUT_VARS = ['x1', 'y1', 't1', 'x2', 'y2', 't2', 'x3', 'y3', 't3']
+OUTPUT_VARS = ['x', 'y']
+
+STATIC_RESOURCES = []
+
+PHYSICAL_CONSTANTS = {
+    'v': 3.0  # [km/s], velocity of seismic waves
+}
+
+ATOL = {
+    'x': 0.0001,  # [km]
+    'y': 0.0001   # [km]
+}
+RTOL = {}
+
 
 class TestCaseType(TestCaseTypeEnum):
     GENERAL = ("General case", 3)
@@ -28,23 +44,6 @@ class ProblemTestCase(TestCase):
 
     def output_str(self) -> str:
         return "x = {}, y = {}".format(self.output['x'], self.output['y'])
-
-
-FUNCTION_NAME = "earthquake_epicenter"
-STATIC_RESOURCES = []
-
-INPUT_VARS = ['x1', 'y1', 't1', 'x2', 'y2', 't2', 'x3', 'y3', 't3']
-OUTPUT_VARS = ['x', 'y']
-
-PHYSICAL_CONSTANTS = {
-    'v': 3.0  # [km/s], velocity of seismic waves
-}
-
-ATOL = {
-    'x': 0.0001,  # [km]
-    'y': 0.0001   # [km]
-}
-RTOL = {}
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:

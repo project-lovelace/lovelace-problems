@@ -7,6 +7,18 @@ from problems.solutions.wind_chill import wind_chill
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "wind_chill"
+INPUT_VARS = ['T_a', 'v']
+OUTPUT_VARS = ['T_wc']
+
+STATIC_RESOURCES = []
+
+PHYSICAL_CONSTANTS = {}
+ATOL = {}
+RTOL = {
+    'T_wc': 1e-8
+}
+
 
 class TestCaseType(TestCaseTypeEnum):
     COLD_CALM = ("Cold calm weather", 1)
@@ -24,19 +36,6 @@ class ProblemTestCase(TestCase):
 
     def output_str(self) -> str:
         return str(self.output['T_wc'])
-
-
-FUNCTION_NAME = "wind_chill"
-STATIC_RESOURCES = []
-
-INPUT_VARS = ['T_a', 'v']
-OUTPUT_VARS = ['T_wc']
-
-PHYSICAL_CONSTANTS = {}
-ATOL = {}
-RTOL = {
-    'T_wc': 1e-8
-}
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:

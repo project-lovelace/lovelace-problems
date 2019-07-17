@@ -7,6 +7,19 @@ from problems.solutions.blood_types import survive
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "survive"
+INPUT_VARS = ['patient_blood_type', 'donated_blood']
+OUTPUT_VARS = ['survive']
+
+STATIC_RESOURCES = []
+
+PHYSICAL_CONSTANTS = {
+    'blood_types': ['A-', 'B-', 'AB-', 'O-', 'A+', 'B+', 'AB+', 'O+']
+}
+
+ATOL = {}
+RTOL = {}
+
 
 class TestCaseType(TestCaseTypeEnum):
     NO_DONATIONS = ("No donations have been made.", 1)
@@ -25,20 +38,6 @@ class ProblemTestCase(TestCase):
 
     def output_str(self) -> str:
         return str(self.output['survive'])
-
-
-FUNCTION_NAME = "survive"
-STATIC_RESOURCES = []
-
-INPUT_VARS = ['patient_blood_type', 'donated_blood']
-OUTPUT_VARS = ['survive']
-
-PHYSICAL_CONSTANTS = {
-    'blood_types': ['A-', 'B-', 'AB-', 'O-', 'A+', 'B+', 'AB+', 'O+']
-}
-
-ATOL = {}
-RTOL = {}
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:

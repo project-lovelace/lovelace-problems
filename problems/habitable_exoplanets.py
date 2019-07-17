@@ -8,6 +8,16 @@ from problems.solutions.habitable_exoplanets import habitable_exoplanet
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "habitable_exoplanet"
+INPUT_VARS = ['L_star', 'r']
+OUTPUT_VARS = ['habitability']
+
+STATIC_RESOURCES = []
+
+PHYSICAL_CONSTANTS = {}
+ATOL = {}
+RTOL = {}
+
 
 class TestCaseType(TestCaseTypeEnum):
     EARTH = ('Earth', 1)
@@ -25,18 +35,6 @@ class ProblemTestCase(TestCase):
 
     def output_str(self) -> str:
         return str(self.output['habitability'])
-
-
-FUNCTION_NAME = "habitable_exoplanet"
-STATIC_RESOURCES = []
-
-INPUT_VARS = ['L_star', 'r']
-OUTPUT_VARS = ['habitability']
-
-PHYSICAL_CONSTANTS = {}
-
-ATOL = {}
-RTOL = {}
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
