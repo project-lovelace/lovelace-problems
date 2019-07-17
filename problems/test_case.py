@@ -48,7 +48,8 @@ def values_match(v1, v2, tt, tol) -> bool:
     :param tol: Tolerance value if using "absolute" or "relative".
     :return: True or False
     """
-    if type(v1) != type(v2):
+    # Values can't match if they're of different types. But if they're ints or floats, that's fine.
+    if not isinstance(v1, (int, float)) and not isinstance(v2, (int, float)) and type(v1) != type(v2):
         logger.debug("v1 and v2 types do not match: v1_type={:}, v2_type={:}".format(type(v1), type(v2)))
         return False
 
