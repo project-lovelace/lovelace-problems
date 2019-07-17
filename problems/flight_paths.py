@@ -8,6 +8,20 @@ from problems.solutions.flight_paths import haversine
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "haversine"
+INPUT_VARS = ['lat1', 'lon1', 'lat2', 'lon2']
+OUTPUT_VARS = ['distance']
+
+STATIC_RESOURCES = []
+
+PHYSICAL_CONSTANTS = {
+    'R': 6372.1  # Radius of the Earth [km]
+}
+ATOL = {}
+RTOL = {
+    'distance': 1e-5
+}
+
 
 class TestCaseType(TestCaseTypeEnum):
     RANDOM_POINTS = ("Two random points", 2)
@@ -22,22 +36,6 @@ class ProblemTestCase(TestCase):
 
     def output_str(self) -> str:
         return str(self.output['distance'])
-
-
-FUNCTION_NAME = "haversine"
-STATIC_RESOURCES = []
-
-INPUT_VARS = ['lat1', 'lon1', 'lat2', 'lon2']
-OUTPUT_VARS = ['distance']
-
-PHYSICAL_CONSTANTS = {
-    'R': 6372.1  # Radius of the Earth [km]
-}
-
-ATOL = {}
-RTOL = {
-    'distance': 1e-5
-}
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:

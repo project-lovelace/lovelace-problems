@@ -8,6 +8,18 @@ from problems.solutions.babylonian_square_roots import babylonian_sqrt
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "babylonian_sqrt"
+INPUT_VARS = ['n']
+OUTPUT_VARS = ['sqrt_n']
+
+STATIC_RESOURCES = []
+
+PHYSICAL_CONSTANTS = {}
+ATOL = {}
+RTOL = {
+    'sqrt_n': 1e-10
+}
+
 
 class TestCaseType(TestCaseTypeEnum):
     ZERO = ("Zero", 1)
@@ -26,27 +38,15 @@ class ProblemTestCase(TestCase):
         return str(self.output['sqrt_n'])
 
 
-FUNCTION_NAME = "babylonian_sqrt"
-STATIC_RESOURCES = []
-
-INPUT_VARS = ['n']
-OUTPUT_VARS = ['sqrt_n']
-
-PHYSICAL_CONSTANTS = {}
-
-ATOL = {}
-RTOL = {
-    'sqrt_n': 1e-10
-}
-
-
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)
 
     if test_type is TestCaseType.ZERO:
         n = 0
+
     elif test_type is TestCaseType.NEGATIVE:
         n = uniform(-10, -0.01)
+
     elif test_type is TestCaseType.SMALL_POSITIVE:
         n = uniform(1, 10)
 

@@ -6,6 +6,19 @@ from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_co
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "celsius"
+INPUT_VARS = ['F']
+OUTPUT_VARS = ['C']
+
+STATIC_RESOURCES = []
+
+PHYSICAL_CONSTANTS = {}
+ATOL = {}
+RTOL = {
+    'C': 1e-5
+}
+
+
 
 class TestCaseType(TestCaseTypeEnum):
     WARM_DAY = ("Warm day", 1)
@@ -28,34 +41,27 @@ class ProblemTestCase(TestCase):
         return str(self.output['C'])
 
 
-FUNCTION_NAME = "celsius"
-STATIC_RESOURCES = []
-
-INPUT_VARS = ['F']
-OUTPUT_VARS = ['C']
-
-PHYSICAL_CONSTANTS = {}
-ATOL = {}
-RTOL = {
-    'C': 1e-5
-}
-
-
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)
 
     if test_type is TestCaseType.WARM_DAY:
         F = uniform(80, 110)
+
     elif test_type is TestCaseType.COLD_DAY:
         F = uniform(-20, 30)
+
     elif test_type is TestCaseType.WATER_FREEZING_POINT:
         F = 32
+
     elif test_type is TestCaseType.WATER_BOILING_POINT:
         F = 212
+
     elif test_type is TestCaseType.MINUS_40:
         F = -40
+
     elif test_type is TestCaseType.ABSOLUTE_ZERO:
         F = -459.67
+
     elif test_type is TestCaseType.SUN_SURFACE:
         F = 9940.73
 

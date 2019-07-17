@@ -11,6 +11,18 @@ from problems.solutions.correlation_does_not_imply_causation import correlation_
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "correlation_coefficient"
+INPUT_VARS = ['x', 'y']
+OUTPUT_VARS = ['r']
+
+STATIC_RESOURCES = ["spurious_xy.csv"]
+
+PHYSICAL_CONSTANTS = {}
+ATOL = {
+    'r': 0.0001
+}
+RTOL = {}
+
 
 class TestCaseType(TestCaseTypeEnum):
     SPURIOUS_DATASET = ('spurious dataset', 1)
@@ -27,20 +39,6 @@ class ProblemTestCase(TestCase):
 
     def output_str(self) -> str:
         return str(self.output['r'])
-
-
-FUNCTION_NAME = "correlation_coefficient"
-STATIC_RESOURCES = ["spurious_xy.csv"]
-
-INPUT_VARS = ['x', 'y']
-OUTPUT_VARS = ['r']
-
-PHYSICAL_CONSTANTS = {}
-
-ATOL = {
-    'r': 0.0001
-}
-RTOL = {}
 
 
 def write_random_dataset_csv(x, y):
@@ -67,6 +65,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
                 y.append(float(row[1]))
 
         dataset_filename = "spurious_xy.csv"
+
     elif test_type is TestCaseType.RANDOM_DATASET:
         N = randint(10, 100)
         x = rand(N).tolist()

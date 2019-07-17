@@ -6,6 +6,16 @@ from problems.solutions.nand_gate import NAND
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "NAND"
+INPUT_VARS = ['p', 'q']
+OUTPUT_VARS = ['nand']
+
+STATIC_RESOURCES = []
+
+PHYSICAL_CONSTANTS = {}
+ATOL = {}
+RTOL = {}
+
 
 class TestCaseType(TestCaseTypeEnum):
     ZERO_ZERO = ("00", 1)
@@ -25,26 +35,18 @@ class ProblemTestCase(TestCase):
         return self.output['nand']
 
 
-FUNCTION_NAME = "NAND"
-STATIC_RESOURCES = []
-
-INPUT_VARS = ['p', 'q']
-OUTPUT_VARS = ['nand']
-
-PHYSICAL_CONSTANTS = {}
-ATOL = {}
-RTOL = {}
-
-
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)
 
     if test_type is TestCaseType.ZERO_ZERO:
         p, q = 0, 0
+
     elif test_type is TestCaseType.ZERO_ONE:
         p, q = 0, 1
+
     elif test_type is TestCaseType.ONE_ZERO:
         p, q = 1, 0
+
     elif test_type is TestCaseType.ONE_ONE:
         p, q = 1, 1
 

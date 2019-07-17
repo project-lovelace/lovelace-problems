@@ -8,30 +8,6 @@ from problems.solutions.colorful_resistors import resistance
 
 logger = logging.getLogger(__name__)
 
-
-class TestCaseType(TestCaseTypeEnum):
-    ZERO_RESISTOR = ('zero resistor', 1)
-    FOUR_BAND = ('four band resistor', 3)
-    FIVE_BAND = ('five band resistor', 3)
-
-
-class ProblemTestCase(TestCase):
-    def input_tuple(self) -> tuple:
-        return self.input['colors'],
-
-    def output_tuple(self) -> tuple:
-        nominal_R = self.output['nominal_resistance']
-        minimum_R = self.output['minimum_resistance']
-        maximum_R = self.output['maximum_resistance']
-        return nominal_R, minimum_R, maximum_R
-
-    def output_str(self) -> str:
-        nominal_R = self.output['nominal_resistance']
-        minimum_R = self.output['minimum_resistance']
-        maximum_R = self.output['maximum_resistance']
-        return "nominal_R = {:f}, minimum_R = {:f}, maximum_R = {:f}".format(nominal_R, minimum_R, maximum_R)
-
-
 FUNCTION_NAME = "resistance"
 STATIC_RESOURCES = []
 
@@ -87,6 +63,29 @@ ATOL = {
 RTOL = {}
 
 
+class TestCaseType(TestCaseTypeEnum):
+    ZERO_RESISTOR = ('zero resistor', 1)
+    FOUR_BAND = ('four band resistor', 3)
+    FIVE_BAND = ('five band resistor', 3)
+
+
+class ProblemTestCase(TestCase):
+    def input_tuple(self) -> tuple:
+        return self.input['colors'],
+
+    def output_tuple(self) -> tuple:
+        nominal_R = self.output['nominal_resistance']
+        minimum_R = self.output['minimum_resistance']
+        maximum_R = self.output['maximum_resistance']
+        return nominal_R, minimum_R, maximum_R
+
+    def output_str(self) -> str:
+        nominal_R = self.output['nominal_resistance']
+        minimum_R = self.output['minimum_resistance']
+        maximum_R = self.output['maximum_resistance']
+        return "nominal_R = {:f}, minimum_R = {:f}, maximum_R = {:f}".format(nominal_R, minimum_R, maximum_R)
+
+
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     digits = PHYSICAL_CONSTANTS['digits']
     multiplier = PHYSICAL_CONSTANTS['multiplier']
@@ -99,12 +98,14 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     # hasn't imported numpy: we want a string, not an np.str_!
     if test_type is TestCaseType.ZERO_RESISTOR:
         colors = ['black']
+
     elif test_type is TestCaseType.FOUR_BAND:
         band_color1 = str(np.random.choice(list(digits.keys())))
         band_color2 = str(np.random.choice(list(digits.keys())))
         multiplier_color = str(np.random.choice(list(multiplier.keys())))
         tolerance_color = str(np.random.choice(list(tolerance.keys())))
         colors = [band_color1, band_color2, multiplier_color, tolerance_color]
+
     elif test_type is TestCaseType.FIVE_BAND:
         band_color1 = str(np.random.choice(list(digits.keys())))
         band_color2 = str(np.random.choice(list(digits.keys())))

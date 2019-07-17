@@ -6,6 +6,18 @@ from problems.solutions.chaos import logistic_map
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "logistic_map"
+INPUT_VARS = ['r']
+OUTPUT_VARS = ['x']
+
+STATIC_RESOURCES = []
+
+PHYSICAL_CONSTANTS = {}
+ATOL = {}
+RTOL = {
+    'x': 0.0001
+}
+
 
 class TestCaseType(TestCaseTypeEnum):
     DEATH = ('death', 1)
@@ -27,33 +39,24 @@ class ProblemTestCase(TestCase):
         return str(self.output['x'])
 
 
-FUNCTION_NAME = "logistic_map"
-STATIC_RESOURCES = []
-
-INPUT_VARS = ['r']
-OUTPUT_VARS = ['x']
-
-PHYSICAL_CONSTANTS = {}
-
-ATOL = {}
-RTOL = {
-    'x': 0.0001
-}
-
-
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)
 
     if test_type is TestCaseType.DEATH:
         r = 1
+
     elif test_type is TestCaseType.QUICK_STABLE:
         r = 2
+
     elif test_type is TestCaseType.FLUCTUATE_STABLE:
         r = 3
+
     elif test_type is TestCaseType.OSCILLATION:
         r = 4
+
     elif test_type is TestCaseType.CHAOS:
         r = 3.5
+
     elif test_type is TestCaseType.DIVERGENCE:
         r = 3.6
 

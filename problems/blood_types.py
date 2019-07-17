@@ -7,6 +7,19 @@ from problems.solutions.blood_types import survive
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "survive"
+INPUT_VARS = ['patient_blood_type', 'donated_blood']
+OUTPUT_VARS = ['survive']
+
+STATIC_RESOURCES = []
+
+PHYSICAL_CONSTANTS = {
+    'blood_types': ['A-', 'B-', 'AB-', 'O-', 'A+', 'B+', 'AB+', 'O+']
+}
+
+ATOL = {}
+RTOL = {}
+
 
 class TestCaseType(TestCaseTypeEnum):
     NO_DONATIONS = ("No donations have been made.", 1)
@@ -27,20 +40,6 @@ class ProblemTestCase(TestCase):
         return str(self.output['survive'])
 
 
-FUNCTION_NAME = "survive"
-STATIC_RESOURCES = []
-
-INPUT_VARS = ['patient_blood_type', 'donated_blood']
-OUTPUT_VARS = ['survive']
-
-PHYSICAL_CONSTANTS = {
-    'blood_types': ['A-', 'B-', 'AB-', 'O-', 'A+', 'B+', 'AB+', 'O+']
-}
-
-ATOL = {}
-RTOL = {}
-
-
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)
     blood_types = PHYSICAL_CONSTANTS['blood_types']
@@ -48,15 +47,19 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     if test_type is TestCaseType.NO_DONATIONS:
         patient_blood_type = choice(blood_types)
         donated_blood = []
+
     elif test_type is TestCaseType.LUCKY_PATIENT:
         patient_blood_type = choice(blood_types)
         donated_blood = ['O-', 'O-', 'O-']
+
     elif test_type is TestCaseType.LUCKY_ABP_PATIENT:
         patient_blood_type = 'AB+'
         donated_blood = choice(blood_types)
+
     elif test_type is TestCaseType.SLIM_PICKINGS:
         patient_blood_type = choice(blood_types)
         donated_blood = choices(blood_types, k=randint(2, 3))
+
     elif test_type is TestCaseType.WELL_STOCKED:
         patient_blood_type = choice(blood_types)
         donated_blood = choices(blood_types, k=randint(8, 25))

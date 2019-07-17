@@ -7,6 +7,19 @@ from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_co
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "temperature_statistics"
+INPUT_VARS = ['temperatures']
+OUTPUT_VARS = ['T_avg', 'T_var']
+
+STATIC_RESOURCES = []
+
+PHYSICAL_CONSTANTS = {}
+ATOL = {}
+RTOL = {
+    'T_avg': 1e-8,
+    'T_var': 1e-8
+}
+
 
 class TestCaseType(TestCaseTypeEnum):
     RANDOM_SMALL = ("Random (small)", 1)
@@ -19,20 +32,6 @@ class ProblemTestCase(TestCase):
 
     def output_tuple(self) -> tuple:
         return self.output['T_avg'], self.output['T_var']
-
-
-FUNCTION_NAME = "temperature_statistics"
-STATIC_RESOURCES = []
-
-INPUT_VARS = ['temperatures']
-OUTPUT_VARS = ['T_avg', 'T_var']
-
-PHYSICAL_CONSTANTS = {}
-ATOL = {}
-RTOL = {
-    'T_avg': 1e-8,
-    'T_var': 1e-8
-}
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:

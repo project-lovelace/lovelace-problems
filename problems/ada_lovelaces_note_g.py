@@ -8,6 +8,16 @@ from problems.solutions.ada_lovelaces_note_g import bernoulli
 
 logger = logging.getLogger(__name__)
 
+FUNCTION_NAME = "bernoulli"
+INPUT_VARS = ['n']
+OUTPUT_VARS = ['numerator', 'denominator']
+
+STATIC_RESOURCES = []
+
+PHYSICAL_CONSTANTS = {}
+ATOL = {}
+RTOL = {}
+
 
 class TestCaseType(TestCaseTypeEnum):
     ZEROTH = ("Zeroth Bernoulli number", 1)
@@ -35,34 +45,30 @@ class ProblemTestCase(TestCase):
         return "numerator = {:d}, denominator = {:d}".format(numerator, denominator)
 
 
-FUNCTION_NAME = "bernoulli"
-STATIC_RESOURCES = []
-
-INPUT_VARS = ['n']
-OUTPUT_VARS = ['numerator', 'denominator']
-
-PHYSICAL_CONSTANTS = {}
-ATOL = {}
-RTOL = {}
-
-
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)
 
     if test_type is TestCaseType.ZEROTH:
         n = 0
+
     elif test_type is TestCaseType.FIRST:
         n = 1
+
     elif test_type is TestCaseType.SECOND:
         n = 2
+
     elif test_type is TestCaseType.THIRD:
         n = 3
+
     elif test_type is TestCaseType.RANDOM_EVEN:
         n = 2 * randint(2, 50)
+
     elif test_type is TestCaseType.RANDOM_ODD:
         n = 2 * randint(2, 50) + 1
+
     elif test_type is TestCaseType.LARGE_EVEN:
         n = 2 * randint(125, 250)
+
     elif test_type is TestCaseType.LARGE_ODD:
         n = 2 * randint(125, 250) + 1
 

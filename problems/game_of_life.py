@@ -9,37 +9,13 @@ from problems.solutions.game_of_life import game_of_life
 
 logger = logging.getLogger(__name__)
 
-
-class TestCaseType(TestCaseTypeEnum):
-    STILL_LIFE = ("still life", 1)
-    OSCILLATORS = ("oscillators", 1)
-    GLIDERS = ("gliders", 0)
-    GLIDER_GUN = ("glider gun", 1)
-    RANDOM_SMALL = ("small random", 1)
-    RANDOM_LARGE = ("large random", 0)
-    RANDOM_LONG = ("long random", 0)
-
-
-class ProblemTestCase(TestCase):
-    def input_tuple(self) -> tuple:
-        return self.input['board'], self.input['steps']
-
-    def output_tuple(self) -> tuple:
-        return self.output['board'],
-
-    def output_str(self) -> str:
-        return str(self.output['board'])
-
-
 FUNCTION_NAME = "game_of_life"
-STATIC_RESOURCES = ["still_life.txt", "oscillators.txt", "spaceships.txt"]
-
 INPUT_VARS = ['board', 'steps']
 OUTPUT_VARS = ['board']
 
-PHYSICAL_CONSTANTS = {}
-TESTING_CONSTANTS = {}
+STATIC_RESOURCES = ["still_life.txt", "oscillators.txt", "spaceships.txt"]
 
+PHYSICAL_CONSTANTS = {}
 ATOL = {}
 RTOL = {}
 
@@ -74,6 +50,27 @@ GLIDER_GUN_STR = 24*"0" + "1" + 11*"0" + \
 GLIDER_GUN = reshape(array(list(GLIDER_GUN_STR), dtype=int), (9, 36))
 
 
+class TestCaseType(TestCaseTypeEnum):
+    STILL_LIFE = ("still life", 1)
+    OSCILLATORS = ("oscillators", 1)
+    GLIDERS = ("gliders", 0)
+    GLIDER_GUN = ("glider gun", 1)
+    RANDOM_SMALL = ("small random", 1)
+    RANDOM_LARGE = ("large random", 0)
+    RANDOM_LONG = ("long random", 0)
+
+
+class ProblemTestCase(TestCase):
+    def input_tuple(self) -> tuple:
+        return self.input['board'], self.input['steps']
+
+    def output_tuple(self) -> tuple:
+        return self.output['board'],
+
+    def output_str(self) -> str:
+        return str(self.output['board'])
+
+
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)
 
@@ -84,6 +81,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         grid[5:8, 2:6] = BEEHIVE
         grid[1:5, 7:11] = LOAF
         grid[6:9, 10:13] = TUB
+
     elif test_type is TestCaseType.OSCILLATORS:
         grid = zeros((17, 36), dtype=int)
         steps = 30
@@ -91,24 +89,29 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         grid[8:10, 15:19] = TOAD
         grid[10:14, 1:5] = BEACON
         grid[2:15, 21:34] = PULSAR
+
     elif test_type is TestCaseType.GLIDERS:
         raise NotImplementedError
+
     elif test_type is TestCaseType.GLIDER_GUN:
         N = randint(15, 50)
         M = randint(50, 100)
         steps = 200
         grid = zeros((N, M), dtype=int)
         grid[2:11, 2:38] = GLIDER_GUN
+
     elif test_type is TestCaseType.RANDOM_SMALL:
         N = randint(5, 50)
         M = randint(5, 50)
         steps = randint(1, 100)
         grid = choice([ALIVE, DEAD], N*M, p=[0.5, 0.5]).reshape(N, M)
+
     elif test_type is TestCaseType.RANDOM_LARGE:
         N = randint(200, 250)
         M = randint(200, 250)
         steps = randint(50, 100)
         grid = choice([ALIVE, DEAD], N*M, p=[0.5, 0.5]).reshape(N, M)
+
     elif test_type is TestCaseType.RANDOM_LONG:
         N, M = 50, 50
         steps = 1000
