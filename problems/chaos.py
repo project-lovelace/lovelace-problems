@@ -23,7 +23,6 @@ class TestCaseType(TestCaseTypeEnum):
     DEATH = ('death', 1)
     QUICK_STABLE = ('quick stable', 1)
     FLUCTUATE_STABLE = ('fluctuate stable', 1)
-    OSCILLATION = ('oscillation', 1)
     CHAOS = ('chaos', 1)
     DIVERGENCE = ('divergence', 1)
 
@@ -50,9 +49,6 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
     elif test_type is TestCaseType.FLUCTUATE_STABLE:
         r = 3
-
-    elif test_type is TestCaseType.OSCILLATION:
-        r = 4
 
     elif test_type is TestCaseType.CHAOS:
         r = 3.5
