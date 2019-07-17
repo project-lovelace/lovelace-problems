@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 FUNCTION_NAME = "enso_classification"
 INPUT_VARS = ['season']
-OUTPUT_VARS = ['enso_classification']
+OUTPUT_VARS = ['enso_classification', 'enso_intensity', 'mei']
 
 STATIC_RESOURCES = ["mei.ext_index.txt"]
 
@@ -27,10 +27,11 @@ class ProblemTestCase(TestCase):
         return self.input["season"],
 
     def output_tuple(self) -> tuple:
-        return self.output['enso_classification'],
+        return self.output['enso_classification'], self.output['enso_intensity'], self.output['mei']
 
     def output_str(self) -> str:
-        return self.output['enso_classification']
+        c, i, mei = self.output['enso_classification'], self.output['enso_intensity'], self.output['mei']
+        return "classification={:}, intensity={:}, mei={:}".format(c, i, mei)
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
@@ -48,7 +49,12 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 def solve_test_case(test_case: ProblemTestCase) -> None:
     from problems.solutions.el_nino_intensities import enso_classification
     season = test_case.input['season']
-    test_case.output['enso_classification'] = enso_classification(season)
+
+    c, i, mei = enso_classification(season)
+
+    test_case.output['enso_classification'] = c
+    test_case.output['enso_intensity'] = i
+    test_case.output['mei'] = mei
 
 
 def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
