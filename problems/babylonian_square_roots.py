@@ -1,7 +1,7 @@
 import logging
 from typing import Tuple
 
-from numpy.random import uniform
+from numpy.random import uniform, randint
 
 from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
 from problems.solutions.babylonian_square_roots import babylonian_sqrt
@@ -22,9 +22,11 @@ RTOL = {
 
 
 class TestCaseType(TestCaseTypeEnum):
-    ZERO = ("Zero", 1)
-    NEGATIVE = ("Negative", 1)
-    SMALL_POSITIVE = ("1 < n < 10", 2)
+    ZERO = ("zero", 1)
+    NEGATIVE = ("negative number", 1)
+    SMALL = ("1 < n < 10", 2)
+    LARGE = ("10 < n < 1,000,000", 2)
+    SQUARE = ("square number", 1)
 
 
 class ProblemTestCase(TestCase):
@@ -47,8 +49,14 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     elif test_type is TestCaseType.NEGATIVE:
         n = uniform(-10, -0.01)
 
-    elif test_type is TestCaseType.SMALL_POSITIVE:
+    elif test_type is TestCaseType.SMALL:
         n = uniform(1, 10)
+
+    elif test_type is TestCaseType.LARGE:
+        n = uniform(10, 1000000)
+
+    elif test_type is TestCaseType.SQUARE:
+        n = randint(5, 100)**2
 
     test_case.input['n'] = n
     return test_case

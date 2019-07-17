@@ -56,7 +56,7 @@ PHYSICAL_CONSTANTS = {
 }
 ATOL = {}
 RTOL = {
-    'distance': 1e-5
+    'distance': 1e-3
 }
 
 
