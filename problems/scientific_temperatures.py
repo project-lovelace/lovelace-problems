@@ -6,7 +6,7 @@ from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_co
 
 logger = logging.getLogger(__name__)
 
-FUNCTION_NAME = "celsius"
+FUNCTION_NAME = "fahrenheit_to_celsius"
 INPUT_VARS = ['F']
 OUTPUT_VARS = ['C']
 
