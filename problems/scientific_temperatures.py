@@ -19,7 +19,6 @@ RTOL = {
 }
 
 
-
 class TestCaseType(TestCaseTypeEnum):
     WARM_DAY = ("Warm day", 1)
     COLD_DAY = ("Cold day", 1)

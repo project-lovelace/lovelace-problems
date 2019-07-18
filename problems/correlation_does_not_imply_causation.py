@@ -71,7 +71,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         x = rand(N).tolist()
         y = rand(N).tolist()
         write_random_dataset_csv(x, y)
-        dataset_filename = 'random_xy.csv'
+        dataset_filename = "random_xy.csv"
         test_case.input['DYNAMIC_RESOURCES'] = [dataset_filename]
 
     test_case.input['x'] = x

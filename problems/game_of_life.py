@@ -57,7 +57,6 @@ class TestCaseType(TestCaseTypeEnum):
     GLIDER_GUN = ("glider gun", 1)
     RANDOM_SMALL = ("small random", 1)
     RANDOM_LARGE = ("large random", 0)
-    RANDOM_LONG = ("long random", 0)
 
 
 class ProblemTestCase(TestCase):
@@ -96,25 +95,20 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     elif test_type is TestCaseType.GLIDER_GUN:
         N = randint(15, 50)
         M = randint(50, 100)
-        steps = 200
+        steps = 10
         grid = zeros((N, M), dtype=int)
         grid[2:11, 2:38] = GLIDER_GUN
 
     elif test_type is TestCaseType.RANDOM_SMALL:
         N = randint(5, 50)
         M = randint(5, 50)
-        steps = randint(1, 10)
+        steps = randint(3, 10)
         grid = choice([ALIVE, DEAD], N*M, p=[0.5, 0.5]).reshape(N, M)
 
     elif test_type is TestCaseType.RANDOM_LARGE:
         N = randint(200, 250)
         M = randint(200, 250)
-        steps = randint(5, 20)
-        grid = choice([ALIVE, DEAD], N*M, p=[0.5, 0.5]).reshape(N, M)
-
-    elif test_type is TestCaseType.RANDOM_LONG:
-        N, M = 50, 50
-        steps = 100
+        steps = randint(3, 10)
         grid = choice([ALIVE, DEAD], N*M, p=[0.5, 0.5]).reshape(N, M)
 
     test_case.input["board"] = grid.tolist()
