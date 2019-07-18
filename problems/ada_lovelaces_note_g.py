@@ -24,10 +24,10 @@ class TestCaseType(TestCaseTypeEnum):
     FIRST = ("First Bernoulli number", 1)
     SECOND = ("Second Bernoulli number", 1)
     THIRD = ("Third Bernoulli number", 1)
-    RANDOM_EVEN = ("Even n > 2", 2)
-    RANDOM_ODD = ("Odd n > 3", 2)
-    LARGE_EVEN = ("Even n > 250", 1)
-    LARGE_ODD = ("Odd n > 250", 1)
+    RANDOM_EVEN = ("Even 2 < n < 50", 2)
+    RANDOM_ODD = ("Odd 3 < n < 51", 2)
+    LARGE_EVEN = ("Even 50 < n < 125", 1)
+    LARGE_ODD = ("Odd 51 < n < 126", 1)
 
 
 class ProblemTestCase(TestCase):
