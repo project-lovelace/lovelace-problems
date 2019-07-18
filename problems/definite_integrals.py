@@ -1,8 +1,7 @@
 import logging
 from typing import Tuple
-from math import exp
-from random import randint, uniform
-from numpy import linspace
+from numpy import pi, exp, sin, linspace
+from numpy.random import randint, uniform
 
 from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
 from problems.solutions.definite_integrals import area_of_rectangles
@@ -25,7 +24,11 @@ RTOL = {
 class TestCaseType(TestCaseTypeEnum):
     ZERO = ("Zero function (rectangles with no height)", 1)
     CONSTANT = ("Constant function (all rectangles have the same height)", 1)
+    LINEAR = ("Linear function", 1)
+    QUADRATIC = ("Quadratic polynomial", 1)
     EXPONENTIAL = ("Exponential function", 1)
+    SINE = ("Sine function", 1)
+    RANDOM = ("Random function", 1)
 
 
 class ProblemTestCase(TestCase):
@@ -53,11 +56,39 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         f = [c for _ in range(N)]
         dx = 1
 
+    elif test_type is TestCaseType.LINEAR:
+        N = randint(10, 20)
+        x1, x2 = uniform(0, 2), uniform(3, 5)
+        dx = (x2 - x1) / N
+
+        a, b = uniform(-5, 5), uniform(-5, 5)
+        f = [a*x + b for x in linspace(x1, x2, N)]
+
+    elif test_type is TestCaseType.QUADRATIC:
+        N = randint(15, 30)
+        x1, x2 = uniform(-5, -1), uniform(2, 5)
+        dx = (x2 - x1) / N
+
+        a, b, c = uniform(-1, 1), uniform(-1, 1), uniform(-1, 1)
+        f = [a*x**2 + b*x + c for x in linspace(x1, x2, N)]
+
     elif test_type is TestCaseType.EXPONENTIAL:
         N = randint(20, 40)
         x1, x2 = 0, uniform(3, 5)
         dx = (x2 - x1) / N
         f = [exp(x) for x in linspace(x1, x2, N)]
+
+    elif test_type is TestCaseType.SINE:
+        N = randint(50, 75)
+        x1, x2 = 0, 2*pi
+        dx = (x2 - x1) / N
+        f = [sin(x) for x in linspace(x1, x2, N)]
+
+    elif test_type is TestCaseType.RANDOM:
+        N = randint(40, 60)
+        x1, x2 = 0, 1
+        dx = (x2 - x1) / N
+        f = uniform(-1, 1, size=N)
 
     test_case.input = {
         "rectangle_heights": f,
