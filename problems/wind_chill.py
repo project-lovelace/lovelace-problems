@@ -21,6 +21,8 @@ RTOL = {
 
 
 class TestCaseType(TestCaseTypeEnum):
+    ZERO_TEMP = ("Zero celsius", 1)
+    ZERO_WIND = ("Zero wind", 1)
     COLD_CALM = ("Cold calm weather", 1)
     COLD_WINDY = ("Cold windy weather", 1)
     VERY_COLD_CALM = ("Very cold and calm weather", 1)
@@ -40,6 +42,14 @@ class ProblemTestCase(TestCase):
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)
+
+    if test_type is TestCaseType.ZERO_TEMP:
+        T_a = 0
+        v = uniform(5, 40)
+
+    if test_type is TestCaseType.ZERO_WIND:
+        T_a = uniform(-20, 20)
+        v = 0
 
     if test_type is TestCaseType.COLD_CALM:
         T_a = uniform(-15, 2)
