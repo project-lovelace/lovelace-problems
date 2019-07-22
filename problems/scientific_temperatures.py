@@ -3,6 +3,7 @@ from typing import Tuple
 from numpy.random import uniform
 
 from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
+from problems.solutions.scientific_temperatures import fahrenheit_to_celsius
 
 logger = logging.getLogger(__name__)
 
@@ -70,7 +71,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
 def solve_test_case(test_case: ProblemTestCase) -> None:
     F = test_case.input['F']
-    test_case.output['C'] = (5/9) * (F - 32)
+    test_case.output['C'] = fahrenheit_to_celsius(F)
 
 
 def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
