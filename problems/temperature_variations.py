@@ -59,11 +59,11 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         T = [uniform(-20, 35)]
 
     elif test_type is TestCaseType.TWO_VALUES:
-        T = uniform(-20, 35, size=2)
+        T = uniform(-20, 35, size=2).tolist()
 
     elif test_type is TestCaseType.BUNCH_OF_VALUES:
         N = randint(5, 20)
-        T = uniform(-20, 35, size=N)
+        T = uniform(-20, 35, size=N).tolist()
 
     elif test_type is TestCaseType.SASKATOON:
         T = PHYSICAL_CONSTANTS['T']['Saskatoon, Canada']
