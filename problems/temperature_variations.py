@@ -1,9 +1,9 @@
 import logging
 from typing import Tuple
-from numpy import mean, std
 from numpy.random import randint, uniform
 
 from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
+from problems.solutions.temperature_variations import temperature_statistics
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +49,7 @@ class ProblemTestCase(TestCase):
         return self.output['T_avg'], self.output['T_std']
 
     def output_str(self) -> str:
-        return "T_mean = {:.4f}, T_std = {:.4f}".format(self.output['T_avg'], self.output['T_std'])
+        return "T_avg = {:.4f}, T_std = {:.4f}".format(self.output['T_avg'], self.output['T_std'])
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
@@ -86,8 +86,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
 def solve_test_case(test_case: ProblemTestCase) -> None:
     T = test_case.input['T']
-    test_case.output['T_avg'] = mean(T)
-    test_case.output['T_std'] = std(T)
+    test_case.output['T_avg'], test_case.output['T_std'] = temperature_statistics(T)
 
 
 def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
