@@ -15,10 +15,10 @@ OUTPUT_VARS = ['area']
 STATIC_RESOURCES = []
 
 PHYSICAL_CONSTANTS = {}
-ATOL = {}
-RTOL = {
+ATOL = {
     'area': 1e-6
 }
+RTOL = {}
 
 
 class TestCaseType(TestCaseTypeEnum):
