@@ -43,21 +43,18 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         season = str(year) + '-' + next_year_short
 
     test_case.input['season'] = season
-    return test_case
 
-
-def solve_test_case(test_case: ProblemTestCase) -> None:
     from problems.solutions.el_nino_intensities import enso_classification
-    season = test_case.input['season']
-
     c, i, mei = enso_classification(season)
 
     test_case.output['enso_classification'] = c
     test_case.output['enso_intensity'] = i
     test_case.output['mei'] = mei
 
+    return test_case
 
-def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+
+def verify_user_solution(correct_test_case: TestCase, user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
     user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
-    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    passed, correct_test_case = test_case_solution_correct(correct_test_case, user_test_case, ATOL, RTOL)
     return passed, correct_test_case.output_str()

@@ -15,15 +15,15 @@ OUTPUT_VARS = ['m_fuel']
 STATIC_RESOURCES = []
 
 PHYSICAL_CONSTANTS = {
-    'v_e': 2550,  # [m/s]
-    'M': 250000,  # [kg]
+    'v_e': 2550.0,  # [m/s]
+    'M': 250000.0,  # [kg]
 
     # All escape velocities in [m/s].
     # Source: https://en.wikipedia.org/wiki/Escape_velocity#List_of_escape_velocities
-    'v_Earth': 11186,
-    'v_Moon': 2380,
-    'v_Jupiter': 60200,
-    'v_Pluto': 1230,
+    'v_Earth': 11186.0,
+    'v_Moon': 2380.0,
+    'v_Jupiter': 60200.0,
+    'v_Pluto': 1230.0,
     'v_Phobos': 1.139
 }
 
@@ -75,15 +75,12 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         v = float(uniform(1.0, 100.0, 1)[0])
 
     test_case.input['v'] = v
+    test_case.output['m_fuel'] = rocket_fuel(v)
+
     return test_case
 
 
-def solve_test_case(test_case: ProblemTestCase) -> None:
-    v = test_case.input['v']
-    test_case.output['m_fuel'] = rocket_fuel(v)
-
-
-def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+def verify_user_solution(correct_test_case: TestCase, user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
     user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
-    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    passed, correct_test_case = test_case_solution_correct(correct_test_case, user_test_case, ATOL, RTOL)
     return passed, correct_test_case.output_str()

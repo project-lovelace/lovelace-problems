@@ -115,18 +115,16 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         colors = [band_color1, band_color2, band_color3, multiplier_color, tolerance_color]
 
     test_case.input['colors'] = colors
-    return test_case
 
-
-def solve_test_case(test_case: ProblemTestCase) -> None:
-    colors = test_case.input['colors']
     nominal_R, minimum_R, maximum_R = resistance(colors)
     test_case.output['nominal_resistance'] = nominal_R
     test_case.output['minimum_resistance'] = minimum_R
     test_case.output['maximum_resistance'] = maximum_R
 
+    return test_case
 
-def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+
+def verify_user_solution(correct_test_case: TestCase, user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
     user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
-    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    passed, correct_test_case = test_case_solution_correct(correct_test_case, user_test_case, ATOL, RTOL)
     return passed, correct_test_case.output_str()

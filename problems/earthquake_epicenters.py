@@ -99,20 +99,20 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         't3': float(t3)
     }
 
+    # We already know the solution by constructions.
     test_case.output['x'] = r0[0]
     test_case.output['y'] = r0[1]
+
+    # We can decide to solve the problem for the solution anyways.
+    # x1, y1, t1 = test_case.input['x1'], test_case.input['y1'], test_case.input['t1']
+    # x2, y2, t2 = test_case.input['x2'], test_case.input['y2'], test_case.input['t2']
+    # x3, y3, t3 = test_case.input['x3'], test_case.input['y3'], test_case.input['t3']
+    # test_case.output['x'], test_case.output['y'] = earthquake_epicenter(x1, y1, t1, x2, y2, t2, x3, y3, t3)
+
     return test_case
 
 
-def solve_test_case(test_case: ProblemTestCase) -> None:
-    x1, y1, t1 = test_case.input['x1'], test_case.input['y1'], test_case.input['t1']
-    x2, y2, t2 = test_case.input['x2'], test_case.input['y2'], test_case.input['t2']
-    x3, y3, t3 = test_case.input['x3'], test_case.input['y3'], test_case.input['t3']
-
-    test_case.output['x'], test_case.output['y'] = earthquake_epicenter(x1, y1, t1, x2, y2, t2, x3, y3, t3)
-
-
-def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+def verify_user_solution(correct_test_case: TestCase, user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
     user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
-    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    passed, correct_test_case = test_case_solution_correct(correct_test_case, user_test_case, ATOL, RTOL)
     return passed, correct_test_case.output_str()

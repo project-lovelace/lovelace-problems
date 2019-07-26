@@ -68,16 +68,12 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         v = uniform(25, 60)
 
     test_case.input['T_a'], test_case.input['v'] = T_a, v
+    test_case.output['T_wc'] = wind_chill(T_a, v)
+
     return test_case
 
 
-def solve_test_case(test_case: ProblemTestCase) -> None:
-    T_a = test_case.input['T_a']
-    v = test_case.input['v']
-    test_case.output['T_wc'] = wind_chill(T_a, v)
-
-
-def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+def verify_user_solution(correct_test_case: TestCase, user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
     user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
-    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    passed, correct_test_case = test_case_solution_correct(correct_test_case, user_test_case, ATOL, RTOL)
     return passed, correct_test_case.output_str()

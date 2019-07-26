@@ -168,16 +168,12 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         "lon2": lon2
     }
 
+    test_case.output['distance'] = haversine_distance(lat1, lon1, lat2, lon2)
+
     return test_case
 
 
-def solve_test_case(test_case: ProblemTestCase) -> None:
-    lat1, lon1 = test_case.input['lat1'], test_case.input['lon1']
-    lat2, lon2 = test_case.input['lat2'], test_case.input['lon2']
-    test_case.output['distance'] = haversine_distance(lat1, lon1, lat2, lon2)
-
-
-def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+def verify_user_solution(correct_test_case: TestCase, user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
     user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
-    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    passed, correct_test_case = test_case_solution_correct(correct_test_case, user_test_case, ATOL, RTOL)
     return passed, correct_test_case.output_str()

@@ -58,16 +58,14 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         chemical_formula = choice(["CO2", "CH4", "C6H12O6", "PuCoGa5", "CH3NH2", "W", "C2H5OH"], 1)[0]
 
     test_case.input['chemical_formula'] = chemical_formula
+
+    from problems.solutions.molecular_mass_calculator import molecular_mass
+    test_case.output['mass'] = molecular_mass(chemical_formula)
+
     return test_case
 
 
-def solve_test_case(test_case: ProblemTestCase) -> None:
-    from problems.solutions.molecular_mass_calculator import molecular_mass
-    chemical_formula = test_case.input['chemical_formula']
-    test_case.output['mass'] = molecular_mass(chemical_formula)
-
-
-def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+def verify_user_solution(correct_test_case: TestCase, user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
     user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
-    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    passed, correct_test_case = test_case_solution_correct(correct_test_case, user_test_case, ATOL, RTOL)
     return passed, correct_test_case.output_str()
