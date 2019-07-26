@@ -69,16 +69,12 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         'donated_blood': donated_blood
     }
 
+    test_case.output['survive'] = survive(patient_blood_type, donated_blood)
+
     return test_case
 
 
-def solve_test_case(test_case: ProblemTestCase) -> None:
-    b = test_case.input['patient_blood_type']
-    donated_blood = test_case.input['donated_blood']
-    test_case.output['survive'] = survive(b, donated_blood)
-
-
-def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+def verify_user_solution(correct_test_case: TestCase, user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
     user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
-    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    passed, correct_test_case = test_case_solution_correct(correct_test_case, user_test_case, ATOL, RTOL)
     return passed, correct_test_case.output_str()

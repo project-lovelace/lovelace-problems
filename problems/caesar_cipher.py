@@ -76,16 +76,12 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
     test_case.input['ciphertext'] = ciphertext
     test_case.input['known_word'] = known_word
+    test_case.output['decrypted_message'] = break_caesar_cipher(ciphertext, known_word)
+
     return test_case
 
 
-def solve_test_case(test_case: ProblemTestCase) -> None:
-    ciphertext = test_case.input['ciphertext']
-    known_word = test_case.input['known_word']
-    test_case.output['decrypted_message'] = break_caesar_cipher(ciphertext, known_word)
-
-
-def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+def verify_user_solution(correct_test_case: TestCase, user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
     user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
-    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    passed, correct_test_case = test_case_solution_correct(correct_test_case, user_test_case, ATOL, RTOL)
     return passed, correct_test_case.output_str()

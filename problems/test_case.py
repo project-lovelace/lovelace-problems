@@ -77,7 +77,7 @@ def values_match(v1, v2, tt, tol) -> bool:
         return v1 == v2  # Takes care of strings (and hopefully other data types).
 
 
-def test_case_solution_correct(user_test_case: TestCase, atol: dict, rtol: dict, problem_test_case, solve_test_case) -> Tuple[bool, TestCase]:
+def test_case_solution_correct(correct_test_case: TestCase, user_test_case: TestCase, atol: dict, rtol: dict) -> Tuple[bool, TestCase]:
     """
     Check whether user_test_case contains the correct output. Absolute and relative tolerances can be specified via
     the atol and rtol dictionaries.
@@ -89,26 +89,15 @@ def test_case_solution_correct(user_test_case: TestCase, atol: dict, rtol: dict,
     :param solve_test_case: A function that can be used to fill the test case output with the correct output.
     :return: True or False, and a TestCase containing the correct output.
     """
-    logger.info("Verifying user solution...")
+    logger.info("Verifying user solution for test case {:}...".format(correct_test_case.test_type))
 
     input_vars = list(user_test_case.input.keys())
+    output_vars = list(user_test_case.output.keys())
 
     for i, var in enumerate(input_vars):
         var_type = type(user_test_case.input[var])
         val = user_test_case.input[var]
         logger.debug("Test case input {:d}: name={:s}, type={:}, value={:}".format(i, var, var_type, val))
-
-    # Create empty test case that we'll fill with the correct input and output.
-    correct_test_case = problem_test_case()
-
-    # Fill empty test case with the inputs the user was given.
-    for var in input_vars:
-        correct_test_case.input[var] = user_test_case.input[var]
-
-    # Now that the test case has inputs, solve it to fill the outputs with the correct solution.
-    solve_test_case(correct_test_case)
-
-    output_vars = list(user_test_case.output.keys())
 
     # Assume user output is correct until we find a mismatching value.
     test_case_passed = True

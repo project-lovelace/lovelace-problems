@@ -51,13 +51,13 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         F = uniform(-20, 30)
 
     elif test_type is TestCaseType.WATER_FREEZING_POINT:
-        F = 32
+        F = 32.0
 
     elif test_type is TestCaseType.WATER_BOILING_POINT:
-        F = 212
+        F = 212.0
 
     elif test_type is TestCaseType.MINUS_40:
-        F = -40
+        F = -40.0
 
     elif test_type is TestCaseType.ABSOLUTE_ZERO:
         F = -459.67
@@ -66,15 +66,11 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         F = 9940.73
 
     test_case.input['F'] = F
+    test_case.output['C'] = fahrenheit_to_celsius(F)
     return test_case
 
 
-def solve_test_case(test_case: ProblemTestCase) -> None:
-    F = test_case.input['F']
-    test_case.output['C'] = fahrenheit_to_celsius(F)
-
-
-def verify_user_solution(user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
+def verify_user_solution(correct_test_case: TestCase, user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
     user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
-    passed, correct_test_case = test_case_solution_correct(user_test_case, ATOL, RTOL, ProblemTestCase, solve_test_case)
+    passed, correct_test_case = test_case_solution_correct(correct_test_case, user_test_case, ATOL, RTOL)
     return passed, correct_test_case.output_str()
