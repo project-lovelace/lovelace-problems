@@ -83,7 +83,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
     elif test_type is TestCaseType.OSCILLATORS:
         grid = zeros((17, 36), dtype=int)
-        steps = 30
+        steps = 31
         grid[3, 16:19] = BLINKER
         grid[8:10, 15:19] = TOAD
         grid[10:14, 1:5] = BEACON
