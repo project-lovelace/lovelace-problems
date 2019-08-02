@@ -37,7 +37,7 @@ class ProblemTestCase(TestCase):
 
 
 def generate_random_string(length):
-    return "".join(random.choice(string.ascii_uppercase) for _ in range(length))
+    return "".join(random.choice(string.ascii_lowercase) for _ in range(length))
 
 
 def randomly_insert_spaces(s):
@@ -50,7 +50,7 @@ def randomly_insert_spaces(s):
 
 
 def caesar_cipher(plaintext, shift):
-    alphabet = string.ascii_uppercase
+    alphabet = string.ascii_lowercase
     shifted_alphabet = alphabet[shift:] + alphabet[:shift]
     table = str.maketrans(alphabet, shifted_alphabet)
     return plaintext.translate(table)
@@ -64,15 +64,15 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         plaintext = randomly_insert_spaces(generate_random_string(length))
 
     elif test_type is TestCaseType.MOBY_DICK:
-        plaintext = "Call me Ishmael Some years ago never mind how long precisely having little or no money in my purse and nothing particular to interest me on shore I thought I would sail about a little and see the watery part of the world".upper()
+        plaintext = "Call me Ishmael Some years ago never mind how long precisely having little or no money in my purse and nothing particular to interest me on shore I thought I would sail about a little and see the watery part of the world".lower()
 
     elif test_type is TestCaseType.THE_WIRE:
-        plaintext = "This drug thing this aint police work I mean I can send any fool with a badge and a gun to a corner to jack a crew and grab vials But policing I mean you call something a war and pretty soon everyone is going to be running around acting like warriors They gonna be running around on a damn crusade storming corners racking up body counts And when you at war you need a fucking enemy And pretty soon damn near everybody on every corner is your fucking enemy And soon, the neighborhood youre supposed to be policing thats just occupied territory".upper()
+        plaintext = "This drug thing this aint police work I mean I can send any fool with a badge and a gun to a corner to jack a crew and grab vials But policing I mean you call something a war and pretty soon everyone is going to be running around acting like warriors They gonna be running around on a damn crusade storming corners racking up body counts And when you at war you need a fucking enemy And pretty soon damn near everybody on every corner is your fucking enemy And soon, the neighborhood youre supposed to be policing thats just occupied territory".lower()
 
     known_word = random.choice(plaintext.split())
 
     shift = random.randint(1, 25)
-    ciphertext = caesar_cipher(plaintext, shift)
+    ciphertext = caesar_cipher(plaintext, shift).upper()
 
     test_case.input['ciphertext'] = ciphertext
     test_case.input['known_word'] = known_word
