@@ -111,9 +111,10 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         steps = randint(3, 10)
         grid = choice([ALIVE, DEAD], N*M, p=[0.5, 0.5]).reshape(N, M)
 
-    test_case.input["board"] = grid.tolist()
-    test_case.input["steps"] = steps
-    test_case.output["board"] = game_of_life(grid, steps)
+    test_case.input['board'] = grid.tolist()
+    test_case.input['steps'] = steps
+
+    test_case.output['board'] = game_of_life(test_case.input['board'], steps)
 
     return test_case
 
