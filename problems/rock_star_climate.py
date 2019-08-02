@@ -85,7 +85,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         a = PHYSICAL_CONSTANTS['a_Pluto']
         ε = PHYSICAL_CONSTANTS['ε_Pluto']
 
-    if test_type is TestCaseType.EARTH:
+    if test_type is TestCaseType.RANDOM:
         S = uniform(1000, 10000)
         a = uniform(0, 1)
         ε = uniform(0, 1)
