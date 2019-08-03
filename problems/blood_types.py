@@ -54,7 +54,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
     elif test_type is TestCaseType.LUCKY_ABP_PATIENT:
         patient_blood_type = 'AB+'
-        donated_blood = choice(blood_types)
+        donated_blood = [choice(blood_types)]
 
     elif test_type is TestCaseType.SLIM_PICKINGS:
         patient_blood_type = choice(blood_types)
