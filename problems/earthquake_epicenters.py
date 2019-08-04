@@ -17,7 +17,7 @@ OUTPUT_VARS = ['x', 'y']
 STATIC_RESOURCES = []
 
 PHYSICAL_CONSTANTS = {
-    'v': 3.0  # velocity of seismic waves [km/s]
+    'v': 6.0  # velocity of seismic waves [km/s]
 }
 
 ATOL = {
