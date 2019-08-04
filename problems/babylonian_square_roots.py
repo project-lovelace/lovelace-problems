@@ -66,7 +66,7 @@ def verify_user_solution(correct_test_case: TestCase, user_input: tuple, user_ou
     
     # Special case for n = 0 as we still want to use rtol=1e-10 on all answers but atol=1e-10 for n =0.
     if correct_test_case.input['n'] == 0:
-        return isclose(user_test_case.output['sqrt_n'], 0, atol=RTOL['sqrt_n']), correct_test_case.output_str()
+        return isclose(user_test_case.output['sqrt_n'], 0, abs_tol=RTOL['sqrt_n']), correct_test_case.output_str()
 
     passed, correct_test_case = test_case_solution_correct(correct_test_case, user_test_case, ATOL, RTOL)
     return passed, correct_test_case.output_str()
