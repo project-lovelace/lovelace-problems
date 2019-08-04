@@ -1,6 +1,6 @@
 import logging
 from typing import Tuple
-from numpy import pi, exp, sin, linspace
+from numpy import pi, exp, sin, linspace, ndarray
 from numpy.random import randint, uniform
 
 from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
@@ -91,11 +91,11 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         f = uniform(-1, 1, size=N)
 
     test_case.input = {
-        "rectangle_heights": f,
-        "rectangle_width": dx
+        "rectangle_heights": f.tolist() if isinstance(f, ndarray) else f,
+        "rectangle_width": float(dx)
     }
 
-    test_case.output['area'] = area_of_rectangles(f, dx)
+    test_case.output['area'] = float(area_of_rectangles(f, dx))
 
     return test_case
 
