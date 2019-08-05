@@ -24,11 +24,19 @@ class TestCase(object):
 
         self.input = {}
         if input_vars is not None and input_tuple is not None:
+            if len(input_vars) != len(input_tuple):
+                raise ValueError("input_vars and input_tuple must be of the same length but input_vars={:} (len={:d}), "
+                                 "input_tuple={:} (len={:d})".format(input_vars, len(input_vars),
+                                                                     input_tuple, len(input_tuple)))
             for var, val in zip(input_vars, input_tuple):
                 self.input[var] = val
 
         self.output = {}
         if output_vars is not None and output_tuple is not None:
+            if len(output_vars) != len(output_tuple):
+                raise ValueError("output_vars and output_tuple must be of the same length but output_vars={:} "
+                                 "(len={:d}), output_tuple={:} (len={:d})".format(output_vars, len(output_vars),
+                                                                                  output_tuple, len(output_tuple)))
             for var, val in zip(output_vars, output_tuple):
                 self.output[var] = val
 
