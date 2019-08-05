@@ -3,6 +3,8 @@ from enum import Enum
 from math import isclose
 from typing import Tuple
 
+from numpy import ndarray, array_equal, allclose
+
 logger = logging.getLogger(__name__)
 
 
@@ -48,6 +50,14 @@ def values_match(v1, v2, tt, tol) -> bool:
     :param tol: Tolerance value if using "absolute" or "relative".
     :return: True or False
     """
+    if isinstance(v1, (list, ndarray)) and isinstance(v2, (list, ndarray)):
+        if tt is None:
+            return array_equal(v1, v2)
+        elif tt == "absolute":
+            return allclose(v1, v2, atol=tol)
+        elif tt == "relative":
+            return allclose(v1, v2, rtol=tol)
+
     # Values can't match if they're of different types. But if they're ints or floats, that's fine.
     if not isinstance(v1, (int, float)) and not isinstance(v2, (int, float)) and type(v1) != type(v2):
         logger.debug("v1 and v2 types do not match: v1_type={:}, v2_type={:}".format(type(v1), type(v2)))
