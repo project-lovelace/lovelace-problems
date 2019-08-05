@@ -117,8 +117,9 @@ def test_case_solution_correct(correct_test_case: TestCase, user_test_case: Test
         val = user_test_case.input[var]
         logger.debug("Test case input {:d}: name={:s}, type={:}, value={:}".format(i, var, var_type, val))
 
-    # Assume user output is correct until we find a mismatching value.
-    test_case_passed = True
+    # Assume user output is false until we can check that all values match.
+    test_case_passed = False
+    values_passed = []
 
     # Verify that every output matches.
     for i, var in enumerate(output_vars):
@@ -145,10 +146,13 @@ def test_case_solution_correct(correct_test_case: TestCase, user_test_case: Test
 
         output_correct = values_match(user_val, correct_val, tolerance_type, tolerance)
 
+        values_passed.append(output_correct)
         if output_correct is False:
-            test_case_passed = False
             logger.info("User output for {:s} is wrong.".format(var))
         else:
             logger.info("User output for {:s} is correct.".format(var))
+
+    if all(values_passed):
+        test_case_passed = True
 
     return test_case_passed, correct_test_case
