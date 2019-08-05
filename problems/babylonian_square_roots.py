@@ -55,8 +55,8 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     elif test_type is TestCaseType.SQUARE:
         n = randint(5, 100)**2
 
-    test_case.input['n'] = n
-    test_case.output['sqrt_n'] = babylonian_sqrt(n)
+    test_case.input['n'] = float(n)
+    test_case.output['sqrt_n'] = float(babylonian_sqrt(n))
 
     return test_case
 
