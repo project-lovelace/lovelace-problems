@@ -58,6 +58,15 @@ def values_match(v1, v2, tt, tol) -> bool:
     :param tol: Tolerance value if using "absolute" or "relative".
     :return: True or False
     """
+
+    if isinstance(v1, (int, float)):
+        if tt is None:
+            return v1 == v2
+        elif tt == "absolute":
+            return isclose(v1, v2, abs_tol=tol)
+        elif tt == "relative":
+            return isclose(v1, v2, rel_tol=tol)
+
     if isinstance(v1, (list, ndarray)) and isinstance(v2, (list, ndarray)):
         if tt is None:
             return array_equal(v1, v2)
@@ -66,12 +75,7 @@ def values_match(v1, v2, tt, tol) -> bool:
         elif tt == "relative":
             return allclose(v1, v2, rtol=tol)
 
-    # Values can't match if they're of different types. But if they're ints or floats, that's fine.
-    if not isinstance(v1, (int, float)) and not isinstance(v2, (int, float)) and type(v1) != type(v2):
-        logger.debug("v1 and v2 types do not match: v1_type={:}, v2_type={:}".format(type(v1), type(v2)))
-        return False
-
-    if isinstance(v1, (list, tuple)):
+    if isinstance(v1, (list, tuple)) and isinstance(v2, (list, tuple)):
         if len(v1) != len(v2):
             logger.debug("v1 and v2 lengths do not match: v1_len={:d}, v2_len={:d}".format(len(v1), len(v2)))
             return False
@@ -84,15 +88,13 @@ def values_match(v1, v2, tt, tol) -> bool:
         # We've gone through the entire list/tuple and each pair of elements match, so return True.
         return True
 
-    if isinstance(v1, (int, float)):
-        if tt is None:
-            return v1 == v2
-        elif tt == "absolute":
-            return isclose(v1, v2, abs_tol=tol)
-        elif tt == "relative":
-            return isclose(v1, v2, rel_tol=tol)
-    else:
-        return v1 == v2  # Takes care of strings (and hopefully other data types).
+    # Values can't match if they're of different types (unless we're comparing ints with floats,
+    # or lists with numpy arrays, or lists with tuples).
+    if type(v1) != type(v2):
+        logger.debug("v1 and v2 types do not match: v1_type={:}, v2_type={:}".format(type(v1), type(v2)))
+        return False
+
+    return v1 == v2  # Takes care of strings (and hopefully other data types not considered above).
 
 
 def test_case_solution_correct(correct_test_case: TestCase, user_test_case: TestCase, atol: dict, rtol: dict) -> Tuple[bool, TestCase]:
