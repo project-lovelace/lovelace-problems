@@ -123,9 +123,9 @@ def test_case_solution_correct(correct_test_case: TestCase, user_test_case: Test
 
     # Verify that every output matches.
     for i, var in enumerate(output_vars):
-        var_type = type(user_test_case.output[var])
-        user_val = user_test_case.output[var]
+        var_type = type(correct_test_case.output[var])
         correct_val = correct_test_case.output[var]
+        user_val = user_test_case.output[var]
 
         # Raise an error if both an absolute and relative tolerance are defined. Technically non-fatal as we could just
         # pick one, but this should encourage less sloppy problem modules.
