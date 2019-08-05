@@ -47,7 +47,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
     if test_type is TestCaseType.ZERO:
         N = randint(5, 10)
-        f = [0 for _ in range(N)]
+        f = [0.0 for _ in range(N)]
         dx = 1
 
     elif test_type is TestCaseType.CONSTANT:
@@ -91,7 +91,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         f = uniform(-1, 1, size=N)
 
     test_case.input = {
-        "rectangle_heights": f.tolist() if isinstance(f, ndarray) else f,
+        "rectangle_heights": f,  # f.tolist() if isinstance(f, ndarray) else f,
         "rectangle_width": float(dx)
     }
 
