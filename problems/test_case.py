@@ -24,11 +24,19 @@ class TestCase(object):
 
         self.input = {}
         if input_vars is not None and input_tuple is not None:
+            if len(input_vars) != len(input_tuple):
+                raise ValueError("input_vars and input_tuple must be of the same length but input_vars={:} (len={:d}), "
+                                 "input_tuple={:} (len={:d})".format(input_vars, len(input_vars),
+                                                                     input_tuple, len(input_tuple)))
             for var, val in zip(input_vars, input_tuple):
                 self.input[var] = val
 
         self.output = {}
         if output_vars is not None and output_tuple is not None:
+            if len(output_vars) != len(output_tuple):
+                raise ValueError("output_vars and output_tuple must be of the same length but output_vars={:} "
+                                 "(len={:d}), output_tuple={:} (len={:d})".format(output_vars, len(output_vars),
+                                                                                  output_tuple, len(output_tuple)))
             for var, val in zip(output_vars, output_tuple):
                 self.output[var] = val
 
@@ -50,6 +58,15 @@ def values_match(v1, v2, tt, tol) -> bool:
     :param tol: Tolerance value if using "absolute" or "relative".
     :return: True or False
     """
+
+    if isinstance(v1, (int, float)):
+        if tt is None:
+            return v1 == v2
+        elif tt == "absolute":
+            return isclose(v1, v2, abs_tol=tol)
+        elif tt == "relative":
+            return isclose(v1, v2, rel_tol=tol)
+
     if isinstance(v1, (list, ndarray)) and isinstance(v2, (list, ndarray)):
         if tt is None:
             return array_equal(v1, v2)
@@ -58,12 +75,7 @@ def values_match(v1, v2, tt, tol) -> bool:
         elif tt == "relative":
             return allclose(v1, v2, rtol=tol)
 
-    # Values can't match if they're of different types. But if they're ints or floats, that's fine.
-    if not isinstance(v1, (int, float)) and not isinstance(v2, (int, float)) and type(v1) != type(v2):
-        logger.debug("v1 and v2 types do not match: v1_type={:}, v2_type={:}".format(type(v1), type(v2)))
-        return False
-
-    if isinstance(v1, (list, tuple)):
+    if isinstance(v1, (list, tuple)) and isinstance(v2, (list, tuple)):
         if len(v1) != len(v2):
             logger.debug("v1 and v2 lengths do not match: v1_len={:d}, v2_len={:d}".format(len(v1), len(v2)))
             return False
@@ -76,15 +88,13 @@ def values_match(v1, v2, tt, tol) -> bool:
         # We've gone through the entire list/tuple and each pair of elements match, so return True.
         return True
 
-    if isinstance(v1, (int, float)):
-        if tt is None:
-            return v1 == v2
-        elif tt == "absolute":
-            return isclose(v1, v2, abs_tol=tol)
-        elif tt == "relative":
-            return isclose(v1, v2, rel_tol=tol)
-    else:
-        return v1 == v2  # Takes care of strings (and hopefully other data types).
+    # Values can't match if they're of different types (unless we're comparing ints with floats,
+    # or lists with numpy arrays, or lists with tuples).
+    if type(v1) != type(v2):
+        logger.debug("v1 and v2 types do not match: v1_type={:}, v2_type={:}".format(type(v1), type(v2)))
+        return False
+
+    return v1 == v2  # Takes care of strings (and hopefully other data types not considered above).
 
 
 def test_case_solution_correct(correct_test_case: TestCase, user_test_case: TestCase, atol: dict, rtol: dict) -> Tuple[bool, TestCase]:
@@ -109,14 +119,15 @@ def test_case_solution_correct(correct_test_case: TestCase, user_test_case: Test
         val = user_test_case.input[var]
         logger.debug("Test case input {:d}: name={:s}, type={:}, value={:}".format(i, var, var_type, val))
 
-    # Assume user output is correct until we find a mismatching value.
-    test_case_passed = True
+    # Assume user output is false until we can check that all values match.
+    test_case_passed = False
+    values_passed = []
 
     # Verify that every output matches.
     for i, var in enumerate(output_vars):
-        var_type = type(user_test_case.output[var])
-        user_val = user_test_case.output[var]
+        var_type = type(correct_test_case.output[var])
         correct_val = correct_test_case.output[var]
+        user_val = user_test_case.output[var]
 
         # Raise an error if both an absolute and relative tolerance are defined. Technically non-fatal as we could just
         # pick one, but this should encourage less sloppy problem modules.
@@ -137,10 +148,13 @@ def test_case_solution_correct(correct_test_case: TestCase, user_test_case: Test
 
         output_correct = values_match(user_val, correct_val, tolerance_type, tolerance)
 
+        values_passed.append(output_correct)
         if output_correct is False:
-            test_case_passed = False
             logger.info("User output for {:s} is wrong.".format(var))
         else:
             logger.info("User output for {:s} is correct.".format(var))
+
+    if all(values_passed):
+        test_case_passed = True
 
     return test_case_passed, correct_test_case
