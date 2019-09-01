@@ -22,7 +22,7 @@ RTOL = {}
 
 
 class TestCaseType(TestCaseTypeEnum):
-    NO_DONATIONS = ("No donations have been made.", 1)
+    NO_DONATIONS = ("No donations have been made.", 0)
     LUCKY_PATIENT = ("Lucky patient (O- is available)", 1)
     LUCKY_ABP_PATIENT = ("Lucky AB+ patient", 1)
     SLIM_PICKINGS = ("Slim pickings (few donations)", 2)
