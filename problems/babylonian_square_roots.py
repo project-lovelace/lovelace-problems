@@ -23,6 +23,7 @@ RTOL = {
 
 
 class TestCaseType(TestCaseTypeEnum):
+    ZERO = ("zero", 1)
     SMALL = ("1 < n < 10", 2)
     LARGE = ("10 < n < 1,000,000", 2)
     SQUARE = ("square number", 1)
@@ -41,6 +42,9 @@ class ProblemTestCase(TestCase):
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)
+
+    if test_type is TestCaseType.ZERO:
+        n = 0
 
     elif test_type is TestCaseType.SMALL:
         n = uniform(1, 10)
