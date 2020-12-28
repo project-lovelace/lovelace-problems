@@ -2,7 +2,7 @@ import logging
 from typing import Tuple
 from numpy.random import uniform
 
-from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
+from problems.test_case import TestCase, TestCaseTypeEnum
 from problems.solutions.wind_chill import wind_chill
 
 logger = logging.getLogger(__name__)
@@ -71,9 +71,3 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case.output['T_wc'] = wind_chill(T_a, v)
 
     return test_case
-
-
-def verify_user_solution(correct_test_case: TestCase, user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
-    user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
-    passed, correct_test_case = test_case_solution_correct(correct_test_case, user_test_case, ATOL, RTOL)
-    return passed, correct_test_case.output_str()
