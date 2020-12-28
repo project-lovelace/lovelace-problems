@@ -4,7 +4,7 @@ from typing import Tuple
 
 from numpy.random import uniform, randint
 
-from problems.test_case import TestCase, TestCaseTypeEnum, test_case_solution_correct
+from problems.test_case import TestCase, TestCaseTypeEnum
 from problems.solutions.babylonian_square_roots import babylonian_sqrt
 
 logger = logging.getLogger(__name__)
@@ -23,7 +23,6 @@ RTOL = {
 
 
 class TestCaseType(TestCaseTypeEnum):
-    ZERO = ("zero", 1)
     SMALL = ("1 < n < 10", 2)
     LARGE = ("10 < n < 1,000,000", 2)
     SQUARE = ("square number", 1)
@@ -43,9 +42,6 @@ class ProblemTestCase(TestCase):
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)
 
-    if test_type is TestCaseType.ZERO:
-        n = 0
-
     elif test_type is TestCaseType.SMALL:
         n = uniform(1, 10)
 
@@ -59,14 +55,3 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case.output['sqrt_n'] = float(babylonian_sqrt(n))
 
     return test_case
-
-
-def verify_user_solution(correct_test_case: TestCase, user_input: tuple, user_output: tuple) -> Tuple[bool, str]:
-    user_test_case = ProblemTestCase(None, INPUT_VARS, user_input, OUTPUT_VARS, user_output)
-    
-    # Special case for n = 0 as we still want to use rtol=1e-10 on all answers but atol=1e-10 for n =0.
-    if correct_test_case.input['n'] == 0:
-        return isclose(user_test_case.output['sqrt_n'], 0, abs_tol=RTOL['sqrt_n']), correct_test_case.output_str()
-
-    passed, correct_test_case = test_case_solution_correct(correct_test_case, user_test_case, ATOL, RTOL)
-    return passed, correct_test_case.output_str()
