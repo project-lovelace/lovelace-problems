@@ -88,10 +88,10 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         N = randint(40, 60)
         x1, x2 = 0, 1
         dx = (x2 - x1) / N
-        f = uniform(-1, 1, size=N)
+        f = uniform(-1, 1, size=N).tolist()
 
     test_case.input = {
-        "rectangle_heights": f,  # f.tolist() if isinstance(f, ndarray) else f,
+        "rectangle_heights": f,
         "rectangle_width": float(dx)
     }
 
