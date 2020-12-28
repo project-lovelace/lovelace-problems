@@ -57,7 +57,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         r = 3.6
 
     test_case.input['r'] = float(r)
-    test_case.output['x'] = logistic_map(r).tolist()
+    test_case.output['x'] = logistic_map(r)
 
     return test_case
 
