@@ -25,7 +25,7 @@ class TestCaseType(TestCaseTypeEnum):
     SMALL_N = ("1 < n < 10", 2)
     MEDIUM_N = ("10 < n < 100", 2)
     LARGE_N = ("100 < n < 1,000", 1)
-    HUGE_N = ("10,000 < n < 20,000", 1)
+    HUGE_N = ("10,000 < n < 100,000", 1)
 
 
 class ProblemTestCase(TestCase):
