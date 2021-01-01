@@ -27,7 +27,7 @@ PHYSICAL_CONSTANTS = {
 
     # 1 Astronomical unit (almost equal to the average of Earth's aphelion and perihelion).
     # Source: https://en.wikipedia.org/wiki/Astronomical_unit
-    'd_Sun_Earth': 149597870700,  # ~150 million kilometres
+    'd_Sun_Earth': 149597870700.0,  # ~150 million kilometres
 
     # Maximum distance between the Earth and Mars.
     # Source: https://www.space.com/14729-spacekids-distance-earth-mars.html
