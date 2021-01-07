@@ -48,9 +48,6 @@ class ProblemTestCase(TestCase):
     def output_tuple(self) -> tuple:
         return self.output['T_avg'], self.output['T_std']
 
-    def output_str(self) -> str:
-        return "T_avg = {:.4f}, T_std = {:.4f}".format(self.output['T_avg'], self.output['T_std'])
-
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)

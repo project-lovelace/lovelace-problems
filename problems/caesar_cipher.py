@@ -32,9 +32,6 @@ class ProblemTestCase(TestCase):
     def output_tuple(self) -> tuple:
         return self.output['decrypted_message'],
 
-    def output_str(self) -> str:
-        return self.output['decrypted_message']
-
 
 def generate_random_string(length):
     return "".join(random.choice(string.ascii_lowercase) for _ in range(length))

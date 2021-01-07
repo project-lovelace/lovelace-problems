@@ -31,9 +31,6 @@ class ProblemTestCase(TestCase):
     def output_tuple(self) -> tuple:
         return self.output['rna_str'],
 
-    def output_str(self) -> str:
-        return self.output['rna_str']
-
 
 def generate_dna_sequence(length):
     return "".join(random.choice("ATGC") for _ in range(length))

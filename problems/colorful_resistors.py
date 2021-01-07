@@ -79,12 +79,6 @@ class ProblemTestCase(TestCase):
         maximum_R = self.output['maximum_resistance']
         return nominal_R, minimum_R, maximum_R
 
-    def output_str(self) -> str:
-        nominal_R = self.output['nominal_resistance']
-        minimum_R = self.output['minimum_resistance']
-        maximum_R = self.output['maximum_resistance']
-        return "nominal_R = {:f}, minimum_R = {:f}, maximum_R = {:f}".format(nominal_R, minimum_R, maximum_R)
-
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     digits = PHYSICAL_CONSTANTS['digits']
