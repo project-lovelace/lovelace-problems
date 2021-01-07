@@ -29,10 +29,6 @@ class ProblemTestCase(TestCase):
     def output_tuple(self) -> tuple:
         return self.output['enso_classification'], self.output['enso_intensity'], self.output['mei']
 
-    def output_str(self) -> str:
-        c, i, mei = self.output['enso_classification'], self.output['enso_intensity'], self.output['mei']
-        return "classification={:}, intensity={:}, mei={:}".format(c, i, mei)
-
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)

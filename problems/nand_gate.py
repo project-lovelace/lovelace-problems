@@ -31,9 +31,6 @@ class ProblemTestCase(TestCase):
     def output_tuple(self) -> tuple:
         return self.output['nand'],
 
-    def output_str(self) -> str:
-        return self.output['nand']
-
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)

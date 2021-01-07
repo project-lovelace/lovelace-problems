@@ -39,11 +39,6 @@ class ProblemTestCase(TestCase):
         denominator = self.output['denominator']
         return numerator, denominator
 
-    def output_str(self) -> str:
-        numerator = self.output['numerator']
-        denominator = self.output['denominator']
-        return "numerator = {:d}, denominator = {:d}".format(numerator, denominator)
-
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)

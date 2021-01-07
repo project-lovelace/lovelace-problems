@@ -50,9 +50,6 @@ class ProblemTestCase(TestCase):
     def output_tuple(self) -> tuple:
         return self.output['habitability'],
 
-    def output_str(self) -> str:
-        return str(self.output['habitability'])
-
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)

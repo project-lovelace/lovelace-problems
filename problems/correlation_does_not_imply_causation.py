@@ -37,9 +37,6 @@ class ProblemTestCase(TestCase):
     def output_tuple(self) -> tuple:
         return self.output['r']
 
-    def output_str(self) -> str:
-        return str(self.output['r'])
-
 
 def write_random_dataset_csv(x, y):
     cwd = os.path.dirname(os.path.abspath(__file__))
