@@ -44,22 +44,22 @@ def generate_test_case(test_type):
         rate = 0.0
         years = randint(1, 10)
 
-    if test_type is TestCaseType.SAVINGS:
+    elif test_type is TestCaseType.SAVINGS:
         amount = uniform(100, 25000)
         rate = 0.005
         years = randint(10, 25)
 
-    if test_type is TestCaseType.SP_500:
+    elif test_type is TestCaseType.SP_500:
         amount = uniform(10000, 500000)
         rate = 0.1
         years = randint(7, 30)
 
-    if test_type is TestCaseType.CREDIT_CARD:
+    elif test_type is TestCaseType.CREDIT_CARD:
         amount = uniform(250, 10000)
         rate = 0.1
         years = randint(7, 30)
 
-    if test_type is TestCaseType.RANDOM:
+    elif test_type is TestCaseType.RANDOM:
         amount = uniform(0, 100000)
         rate = uniform(0, 0.25)
         years = randint(0, 30)
