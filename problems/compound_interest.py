@@ -3,7 +3,7 @@ import logging
 from numpy.random import uniform, randint
 
 from problems.test_case import TestCase, TestCaseTypeEnum
-from problems.solutions.plump_moose import compound_interest
+from problems.solutions.compound_interest import compound_interest
 
 logger = logging.getLogger(__name__)
 
