@@ -59,7 +59,7 @@ def generate_test_case(test_type):
         rate = 0.1
         years = randint(7, 30)
 
-    if test_type is TestCaseType.CREDIT_CARD:
+    if test_type is TestCaseType.RANDOM:
         amount = uniform(0, 100000)
         rate = uniform(0, 0.25)
         years = randint(0, 30)
