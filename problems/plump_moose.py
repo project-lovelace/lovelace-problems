@@ -50,13 +50,13 @@ def generate_test_case(test_type):
         latitude = 67.85507
 
     elif test_type is TestCaseType.SOUTHERN:
-        latitude = uniform(58.0, 62.0)
+        latitude = uniform(58, 62)
 
     elif test_type is TestCaseType.NORTHERN:
-        latitude = uniform(62.0, 66.0)
+        latitude = uniform(62, 66)
 
     elif test_type is TestCaseType.RANDOM:
-        latitude = uniform(57.0, 67.0)
+        latitude = uniform(57, 67)
 
     else:
         raise ValueError(f"Unrecognized test case: {test_type}")
