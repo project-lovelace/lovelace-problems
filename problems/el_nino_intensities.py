@@ -70,7 +70,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     from problems.solutions.el_nino_intensities import enso_classification
     classification, intensity = enso_classification(year)
 
-    test_case.output['enso_classification'] = c
-    test_case.output['enso_intensity'] = i
+    test_case.output['enso_classification'] = classification
+    test_case.output['enso_intensity'] = intensity
 
     return test_case
