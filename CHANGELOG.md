@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/project-lovelace/lovelace-problems/tree/HEAD)
+## [v3.0.0](https://github.com/project-lovelace/lovelace-problems/tree/v3.0.0) (2021-03-25)
 
-[Full Changelog](https://github.com/project-lovelace/lovelace-problems/compare/v2.0...HEAD)
+[Full Changelog](https://github.com/project-lovelace/lovelace-problems/compare/v2.0...v3.0.0)
 
 **Fixed bugs:**
 
