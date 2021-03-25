@@ -36,7 +36,7 @@ class ProblemTestCase(TestCase):
         return self.input["season"],
 
     def output_tuple(self) -> tuple:
-        return self.output['enso_classification'], self.output['enso_intensity'], self.output['mei']
+        return self.output['enso_classification'], self.output['enso_intensity']
 
 
 def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
