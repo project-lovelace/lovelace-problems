@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 FUNCTION_NAME = "enso_classification"
 INPUT_VARS = ['season']
-OUTPUT_VARS = ['enso_classification', 'enso_intensity', 'mei']
+OUTPUT_VARS = ['enso_classification', 'enso_intensity']
 
 STATIC_RESOURCES = ["mei.ext_index.txt"]
 
