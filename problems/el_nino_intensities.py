@@ -8,7 +8,7 @@ from problems.test_case import TestCase, TestCaseTypeEnum
 logger = logging.getLogger(__name__)
 
 FUNCTION_NAME = "enso_classification"
-INPUT_VARS = ['season']
+INPUT_VARS = ['year']
 OUTPUT_VARS = ['enso_classification', 'enso_intensity']
 
 STATIC_RESOURCES = ["mei.ext_index.txt"]
@@ -33,7 +33,7 @@ class TestCaseType(TestCaseTypeEnum):
 
 class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
-        return self.input["season"],
+        return self.input["year"],
 
     def output_tuple(self) -> tuple:
         return self.output['enso_classification'], self.output['enso_intensity']
