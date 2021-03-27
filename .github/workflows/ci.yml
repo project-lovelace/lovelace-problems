@@ -21,8 +21,7 @@ jobs:
 
       - name: Clone lovelace-solutions
         run: |
-          git clone https://${{ secrets.LOVELACE_GITHUB_TOKEN }}@github.com/project-lovelace/lovelace-solutions.git
-          ln -s lovelace-solutions/python/ problems/solutions/
+          git clone https://${{ secrets.LOVELACE_GITHUB_TOKEN }}@github.com/project-lovelace/lovelace-solutions.git problems/solutions/
 
       - name: Run tests
         run: pytest --capture=no --verbose
