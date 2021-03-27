@@ -49,9 +49,9 @@ def test_problem_test_case_generation(problem_name):
     problem_module = importlib.import_module("problems." + problem_name)
     assert len(problem_module.TestCaseType) > 0
 
-    # if len(problem_module.STATIC_RESOURCES) > 0:
-    #     print(f"Skipping problem {problem_name} as we can't test problems with static resources yet.")
-    #     return True
+    if len(problem_module.STATIC_RESOURCES) > 0:
+        print(f"Skipping problem {problem_name} as we can't test problems with static resources yet.")
+        return True
 
     for test_case_type in problem_module.TestCaseType:
 

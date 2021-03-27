@@ -92,5 +92,5 @@ ENV/
 .idea
 
 # Symbolic links to secret stuff
-problems/lovelace-solutions
+lovelace-solutions
 problems/solutions
