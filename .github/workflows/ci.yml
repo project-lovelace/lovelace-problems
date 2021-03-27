@@ -1,0 +1,33 @@
+name: lovelace-solutions CI
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Clone lovelace-solutions
+        run: |
+          git clone https://${{ secrets.LOVELACE_GITHUB_TOKEN }}@github.com/project-lovelace/lovelace-solutions.git
+          ln -s lovelace-solutions/python/ problems/solutions/
+
+      - name: Run tests
+        run: pytest --capture=no --verbose
