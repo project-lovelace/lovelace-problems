@@ -31,4 +31,4 @@ jobs:
         run: git clone https://${{ secrets.LOVELACE_GITHUB_TOKEN }}@github.com/project-lovelace/lovelace-solutions.git problems/solutions/
 
       - name: Run tests
-        run: pytest --capture=no --verbose
+        run: pytest --capture=no --verbose tests/
