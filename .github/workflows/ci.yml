@@ -24,6 +24,9 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Set up package
+        run: python setup.py develop
+
       - name: Clone lovelace-solutions
         run: |
           git clone https://${{ secrets.LOVELACE_GITHUB_TOKEN }}@github.com/project-lovelace/lovelace-solutions.git
