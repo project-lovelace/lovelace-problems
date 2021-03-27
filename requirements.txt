@@ -26,7 +26,7 @@ pyflakes==2.2.0
 pyparsing==2.4.7
 pytest==6.2.1
 scipy==1.5.4
-setuptools==52.0.0.post20210125
+setuptools==52.0.0
 six==1.15.0
 toml==0.10.2
 urllib3==1.26.3
