@@ -17,18 +17,21 @@ iniconfig==1.1.1
 mccabe==0.6.1
 more-itertools==8.6.0
 numpy==1.19.4
-packaging @ file:///tmp/build/80754af9/packaging_1611952188834/work
+packaging==20.9
+pip==21.0.1
 pluggy==0.13.1
 py==1.10.0
 pycodestyle==2.6.0
 pyflakes==2.2.0
-pyparsing @ file:///home/linux1/recipes/ci/pyparsing_1610983426697/work
+pyparsing==2.4.7
 pytest==6.2.1
 scipy==1.5.4
-six @ file:///tmp/build/80754af9/six_1605205306277/work
-toml @ file:///tmp/build/80754af9/toml_1616166611790/work
+setuptools==52.0.0.post20210125
+six==1.15.0
+toml==0.10.2
 urllib3==1.26.3
 virtualenv==20.4.3
 wcwidth==0.2.5
 websocket-client==0.57.0
+wheel==0.36.2
 zipp==3.4.0
