@@ -1,37 +1,34 @@
-# This file may be used to create an environment using:
-# $ conda create --name <env> --file <this file>
-# platform: linux-64
-_libgcc_mutex=0.1=main
-attrs=20.3.0=pyhd3eb1b0_0
-blas=1.0=openblas
-ca-certificates=2021.1.19=h06a4308_1
-certifi=2020.12.5=py39h06a4308_0
-iniconfig=1.1.1=pyhd3eb1b0_0
-ld_impl_linux-64=2.33.1=h53a641e_7
-libffi=3.3=he6710b0_2
-libgcc-ng=9.1.0=hdf63c60_0
-libgfortran-ng=7.3.0=hdf63c60_0
-libopenblas=0.3.13=h4367d64_0
-libstdcxx-ng=9.1.0=hdf63c60_0
-more-itertools=8.7.0=pyhd3eb1b0_0
-ncurses=6.2=he6710b0_1
-numpy=1.19.2=py39h87658db_0
-numpy-base=1.19.2=py39h0f7b65f_0
-openssl=1.1.1k=h27cfd23_0
-packaging=20.9=pyhd3eb1b0_0
-pip=21.0.1=py39h06a4308_0
-pluggy=0.13.1=py39h06a4308_0
-py=1.10.0=pyhd3eb1b0_0
-pyparsing=2.4.7=pyhd3eb1b0_0
-pytest=6.2.2=py39h06a4308_2
-python=3.9.2=hdb3f193_0
-readline=8.1=h27cfd23_0
-setuptools=52.0.0=py39h06a4308_0
-six=1.15.0=py39h06a4308_0
-sqlite=3.35.2=hdfb4753_0
-tk=8.6.10=hbc83047_0
-toml=0.10.2=pyhd3eb1b0_0
-tzdata=2020f=h52ac0ba_0
-wheel=0.36.2=pyhd3eb1b0_0
-xz=5.2.5=h7b6447c_0
-zlib=1.2.11=h7b6447c_3
+atomicwrites==1.4.0
+attrs==20.3.0
+bitstring==3.1.7
+black==19.3b0
+certifi==2020.12.5
+chardet==4.0.0
+click==7.1.2
+docker==4.4.1
+entrypoints==0.3
+falcon==2.0.0
+filelock==3.0.12
+flake8==3.8.4
+flake8-bugbear==20.11.1
+gunicorn==20.0.4
+importlib-metadata==3.3.0
+iniconfig==1.1.1
+mccabe==0.6.1
+more-itertools==8.6.0
+numpy==1.19.4
+packaging @ file:///tmp/build/80754af9/packaging_1611952188834/work
+pluggy==0.13.1
+py==1.10.0
+pycodestyle==2.6.0
+pyflakes==2.2.0
+pyparsing @ file:///home/linux1/recipes/ci/pyparsing_1610983426697/work
+pytest==6.2.1
+scipy==1.5.4
+six @ file:///tmp/build/80754af9/six_1605205306277/work
+toml @ file:///tmp/build/80754af9/toml_1616166611790/work
+urllib3==1.26.3
+virtualenv==20.4.3
+wcwidth==0.2.5
+websocket-client==0.57.0
+zipp==3.4.0
