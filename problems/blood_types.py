@@ -100,7 +100,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         donated_blood = []
 
     else:
-        raise ValueError("Unrecognized test case: {}".format(test_type))
+        raise ValueError(f"Unrecognized test case: {test_type}")
 
     test_case.input = {"patient_blood_type": patient_blood_type, "donated_blood": donated_blood}
 

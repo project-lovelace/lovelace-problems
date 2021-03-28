@@ -71,6 +71,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     elif test_type is TestCaseType.RANDOM:
         v = float(uniform(1.0, 100.0, 1)[0])
 
+    else:
+        raise ValueError(f"Unrecognized test case: {test_type}")
+
     test_case.input['v'] = v
     test_case.output['m_fuel'] = rocket_fuel(v)
 

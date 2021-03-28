@@ -77,6 +77,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     elif test_type is TestCaseType.SAN_JUAN:
         T = PHYSICAL_CONSTANTS['T']['San Juan, Argentina']
 
+    else:
+        raise ValueError(f"Unrecognized test case: {test_type}")
+
     test_case.input['T'] = T
     test_case.output['T_avg'], test_case.output['T_std'] = temperature_statistics(T)
 

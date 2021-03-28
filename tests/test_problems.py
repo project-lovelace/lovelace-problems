@@ -1,9 +1,12 @@
+import logging
 import pkgutil
 import importlib
 import pytest
 import problems
 
 from types import ModuleType
+
+log = logging.getLogger(__name__)
 
 problem_modules = pkgutil.iter_modules(problems.__path__)
 problem_names = [m.name for m in problem_modules]
@@ -50,14 +53,14 @@ def test_problem_test_case_generation(problem_name):
     assert len(problem_module.TestCaseType) > 0
 
     if len(problem_module.STATIC_RESOURCES) > 0:
-        print(f"Skipping problem {problem_name} as we can't test problems with static resources yet.")
+        log.info(f"Skipping problem {problem_name} as we can't test problems with static resources yet.")
         return True
 
     for test_case_type in problem_module.TestCaseType:
 
         if test_case_type.multiplicity == 0:
             # These are usually disabled or not yet implemented tests.
-            print(f"Skipping problem {problem_name} test case type {test_case_type} with multiplicity 0.")
+            log.info(f"Skipping problem {problem_name} test case type {test_case_type} with multiplicity 0.")
             continue
 
         test_case = problem_module.generate_test_case(test_case_type)

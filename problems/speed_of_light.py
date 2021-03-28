@@ -79,6 +79,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         c = PHYSICAL_CONSTANTS['c']
         distance = uniform(c, 60*c)
 
+    else:
+        raise ValueError(f"Unrecognized test case: {test_type}")
+
     test_case.input['distance'] = distance
     test_case.output['time'] = light_time(distance)
 

@@ -45,6 +45,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     elif test_type is TestCaseType.QUICK_BROWN_FOX:
         M = "The quick brown fox jumps over the lazy dog"
 
+    else:
+        raise ValueError(f"Unrecognized test case: {test_type}")
+
     test_case.input['message'] = M
     test_case.output['digest'] = SHA256(M)
 

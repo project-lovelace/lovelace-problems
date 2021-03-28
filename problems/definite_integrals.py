@@ -87,6 +87,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         dx = (x2 - x1) / N
         f = uniform(-1, 1, size=N).tolist()
 
+    else:
+        raise ValueError(f"Unrecognized test case: {test_type}")
+
     test_case.input = {
         "rectangle_heights": f,
         "rectangle_width": float(dx)

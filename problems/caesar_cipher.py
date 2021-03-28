@@ -66,6 +66,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     elif test_type is TestCaseType.THE_WIRE:
         plaintext = "This drug thing this aint police work I mean I can send any fool with a badge and a gun to a corner to jack a crew and grab vials But policing I mean you call something a war and pretty soon everyone is going to be running around acting like warriors They gonna be running around on a damn crusade storming corners racking up body counts And when you at war you need a fucking enemy And pretty soon damn near everybody on every corner is your fucking enemy And soon, the neighborhood youre supposed to be policing thats just occupied territory".lower()
 
+    else:
+        raise ValueError(f"Unrecognized test case: {test_type}")
+
     known_word = random.choice(plaintext.split())
 
     shift = random.randint(1, 25)

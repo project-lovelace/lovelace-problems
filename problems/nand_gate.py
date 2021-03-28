@@ -47,6 +47,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     elif test_type is TestCaseType.ONE_ONE:
         p, q = 1, 1
 
+    else:
+        raise ValueError(f"Unrecognized test case: {test_type}")
+
     test_case.input["p"], test_case.input["q"] = p, q
     test_case.output["nand"] = NAND(p, q)
 

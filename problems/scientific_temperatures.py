@@ -62,6 +62,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     elif test_type is TestCaseType.SUN_SURFACE:
         F = 9940.73
 
+    else:
+        raise ValueError(f"Unrecognized test case: {test_type}")
+
     test_case.input['F'] = F
     test_case.output['C'] = fahrenheit_to_celsius(F)
     return test_case

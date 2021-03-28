@@ -52,6 +52,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     elif test_type is TestCaseType.SQUARE:
         n = randint(5, 100)**2
 
+    else:
+        raise ValueError(f"Unrecognized test case: {test_type}")
+
     test_case.input['n'] = float(n)
     test_case.output['sqrt_n'] = float(babylonian_sqrt(n))
 

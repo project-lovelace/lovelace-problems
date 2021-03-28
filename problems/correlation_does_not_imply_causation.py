@@ -71,6 +71,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         dataset_filename = "random_xy.csv"
         test_case.input['DYNAMIC_RESOURCES'] = [dataset_filename]
 
+    else:
+        raise ValueError(f"Unrecognized test case: {test_type}")
+
     test_case.input['x'] = x
     test_case.input['y'] = y
     test_case.input['dataset_filename'] = dataset_filename

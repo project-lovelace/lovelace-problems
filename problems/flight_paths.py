@@ -92,71 +92,74 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         lat2 = lat1
         lon2 = lon1
 
-    if test_type is TestCaseType.EQUATORIAL:
+    elif test_type is TestCaseType.EQUATORIAL:
         lat1 = 0
         lon1 = uniform(-180, 180)
         lat2 = 0
         lon2 = uniform(-180, 180)
 
-    if test_type is TestCaseType.POLE_TO_POLE:
+    elif test_type is TestCaseType.POLE_TO_POLE:
         lat1 = 90
         lon1 = uniform(-180, 180)
         lat2 = -90
         lon2 = uniform(-180, 180)
 
-    if test_type is TestCaseType.NEW_YORK_TO_MADRID:
+    elif test_type is TestCaseType.NEW_YORK_TO_MADRID:
         lat1 = PHYSICAL_CONSTANTS['New_York_lat']
         lon1 = PHYSICAL_CONSTANTS['New_York_lon']
         lat2 = PHYSICAL_CONSTANTS['Madrid_lat']
         lon2 = PHYSICAL_CONSTANTS['Madrid_lon']
 
-    if test_type is TestCaseType.VANCOUVER_TO_ST_JOHNS:
+    elif test_type is TestCaseType.VANCOUVER_TO_ST_JOHNS:
         lat1 = PHYSICAL_CONSTANTS['Vancouver_lat']
         lon1 = PHYSICAL_CONSTANTS['Vancouver_lon']
         lat2 = PHYSICAL_CONSTANTS['St_Johns_lat']
         lon2 = PHYSICAL_CONSTANTS['St_Johns_lon']
 
-    if test_type is TestCaseType.DAKAR_TO_ANTANANARIVO:
+    elif test_type is TestCaseType.DAKAR_TO_ANTANANARIVO:
         lat1 = PHYSICAL_CONSTANTS['Dakar_lat']
         lon1 = PHYSICAL_CONSTANTS['Dakar_lon']
         lat2 = PHYSICAL_CONSTANTS['Antananarivo_lat']
         lon2 = PHYSICAL_CONSTANTS['Antananarivo_lon']
 
-    if test_type is TestCaseType.ROME_TO_ISTANBUL:
+    elif test_type is TestCaseType.ROME_TO_ISTANBUL:
         lat1 = PHYSICAL_CONSTANTS['Rome_lat']
         lon1 = PHYSICAL_CONSTANTS['Rome_lon']
         lat2 = PHYSICAL_CONSTANTS['Istanbul_lat']
         lon2 = PHYSICAL_CONSTANTS['Istanbul_lon']
 
-    if test_type is TestCaseType.BENGALURU_TO_LHASA:
+    elif test_type is TestCaseType.BENGALURU_TO_LHASA:
         lat1 = PHYSICAL_CONSTANTS['Bengaluru_lat']
         lon1 = PHYSICAL_CONSTANTS['Bengaluru_lon']
         lat2 = PHYSICAL_CONSTANTS['Lhasa_lat']
         lon2 = PHYSICAL_CONSTANTS['Lhasa_lon']
 
-    if test_type is TestCaseType.MANAUS_TO_BANDUNG:
+    elif test_type is TestCaseType.MANAUS_TO_BANDUNG:
         lat1 = PHYSICAL_CONSTANTS['Manaus_lat']
         lon1 = PHYSICAL_CONSTANTS['Manaus_lon']
         lat2 = PHYSICAL_CONSTANTS['Bandung_lat']
         lon2 = PHYSICAL_CONSTANTS['Bandung_lon']
 
-    if test_type is TestCaseType.USHUAIA_TO_ALERT:
+    elif test_type is TestCaseType.USHUAIA_TO_ALERT:
         lat1 = PHYSICAL_CONSTANTS['Ushuaia_lat']
         lon1 = PHYSICAL_CONSTANTS['Ushuaia_lon']
         lat2 = PHYSICAL_CONSTANTS['Alert_lat']
         lon2 = PHYSICAL_CONSTANTS['Alert_lon']
 
-    if test_type is TestCaseType.EPIA_TO_PPIA:
+    elif test_type is TestCaseType.EPIA_TO_PPIA:
         lat1 = PHYSICAL_CONSTANTS['EPIA_lat']
         lon1 = PHYSICAL_CONSTANTS['EPIA_lon']
         lat2 = PHYSICAL_CONSTANTS['PPIA_lat']
         lon2 = PHYSICAL_CONSTANTS['PPIA_lon']
 
-    if test_type is TestCaseType.RANDOM_POINTS:
+    elif test_type is TestCaseType.RANDOM_POINTS:
         lat1 = uniform(-90, 90)
         lon1 = uniform(-180, 180)
         lat2 = uniform(-90, 90)
         lon2 = uniform(-180, 180)
+
+    else:
+        raise ValueError(f"Unrecognized test case: {test_type}")
 
     test_case.input = {
         "lat1": lat1,

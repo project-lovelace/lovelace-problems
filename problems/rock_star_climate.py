@@ -72,20 +72,23 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         a = 1
         ε = PHYSICAL_CONSTANTS['ε_Earth']
 
-    if test_type is TestCaseType.MARS:
+    elif test_type is TestCaseType.MARS:
         S = PHYSICAL_CONSTANTS['S_Mars']
         a = PHYSICAL_CONSTANTS['a_Mars']
         ε = PHYSICAL_CONSTANTS['ε_Mars']
 
-    if test_type is TestCaseType.PLUTO:
+    elif test_type is TestCaseType.PLUTO:
         S = PHYSICAL_CONSTANTS['S_Pluto']
         a = PHYSICAL_CONSTANTS['a_Pluto']
         ε = PHYSICAL_CONSTANTS['ε_Pluto']
 
-    if test_type is TestCaseType.RANDOM:
+    elif test_type is TestCaseType.RANDOM:
         S = uniform(1000, 10000)
         a = uniform(0, 1)
         ε = uniform(0, 1)
+
+    else:
+        raise ValueError(f"Unrecognized test case: {test_type}")
 
     test_case.input = {'solar_constant': S, 'albedo': a, 'emissivity': ε}
     test_case.output['T_rock'] = rock_temperature(S, a, ε)

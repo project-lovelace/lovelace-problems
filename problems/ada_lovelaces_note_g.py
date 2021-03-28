@@ -67,6 +67,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     elif test_type is TestCaseType.LARGE_ODD:
         n = 2 * randint(50, 125) + 1
 
+    else:
+        raise ValueError(f"Unrecognized test case: {test_type}")
+
     test_case.input['n'] = n
     test_case.output['numerator'], test_case.output['denominator'] = bernoulli(n)
 
