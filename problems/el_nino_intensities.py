@@ -4,6 +4,7 @@ from typing import Tuple
 from numpy.random import randint
 
 from problems.test_case import TestCase, TestCaseTypeEnum
+from problems.solutions.el_nino_intensities import enso_classification
 
 logger = logging.getLogger(__name__)
 
@@ -44,30 +45,39 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
     if test_type is TestCaseType.QUIET_YEAR:
         year = 1996
+
     elif test_type is TestCaseType.WEAK_EL_NINO:
         year = 1948
+
     elif test_type is TestCaseType.WEAK_LA_NINA:
         year = 1871
+
     elif test_type is TestCaseType.MODERATE_EL_NINO:
         year = 1914
+
     elif test_type is TestCaseType.MODERATE_LA_NINA:
         year = 2000
+
     elif test_type is TestCaseType.STRONG_EL_NINO:
         year = 1993
+
     elif test_type is TestCaseType.STRONG_LA_NINA:
         year = 1890
+
     elif test_type is TestCaseType.VERY_STRONG_EL_NINO:
         year = 2016
+
     elif test_type is TestCaseType.VERY_STRONG_LA_NINA:
         year = 1955
+
     elif test_type is TestCaseType.RANDOM_YEAR:
         year = randint(1871, 2016)
+
     else:
         raise ValueError(f"Unrecognized test case: {test_type}")
 
     test_case.input['year'] = year
 
-    from problems.solutions.el_nino_intensities import enso_classification
     classification, intensity = enso_classification(year)
 
     test_case.output['enso_classification'] = classification

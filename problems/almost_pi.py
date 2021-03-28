@@ -42,14 +42,17 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     if test_type is TestCaseType.SMALL_N:
         N = randint(2, 10)
 
-    if test_type is TestCaseType.MEDIUM_N:
+    elif test_type is TestCaseType.MEDIUM_N:
         N = randint(11, 100)
 
-    if test_type is TestCaseType.LARGE_N:
+    elif test_type is TestCaseType.LARGE_N:
         N = randint(101, 1000)
 
-    if test_type is TestCaseType.HUGE_N:
+    elif test_type is TestCaseType.HUGE_N:
         N = randint(10000, 100000)
+
+    else:
+        raise ValueError(f"Unrecognized test case: {test_type}")
 
     test_case.input['N'] = N
     test_case.output['pi'] = almost_pi(N)

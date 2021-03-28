@@ -108,6 +108,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         tolerance_color = str(np.random.choice(list(tolerance.keys())))
         colors = [band_color1, band_color2, band_color3, multiplier_color, tolerance_color]
 
+    else:
+        raise ValueError(f"Unrecognized test case: {test_type}")
+
     test_case.input['colors'] = colors
 
     nominal_R, minimum_R, maximum_R = resistance(colors)

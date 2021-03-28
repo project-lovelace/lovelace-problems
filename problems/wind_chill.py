@@ -44,11 +44,11 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         T_a = 0
         v = uniform(5, 40)
 
-    if test_type is TestCaseType.ZERO_WIND:
+    elif test_type is TestCaseType.ZERO_WIND:
         T_a = uniform(-20, 20)
         v = 0
 
-    if test_type is TestCaseType.COLD_CALM:
+    elif test_type is TestCaseType.COLD_CALM:
         T_a = uniform(-15, 2)
         v = uniform(2, 8)
 
@@ -63,6 +63,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     elif test_type is TestCaseType.VERY_COLD_WINDY:
         T_a = uniform(-50, -20)
         v = uniform(25, 60)
+
+    else:
+        raise ValueError(f"Unrecognized test case: {test_type}")
 
     test_case.input['T_a'], test_case.input['v'] = T_a, v
     test_case.output['T_wc'] = wind_chill(T_a, v)

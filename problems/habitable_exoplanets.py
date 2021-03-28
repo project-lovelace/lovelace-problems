@@ -70,6 +70,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         L_star = float(uniform(0.1, 5.0, 1)[0])
         r = float(uniform(0.1, 5.0, 1)[0])
 
+    else:
+        raise ValueError(f"Unrecognized test case: {test_type}")
+
     test_case.input['L_star'] = L_star
     test_case.input['r'] = r
     test_case.output['habitability'] = habitable_exoplanet(L_star, r)

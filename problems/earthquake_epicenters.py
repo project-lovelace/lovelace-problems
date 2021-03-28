@@ -77,6 +77,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         r2 = r0 + d * array([cos(theta[1]), sin(theta[1])])
         r3 = r0 + d * array([cos(theta[2]), sin(theta[2])])
 
+    else:
+        raise ValueError(f"Unrecognized test case: {test_type}")
+
     v = PHYSICAL_CONSTANTS['v']
 
     t1 = norm(r1-r0) / v

@@ -108,6 +108,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         steps = randint(3, 10)
         grid = choice([ALIVE, DEAD], N*M, p=[0.5, 0.5]).reshape(N, M)
 
+    else:
+        raise ValueError(f"Unrecognized test case: {test_type}")
+
     test_case.input['board'] = grid.tolist()
     test_case.input['steps'] = steps
 
