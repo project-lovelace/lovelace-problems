@@ -4,7 +4,6 @@ from typing import Tuple
 from numpy.random import randint
 
 from problems.test_case import TestCase, TestCaseTypeEnum
-from problems.solutions.el_nino_intensities import enso_classification
 
 logger = logging.getLogger(__name__)
 
@@ -78,6 +77,9 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
     test_case.input['year'] = year
 
+    # Delay solution import until tests can handle static resources:
+    # https://github.com/project-lovelace/lovelace-problems/issues/60
+    from problems.solutions.el_nino_intensities import enso_classification
     classification, intensity = enso_classification(year)
 
     test_case.output['enso_classification'] = classification

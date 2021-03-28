@@ -134,7 +134,7 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         lat2 = PHYSICAL_CONSTANTS['Lhasa_lat']
         lon2 = PHYSICAL_CONSTANTS['Lhasa_lon']
 
-    elif test_type is TestCaseType.MANAUS_TO_BANDUNG
+    elif test_type is TestCaseType.MANAUS_TO_BANDUNG:
         lat1 = PHYSICAL_CONSTANTS['Manaus_lat']
         lon1 = PHYSICAL_CONSTANTS['Manaus_lon']
         lat2 = PHYSICAL_CONSTANTS['Bandung_lat']

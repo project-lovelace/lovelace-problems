@@ -4,7 +4,6 @@ from typing import Tuple
 from numpy.random import choice
 
 from problems.test_case import TestCase, TestCaseTypeEnum
-from problems.solutions.molecular_mass_calculator import molecular_mass
 
 logger = logging.getLogger(__name__)
 
@@ -57,6 +56,11 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
 
     else:
         raise ValueError(f"Unrecognized test case: {test_type}")
+
+
+    # Delay solution import until tests can handle static resources:
+    # https://github.com/project-lovelace/lovelace-problems/issues/60
+    from problems.solutions.molecular_mass_calculator import molecular_mass
 
     test_case.input['chemical_formula'] = chemical_formula
     test_case.output['mass'] = molecular_mass(chemical_formula)
