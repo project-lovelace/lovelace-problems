@@ -1,5 +1,22 @@
 # Changelog
 
+## [v3.1.0](https://github.com/project-lovelace/lovelace-problems/tree/v3.1.0) (2021-03-27)
+
+[Full Changelog](https://github.com/project-lovelace/lovelace-problems/compare/v3.0.0...v3.1.0)
+
+**Closed issues:**
+
+- Test suite that just makes sure we can generate every test case? [\#54](https://github.com/project-lovelace/lovelace-problems/issues/54)
+- Change output for El Niño intensities when no El Nino or La Nina is present [\#32](https://github.com/project-lovelace/lovelace-problems/issues/32)
+- Rewrite README.me [\#11](https://github.com/project-lovelace/lovelace-problems/issues/11)
+
+**Merged pull requests:**
+
+- Run CI tests with Python 3.9 [\#58](https://github.com/project-lovelace/lovelace-problems/pull/58) ([ali-ramadhan](https://github.com/ali-ramadhan))
+- Add GitHub Actions CI pipeline [\#57](https://github.com/project-lovelace/lovelace-problems/pull/57) ([ali-ramadhan](https://github.com/ali-ramadhan))
+- Add a test suite [\#56](https://github.com/project-lovelace/lovelace-problems/pull/56) ([ali-ramadhan](https://github.com/ali-ramadhan))
+- Revise El Nino intensities problem [\#55](https://github.com/project-lovelace/lovelace-problems/pull/55) ([ali-ramadhan](https://github.com/ali-ramadhan))
+
 ## [v3.0.0](https://github.com/project-lovelace/lovelace-problems/tree/v3.0.0) (2021-03-25)
 
 [Full Changelog](https://github.com/project-lovelace/lovelace-problems/compare/v2.0...v3.0.0)
