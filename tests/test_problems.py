@@ -46,8 +46,20 @@ def test_problem_test_case_types(problem_name):
         assert isinstance(test_case_type.test_name, str)
         assert isinstance(test_case_type.multiplicity, int)
 
-@pytest.mark.parametrize("problem_name", problem_names)
-def test_problem_test_case_generation(problem_name):
+#####
+##### Test each test case for each problem
+#####
+
+def problem_test_cases(problem_name):
+    problem_module = importlib.import_module("problems." + problem_name)
+    return [_ for _ in problem_module.TestCaseType]
+
+problem_test_cases_dict = {problem_name: problem_test_cases(problem_name) for problem_name in problem_names}
+
+problem_test_case_combos = [(name, test_case) for name, test_cases in problem_test_cases_dict.items() for test_case in test_cases]
+
+@pytest.mark.parametrize("problem_name, test_case_type", problem_test_case_combos)
+def test_problem_test_case_generation(problem_name, test_case_type):
 
     problem_module = importlib.import_module("problems." + problem_name)
     assert len(problem_module.TestCaseType) > 0
@@ -56,33 +68,31 @@ def test_problem_test_case_generation(problem_name):
         log.info(f"Skipping problem {problem_name} as we can't test problems with static resources yet.")
         return True
 
-    for test_case_type in problem_module.TestCaseType:
+    if test_case_type.multiplicity == 0:
+        # These are usually disabled or not yet implemented tests.
+        log.info(f"Skipping problem {problem_name} test case type {test_case_type} with multiplicity 0.")
+        return True
 
-        if test_case_type.multiplicity == 0:
-            # These are usually disabled or not yet implemented tests.
-            log.info(f"Skipping problem {problem_name} test case type {test_case_type} with multiplicity 0.")
-            continue
+    test_case = problem_module.generate_test_case(test_case_type)
 
-        test_case = problem_module.generate_test_case(test_case_type)
+    assert test_case.test_type == test_case_type
+    assert isinstance(test_case.input, dict)
+    assert isinstance(test_case.output, dict)
 
-        assert test_case.test_type == test_case_type
-        assert isinstance(test_case.input, dict)
-        assert isinstance(test_case.output, dict)
+    for input_name, input_value in test_case.input.items():
+        assert isinstance(input_name, str)
+        assert input_name in problem_module.INPUT_VARS
 
-        for input_name, input_value in test_case.input.items():
-            assert isinstance(input_name, str)
-            assert input_name in problem_module.INPUT_VARS
+    for output_name, output_value in test_case.output.items():
+        assert isinstance(output_name, str)
+        assert output_name in problem_module.OUTPUT_VARS
 
-        for output_name, output_value in test_case.output.items():
-            assert isinstance(output_name, str)
-            assert output_name in problem_module.OUTPUT_VARS
+    input_tuple = test_case.input_tuple()
+    assert len(input_tuple) == len(problem_module.INPUT_VARS)
+    for input_name, input_value in zip(problem_module.INPUT_VARS, input_tuple):
+        assert test_case.input[input_name] == input_value
 
-        input_tuple = test_case.input_tuple()
-        assert len(input_tuple) == len(problem_module.INPUT_VARS)
-        for input_name, input_value in zip(problem_module.INPUT_VARS, input_tuple):
-            assert test_case.input[input_name] == input_value
-
-        output_tuple = test_case.output_tuple()
-        assert len(output_tuple) == len(problem_module.OUTPUT_VARS)
-        for output_name, output_value in zip(problem_module.OUTPUT_VARS, output_tuple):
-            assert test_case.output[output_name] == output_value
+    output_tuple = test_case.output_tuple()
+    assert len(output_tuple) == len(problem_module.OUTPUT_VARS)
+    for output_name, output_value in zip(problem_module.OUTPUT_VARS, output_tuple):
+        assert test_case.output[output_name] == output_value
