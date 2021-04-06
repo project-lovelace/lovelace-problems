@@ -29,7 +29,7 @@ scipy==1.5.4
 setuptools==52.0.0
 six==1.15.0
 toml==0.10.2
-urllib3==1.26.3
+urllib3==1.26.4
 virtualenv==20.4.3
 wcwidth==0.2.5
 websocket-client==0.57.0
