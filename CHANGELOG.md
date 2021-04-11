@@ -1,5 +1,22 @@
 # Changelog
 
+## [v3.2.0](https://github.com/project-lovelace/lovelace-problems/tree/v3.2.0) (2021-04-11)
+
+[Full Changelog](https://github.com/project-lovelace/lovelace-problems/compare/v3.1.0...v3.2.0)
+
+**Closed issues:**
+
+- Record version of problems repo [\#46](https://github.com/project-lovelace/lovelace-problems/issues/46)
+
+**Merged pull requests:**
+
+- New problem: Exponential growth [\#67](https://github.com/project-lovelace/lovelace-problems/pull/67) ([ali-ramadhan](https://github.com/ali-ramadhan))
+- Bump urllib3 from 1.26.3 to 1.26.4 [\#66](https://github.com/project-lovelace/lovelace-problems/pull/66) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Flesh out RNA translation tests [\#65](https://github.com/project-lovelace/lovelace-problems/pull/65) ([ali-ramadhan](https://github.com/ali-ramadhan))
+- Parameterize test cases too [\#64](https://github.com/project-lovelace/lovelace-problems/pull/64) ([ali-ramadhan](https://github.com/ali-ramadhan))
+- Test cases for RNA translation [\#63](https://github.com/project-lovelace/lovelace-problems/pull/63) ([ali-ramadhan](https://github.com/ali-ramadhan))
+- Cleanup problem module logic [\#61](https://github.com/project-lovelace/lovelace-problems/pull/61) ([ali-ramadhan](https://github.com/ali-ramadhan))
+
 ## [v3.1.0](https://github.com/project-lovelace/lovelace-problems/tree/v3.1.0) (2021-03-27)
 
 [Full Changelog](https://github.com/project-lovelace/lovelace-problems/compare/v3.0.0...v3.1.0)
