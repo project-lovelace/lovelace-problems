@@ -15,7 +15,9 @@ STATIC_RESOURCES = []
 
 PHYSICAL_CONSTANTS = {}
 ATOL = {}
-RTOL = {}
+RTOL = {
+    "x": 1e-8
+}
 
 class ProblemTestCase(TestCase):
     def input_tuple(self):
