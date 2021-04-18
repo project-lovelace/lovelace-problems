@@ -16,9 +16,9 @@ Let us know if you're interested in submitting new problems so we can invite you
 
 There are three steps to submitting a new problem:
 
-1. Open a pull request to lovelace-solutions with the solution to the problem.
-2. Open a pull request to lovelace-problems with code to generate test cases for the problem. (You're here!)
-3. Open a pull request to lovelace-website with the problem description, code stubs, and any visualization code.
+1. Open a pull request to [lovelace-solutions](https://github.com/project-lovelace/lovelace-solutions#new-problem-submission-guide) with the solution to the problem.
+2. Open a pull request to lovelace-problems with code to generate test cases for the problem. (You are here!)
+3. Open a pull request to [lovelace-website](https://github.com/project-lovelace/lovelace-website#new-problem-submission-guide) with the problem description, code stubs, and any visualization code.
 
 ### How to submit new problem test cases
 
