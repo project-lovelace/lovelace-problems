@@ -41,12 +41,12 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
     test_case = ProblemTestCase(test_type)
 
     if test_type is TestCaseType.ZERO_TEMP:
-        T_a = 0
+        T_a = 0.0
         v = uniform(5, 40)
 
     elif test_type is TestCaseType.ZERO_WIND:
         T_a = uniform(-20, 20)
-        v = 0
+        v = 0.0
 
     elif test_type is TestCaseType.COLD_CALM:
         T_a = uniform(-15, 2)

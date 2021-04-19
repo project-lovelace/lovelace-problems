@@ -93,15 +93,15 @@ def generate_test_case(test_type: TestCaseType) -> ProblemTestCase:
         lon2 = lon1
 
     elif test_type is TestCaseType.EQUATORIAL:
-        lat1 = 0
+        lat1 = 0.0
         lon1 = uniform(-180, 180)
-        lat2 = 0
+        lat2 = 0.0
         lon2 = uniform(-180, 180)
 
     elif test_type is TestCaseType.POLE_TO_POLE:
-        lat1 = 90
+        lat1 = 90.0
         lon1 = uniform(-180, 180)
-        lat2 = -90
+        lat2 = -90.0
         lon2 = uniform(-180, 180)
 
     elif test_type is TestCaseType.NEW_YORK_TO_MADRID:
