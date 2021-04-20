@@ -32,7 +32,7 @@ class TestCaseType(TestCaseTypeEnum):
 
 class ProblemTestCase(TestCase):
     def input_tuple(self) -> tuple:
-        return self.input['f', 'x'],
+        return (self.input['f'], self.input['x'])
 
     def output_tuple(self) -> tuple:
         return self.output['df'],
