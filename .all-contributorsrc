@@ -15,6 +15,16 @@
         "test",
         "code"
       ]
+    },
+    {
+      "login": "basimr",
+      "name": "br",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9298270?v=4",
+      "profile": "https://github.com/basimr",
+      "contributions": [
+        "content",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
