@@ -1,6 +1,6 @@
 # Project Lovelace problem modules
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Tests](https://github.com/project-lovelace/lovelace-problems/actions/workflows/ci.yml/badge.svg)](https://github.com/project-lovelace/lovelace-problems/actions/workflows/ci.yml)
@@ -38,6 +38,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="http://aliramadhan.me"><img src="https://avatars.githubusercontent.com/u/20099589?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ali Ramadhan</b></sub></a><br /><a href="#content-ali-ramadhan" title="Content">🖋</a> <a href="https://github.com/project-lovelace/lovelace-problems/commits?author=ali-ramadhan" title="Tests">⚠️</a> <a href="https://github.com/project-lovelace/lovelace-problems/commits?author=ali-ramadhan" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/basimr"><img src="https://avatars.githubusercontent.com/u/9298270?v=4?s=100" width="100px;" alt=""/><br /><sub><b>br</b></sub></a><br /><a href="#content-basimr" title="Content">🖋</a> <a href="https://github.com/project-lovelace/lovelace-problems/commits?author=basimr" title="Code">💻</a></td>
   </tr>
 </table>
 
