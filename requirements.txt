@@ -16,7 +16,7 @@ importlib-metadata==3.3.0
 iniconfig==1.1.1
 mccabe==0.6.1
 more-itertools==8.6.0
-numpy==1.19.4
+numpy==1.22.0
 packaging==20.9
 pip==21.0.1
 pluggy==0.13.1
