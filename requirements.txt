@@ -33,5 +33,5 @@ urllib3==1.26.4
 virtualenv==20.4.3
 wcwidth==0.2.5
 websocket-client==0.57.0
-wheel==0.36.2
+wheel==0.38.1
 zipp==3.4.0
